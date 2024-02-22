@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
     --nokair: #FFCB0B;
+    --black : #111111
 }
 
 html, body { height: 100%; }
@@ -12,4 +13,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .background-nokair {
     background-color: var(--nokair);
+}
+
+.background-black {
+    background-color: var(--black);
+
+}
+
+.d-flex {
+    display: flex;
 }
