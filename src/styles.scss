@@ -17,9 +17,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .background-black {
     background-color: var(--black);
+}
 
+.justify-content-space-between {
+    justify-content: space-between;
 }
 
 .d-flex {
     display: flex;
+}
+
+.mat-form-field {
+  width: 100%; /* Adjust this to fit within your col-2 or whatever grid system you're using */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+/* Ensures the row contains your form fields inline */
+.row > .col {
+  flex: 0 0 auto; /* Adjust flex-grow, flex-shrink, and flex-basis as needed */
+  width: 16.66666667%; /* For six items in a row, adjust based on your layout */
 }

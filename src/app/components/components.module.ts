@@ -6,9 +6,10 @@ import { AppRoutingModule } from '../app-routing.module';
 import { CoreModule } from '../core/core.module';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
+import { SelectScheduleComponent } from './select-schedule/select-schedule.component';
 
 @NgModule({
-  declarations: [SearchFlightComponent],
+  declarations: [SearchFlightComponent, SelectScheduleComponent],
   imports: [
     CommonModule,
     SharedModule,
