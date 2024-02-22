@@ -1,0 +1,28 @@
+.top-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 50px 8px 50px;
+}
+
+.logo {
+    display: flex;
+    text-align: left;
+}
+
+.logo img {
+    max-height: 35px;
+    width: auto;
+}
+
+.border-header {
+    border-top: 1px solid rgba(0,0,0,.15);
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(0, 0, 0, 0.15);
+    color: #000;
+}
+
+.language-selector {
+    display: flex;
+    text-align: right;
+}
