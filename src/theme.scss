@@ -1,2 +1,20 @@
 @use '@angular/material' as mat;
 
+
+.mat-button-toggle-label-content {
+    font-size: 12px;
+    line-height: 40px !important;
+}
+
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+    background-color: #fff13c !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field-bottom-align {
+  display: none;
+}
+
+
+
+
