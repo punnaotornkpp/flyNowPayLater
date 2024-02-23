@@ -8,3 +8,11 @@ footer {
     width: 100%;
     font-size: 15px;
 }
+
+@media screen and (max-width: 768px) {
+    .footer{
+        display: flex;
+        position: none;
+    }
+}
+
