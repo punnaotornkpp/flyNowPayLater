@@ -1,4 +1,17 @@
 .footer {
     opacity: 0.8;   
     color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    .footer{
+        display: flex;
+        position: none;
+    }
 }

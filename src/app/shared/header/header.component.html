@@ -7,6 +7,10 @@
         title="Nok Air"
     /></a>
   </div>
+  <a>จัดการบุ๊คกิ้ง</a>
+  <a>เช็คอิน</a>
+  <a>นกแฟนคลับ</a>
+  <a>เข้าสู่ระบบตัวแทน</a>
   <div class="language-selector">
     <div class="dropdown">
       <a
@@ -26,4 +30,30 @@
     </div>
   </div>
 </div>
-<div class="border-header background-nokair top-header"></div>
+<div class="border-header background-nokair top-header" style="display: none;">
+
+  <div class="main-header">
+    
+    <div class="header-journey">
+
+
+      <div class="grid-item">กรุงเทพฯ (ดอนเมือง) ถึง เชียงใหม่
+        อาทิตย์ 25 กุมภาพันธ์ 2567 | 05:30 - 06:40</div>
+      <div class="grid-item">เชียงใหม่ ถึง กรุงเทพฯ (ดอนเมือง)
+        พุธ 27 มีนาคม 2567 | 06:20 - 07:30</div>
+      <div class="grid-item">Main</div>
+      <div class="grid-item">
+        <div class="header" (click)="toggleDropdown()">
+          <h2 style="display: flex;align-items: center; ">THB 3,278.00<i data-v-8f6bb956="" aria-hidden="true" class="icon material-icons arrow-icon" style="color: rgb(0, 0, 0);"></i> </h2>
+          <div id="myDropdown" [ngClass]="{'dropdown-content': dropdownVisible}">
+            <p>This is the expanded content of the dropdown.</p>
+            <p>You can add any HTML content here.</p>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+ 
+  </div>
+</div>
