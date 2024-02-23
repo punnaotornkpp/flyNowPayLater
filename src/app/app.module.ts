@@ -10,6 +10,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MaterialModule } from './shared/material.module';
 import { SharedModule } from './shared/shared.module';
 import { ComponentsModule } from './components/components.module';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,8 +20,14 @@ import { ComponentsModule } from './components/components.module';
     SharedModule,
     MaterialModule,
     ComponentsModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
-  providers: [provideClientHydration(), provideAnimationsAsync()],
+  providers: [
+    provideClientHydration(),
+    provideAnimationsAsync(),
+    provideNativeDateAdapter(),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

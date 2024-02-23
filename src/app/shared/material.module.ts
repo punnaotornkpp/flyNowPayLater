@@ -6,6 +6,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -15,6 +20,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatFormFieldModule,
     MatButtonToggleModule,
     MatCheckboxModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatAutocompleteModule,
+    BrowserAnimationsModule,
+    MatChipsModule,
   ],
 })
 export class MaterialModule {}

@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Select Items</h1>
+<div mat-dialog-content>
+  <div *ngFor="let item of data.items">
+    {{ item.name }}
+    <button (click)="decreaseQuantity(item)">-</button>
+    {{ item.quantity }}
+    <button (click)="increaseQuantity(item)">+</button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Done</button>
+</div>

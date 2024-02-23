@@ -1,4 +1,23 @@
 @use '@angular/material' as mat;
+:root {
+    --nokair: #FFCB0B;
+    --black : #111111;
+    --mdc-outlined-text-field-label-text-size: 14px;
+    --mdc-filled-text-field-label-text-size: 14px;
+    --mat-select-trigger-text-size: 14px;
+}
+@include mat.core();
+$my-primary: mat.define-palette(mat.$gray-palette, 700);
+$my-accent: mat.define-palette(mat.$gray-palette, A200, A100, A400);
+$my-theme: mat.define-light-theme((
+    color: (
+        primary: $my-primary,
+        accent: $my-accent,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+));
+@include mat.all-component-themes($my-theme);
 
 
 .mat-button-toggle-label-content {
@@ -14,6 +33,22 @@
 .mat-mdc-form-field-bottom-align {
   display: none;
 }
+
+.mat-mdc-text-field-wrapper{
+    cursor: pointer;
+    background-color: white;
+    border-radius: 4px !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+    border : none
+}
+
+.mat-mdc-text-field-wrapper {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
 
 
 

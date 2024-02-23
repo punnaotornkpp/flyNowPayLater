@@ -1,40 +1,82 @@
-<mat-card class="mx-5">
-  <div class="d-flex justify-content-space-between">
-    <div>
-      <mat-button-toggle-group>
-        <mat-button-toggle value="red">Round Trip</mat-button-toggle>
-        <mat-button-toggle value="green">One Way</mat-button-toggle>
-        <mat-button-toggle value="blue">Multi-city</mat-button-toggle>
-      </mat-button-toggle-group>
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+  <mat-card class="mx-5">
+    <div class="d-flex justify-content-space-between px-1">
+      <div>
+        <mat-button-toggle-group (change)="onToggleChange($event)">
+          <mat-button-toggle value="0">Round Trip</mat-button-toggle>
+          <mat-button-toggle value="1">One Way</mat-button-toggle>
+          <mat-button-toggle value="2">Multi-city</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="col-12 col-lg-2 col-md-4 select-currency">
+        <mat-form-field appearance="fill" class="custom-mat-form-field">
+          <mat-label>Currency</mat-label>
+          <mat-select value="option1">
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
-    <div>
-      <mat-form-field>
-        <mat-label>Select</mat-label>
-        <mat-select value="option1">
-          <mat-option>None</mat-option>
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="container py-2">
+      <div class="row">
+        <div class="col-12 col-lg-2 col-md-4 col py-2">
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>From</mat-label>
+            <input matInput placeholder="" value="" />
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-lg-2 col-md-4 col py-2">
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>To</mat-label>
+            <input matInput placeholder="" value="" />
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-lg-2 col-md-4 col py-2">
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>Depart</mat-label>
+            <input matInput [matDatepicker]="picker" readonly />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div
+          class="col-12 col-lg-2 col-md-4 col py-2"
+          *ngIf="selectedToggleValue != 1"
+        >
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>Return</mat-label>
+            <input matInput [matDatepicker]="picker" readonly />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-lg-2 col-md-4 col py-2">
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>Select Passengers</mat-label>
+            <input matInput placeholder="" value="" />
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-lg-2 col-md-4 col py-2">
+          <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-label>Promo Code</mat-label>
+            <input matInput placeholder="" value="" />
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row col-12 pt-4">
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-  </div>
-  <div class="pt-2">
-    <section>
-      <mat-checkbox>Check me!</mat-checkbox>
-    </section>
-  </div>
-  <div class="d-flex justify-content-end">
-    <button mat-raised-button (click)="redirectToSelect()">
-      <span class="px-3">Search</span>
-    </button>
-  </div>
-</mat-card>
+    <div class="d-flex justify-content-end px-1">
+      <button mat-raised-button>
+        <span class="px-3">Search</span>
+      </button>
+    </div>
+  </mat-card>
+</form>
