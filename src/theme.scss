@@ -3,8 +3,8 @@
     --nokair: #FFCB0B;
     --black : #111111;
     --mdc-outlined-text-field-label-text-size: 14px;
-    --mdc-filled-text-field-label-text-size: 14px;
-    --mat-select-trigger-text-size: 14px;
+    --mdc-filled-text-field-label-text-size: 12px;
+    --mat-select-trigger-text-size: 12px;
 }
 @include mat.core();
 $my-primary: mat.define-palette(mat.$gray-palette, 700);
@@ -49,7 +49,14 @@ $my-theme: mat.define-light-theme((
     border: 1px solid black;
 }
 
+.mat-mdc-option  {
+    font-size: 12px !important;
+}
 
+.mat-mdc-form-field-input-control.mat-mdc-form-field-input-control {
+    font-size: 12px !important;
+}
 
-
-
+.cdk-overlay-pane {
+    width: 350px !important;
+}
