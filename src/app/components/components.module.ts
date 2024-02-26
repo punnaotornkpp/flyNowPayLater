@@ -7,9 +7,10 @@ import { CoreModule } from '../core/core.module';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { SelectScheduleComponent } from './select-schedule/select-schedule.component';
+import { PassengersComponent } from './passengers/passengers.component';
 
 @NgModule({
-  declarations: [SearchFlightComponent, SelectScheduleComponent],
+  declarations: [SearchFlightComponent, SelectScheduleComponent, PassengersComponent],
   imports: [
     CommonModule,
     SharedModule,

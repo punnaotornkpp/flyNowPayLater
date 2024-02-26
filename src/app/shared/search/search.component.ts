@@ -1,52 +1,68 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Router } from '@angular/router';
-import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormArray,
   Validators,
+  FormArray,
   FormControl,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
-import { MOCK_AIRPORT } from '../../../assets/mock';
-import { MatDialog } from '@angular/material/dialog';
-import { SelectPassengersComponent } from '../select-passengers/select-passengers.component';
+import { Observable } from 'rxjs';
+import { IAirport } from '../../model/airport.model';
+import { AirportService } from '../../service/airport.service';
+import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrl: './search.component.scss',
-  // encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent extends SubscriptionDestroyer implements OnInit {
-  mock_airport = MOCK_AIRPORT;
+  airport: IAirport[] = [];
   selectedToggleValue: number = 0;
   bookingForm: FormGroup;
-  items = [{ name: 'Item 1', quantity: 1 }];
+  showDropdown = false;
+
+  selections = {
+    adult: 0,
+    child: 0,
+    infant: 0,
+  };
 
   constructor(
     private route: Router,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    private airportService: AirportService
   ) {
     super();
     this.bookingForm = this.fb.group({
       currency: ['THB', Validators.required],
-      adult: [0, Validators.required],
-      child: [0, Validators.required],
-      infant: [0, Validators.required],
+      adult: [0],
+      child: [0],
+      infant: [0],
       promoCode: [''],
       languageCode: ['th', Validators.required],
       journeys: this.fb.array([this.initJourney()]),
     });
+    const obs = this.airportService
+      .getAirport<IAirport[]>()
+      .subscribe((resp) => {
+        this.airport = resp;
+      });
+    this.AddSubscription(obs);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    this.showDropdown = false;
   }
 
   ngOnInit(): void {}
 
-  initJourney() {
+  initJourney(): FormGroup {
     return this.fb.group({
       origin: ['', Validators.required],
       destination: ['', Validators.required],
@@ -54,32 +70,46 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     });
   }
 
-  addJourney() {
-    const control = <FormArray>this.bookingForm.controls['journeys'];
-    control.push(this.initJourney());
-  }
-
-  removeJourney(i: number) {
-    const control = <FormArray>this.bookingForm.controls['journeys'];
-    control.removeAt(i);
+  onSubmit(): void {
+    // this.route.navigateByUrl('select');
+    console.log(this.bookingForm.value);
   }
 
   onToggleChange(event: MatButtonToggleChange) {
     this.selectedToggleValue = event.value;
   }
 
-  onSubmit() {
-    this.route.navigateByUrl('select');
-    console.log(this.bookingForm.value);
+  toggleDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showDropdown = !this.showDropdown;
   }
 
-  openDialog(item: any): void {
-    const dialogRef = this.dialog.open(SelectPassengersComponent, {
-      width: '250px',
-      data: { items: [item] },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
-    });
+  increaseCount(category: string, event: MouseEvent): void {
+    if (category === 'adult' || category === 'child' || category === 'infant') {
+      this.selections[category]++;
+    }
+    event.stopPropagation();
+  }
+
+  decreaseCount(category: string, event: MouseEvent): void {
+    if (
+      category === 'adult' ||
+      category === 'child' ||
+      (category === 'infant' && this.selections[category] > 0)
+    ) {
+      this.selections[category]--;
+    }
+    event.stopPropagation();
+  }
+
+  get selectionDisplay(): string {
+    return `Adults: ${this.selections.adult}, Children: ${this.selections.child}, Infants: ${this.selections.infant}`;
+  }
+
+  getSelectionCount(category: string): number {
+    if (category === 'adult' || category === 'child' || category === 'infant') {
+      return this.selections[category];
+    }
+    return 0; // Default or error value
   }
 }

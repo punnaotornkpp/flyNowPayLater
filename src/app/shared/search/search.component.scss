@@ -26,8 +26,30 @@ mat-button-toggle {
 }
 
 
+.custom-mat-form-field-container {
+  position: relative; 
+}
 
+.custom-dropdown {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%; 
+  background: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,.2);
+  border-radius: 4px;
+  z-index: 1000; 
+}
 
+.passenger-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.count {
+  color: var(--nokair);
+}
 
 
 
