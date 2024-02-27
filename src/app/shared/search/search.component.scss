@@ -34,7 +34,7 @@ mat-button-toggle {
   position: absolute;
   top: 100%; 
   left: 0;
-  width: 100%; 
+  width: 120%; 
   background: white;
   box-shadow: 0 4px 6px rgba(0,0,0,.2);
   border-radius: 4px;
@@ -47,8 +47,20 @@ mat-button-toggle {
   justify-content: space-between;
 }
 
-.count {
-  color: var(--nokair);
+
+
+@media screen and (max-width: 768px) {
+    .custom-dropdown {
+      width: 100%; 
+    }
+}
+
+.icon {
+  background-color: var(--nokair);
+  border-radius: 4px;
+  padding: 5px;
+  display: inline;
+  vertical-align: middle;
 }
 
 

@@ -57,6 +57,9 @@ $my-theme: mat.define-light-theme((
     font-size: 12px !important;
 }
 
-.cdk-overlay-pane {
-    width: 350px !important;
+.mat-icon {
+    font-size: 12px;
+    height: auto !important;
+    width: auto !important;
 }
+
