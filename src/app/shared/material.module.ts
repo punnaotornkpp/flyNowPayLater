@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -33,6 +34,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTabsModule,
     MatDialogModule,
     MatRadioModule,
+    MatExpansionModule,
   ],
 })
 export class MaterialModule {}

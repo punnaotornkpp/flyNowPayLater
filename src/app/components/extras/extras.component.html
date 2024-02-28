@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="px-2">
+    <div class="py-3">
+      <app-step></app-step>
+    </div>
+    <div class="py-3">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-32 f-nokair">work</mat-icon>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Extra Services</div>
+            <div class="bold">Please select your additional services</div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+        <div class="col py-2" *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          <mat-card class="p-2">
+            <img mat-card-image src="https://placehold.co/600x400" alt="" />
+            <div class="py-2">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
+              animi dolorum eaque temporibus non velit aspernatur nostrum
+              corporis, nulla molestiae nesciunt aut libero omnis veritatis?
+              Repellendus dolorum officia ut nihil.
+            </div>
+            <mat-card-actions class="center">
+              <button
+                mat-flat-button
+                color="accent"
+                (click)="selectDetail(item)"
+              >
+                <span class="px-3 py-2">ADD</span>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+          <div class="py-3" *ngIf="selectedItem === item">
+            <mat-card class="p-2"
+              >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
+              vitae tempora harum odit in dignissimos dolorem similique soluta
+              modi unde voluptatibus minima iure aut molestias, alias, aliquam
+              sunt tempore atque?</mat-card
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-space-between pt-3">
+        <div class="col text-align-start">
+          <button mat-button class="px-4 py-3" (click)="redirectPrevious()">
+            <u>Previous</u>
+          </button>
+        </div>
+        <div class="col text-align-end">
+          <button mat-raised-button class="px-4 py-3" (click)="redirectNext()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,114 @@
-<p>passengers works!</p>
+<div class="container-fluid">
+  <div class="px-2">
+    <div class="py-3">
+      <app-step></app-step>
+    </div>
+    <div class="py-3">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-32 f-nokair">group_add</mat-icon>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Passengers</div>
+            <div class="bold">Enter passenger details</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-card
+          ><mat-accordion class="example-headers-align">
+            <mat-expansion-panel
+              [expanded]="step === 0"
+              (opened)="setStep(0)"
+              hideToggle
+            >
+              <mat-expansion-panel-header class="background-expansion">
+                <mat-panel-title class="f-20 bold text-dark"
+                  ><mat-icon class="f-32 px-2 f-nokair">account_circle</mat-icon
+                  >Passenger 1 (Primary passenger)</mat-panel-title
+                >
+              </mat-expansion-panel-header>
+              <div class="row col-12 pt-2">
+                <div class="col-12 col-md-6 col-lg-2 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>Title</mat-label>
+                    <mat-select required>
+                      <mat-option value="Mr">Mr</mat-option>
+                      <mat-option value="Mrs">Mrs</mat-option>
+                      <mat-option value="Miss">Miss</mat-option>
+                      <mat-option value="Monk">Monk</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-md-6 col-lg-5 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>First name & Middle name </mat-label>
+                    <input matInput required />
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-md-6 col-lg-5 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>Last name</mat-label>
+                    <input matInput required />
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>Date of birth</mat-label>
+                    <input matInput [matDatepicker]="picker" required />
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="py-3 f-24">Contact Information</div>
+              <div class="row col-12">
+                <div class="col-12 col-md-6 col-lg-6 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>Mobile Phone</mat-label>
+                    <input matInput required maxlength="10" />
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 py-2">
+                  <mat-form-field class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput required />
+                  </mat-form-field>
+                </div>
+              </div>
+              <section class="py-2">
+                <mat-checkbox
+                  >I would like to receive news and special offers from Nok Air
+                  at the contact provided and accept Nok Air’s privacy
+                  policy.</mat-checkbox
+                >
+              </section>
+              <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">
+                  Next
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion></mat-card
+        >
+      </div>
+      <div class="col-12 d-flex justify-content-space-between pt-3">
+        <div class="col text-align-start">
+          <button mat-button class="px-4 py-3" (click)="redirectPrevious()">
+            <u>Previous</u>
+          </button>
+        </div>
+        <div class="col text-align-end">
+          <button mat-raised-button class="px-4 py-3" (click)="redirectNext()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
