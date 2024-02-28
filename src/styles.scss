@@ -32,6 +32,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     text-align: start;
 }
 
+.text-align-end {
+    text-align: end;
+}
+
 .align-self-center {
     align-self: center;
 }
@@ -80,4 +84,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   pointer-events: none ;
   background-color: var(--gray) !important ;
 }
+
 

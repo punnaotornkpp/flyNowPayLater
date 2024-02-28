@@ -18,7 +18,7 @@
   </div>
   <div class="border-top" *ngFor="let item of [1, 2, 3, 4, 5]">
     <div class="hover-background cursor" (click)="openDetailFlight(item)">
-      <div class="row col-12 py-3 text-align-center">
+      <div class="col-12 py-3 text-align-center row">
         <div
           class="col-2 bold d-flex align-items-center justify-content-center"
         >
@@ -33,15 +33,35 @@
           <div>1h 10m | DD 121 | B737-800</div>
         </div>
         <div class="col bold align-self-center">
-          <button mat-button>1,399.00</button>
+          <button
+            mat-button
+            (click)="selectDetail(item, 1399); $event.stopPropagation()"
+          >
+            1,399.00
+          </button>
         </div>
         <div class="col bold align-self-center">
-          <button mat-flat-button color="accent">1,699.00</button>
+          <button
+            mat-flat-button
+            color="accent"
+            (click)="selectDetail(item, 1699); $event.stopPropagation()"
+          >
+            1,699.00
+          </button>
         </div>
         <div class="col bold align-self-center">
-          <button mat-flat-button color="warn">2,099.00</button>
+          <button
+            mat-flat-button
+            color="warn"
+            (click)="selectDetail(item, 2099); $event.stopPropagation()"
+          >
+            2,099.00
+          </button>
         </div>
       </div>
+    </div>
+    <div *ngIf="selectedItem === item">
+      <app-detail-flight [price]="selectedPrice"></app-detail-flight>
     </div>
   </div>
 </div>

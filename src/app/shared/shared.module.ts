@@ -8,6 +8,8 @@ import { StepComponent } from './step/step.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { FlightComponent } from './flight/flight.component';
+import { DialogDetailFlightComponent } from './dialog-detail-flight/dialog-detail-flight.component';
+import { DetailFlightComponent } from './detail-flight/detail-flight.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -16,6 +18,8 @@ import { FlightComponent } from './flight/flight.component';
     StepComponent,
     ScheduleComponent,
     FlightComponent,
+    DialogDetailFlightComponent,
+    DetailFlightComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [

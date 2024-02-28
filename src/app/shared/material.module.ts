@@ -13,6 +13,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -29,6 +31,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatChipsModule,
     MatListModule,
     MatTabsModule,
+    MatDialogModule,
+    MatRadioModule,
   ],
 })
 export class MaterialModule {}
