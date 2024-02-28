@@ -16,7 +16,7 @@
         </div>
         <div class="col-11">
           <h2>Depart</h2>
-          <div>{{ route.origin || "" }}</div>
+          <div>{{ route.origin || "" }} To {{ route.destination || "" }}</div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>
@@ -32,27 +32,37 @@
         </div>
         <div class="col-11">
           <h2>Return</h2>
-          <div>{{ route.destination || "" }}</div>
+          <div>{{ route.destination || "" }} To {{ route.origin || "" }}</div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>
     </div>
-    <div class="py-5">
-      <div class="py-2 f-12">
-        Please note that the final price will be displayed on the last step of
-        the booking process. The fuel cost fluctuation (included in price).
-      </div>
-      <div class="py-2 f-12">
-        For “Muti-city” booking which involved flight connections, do ensure
-        sufficient time for aircraft changes. A minimum of 2 hours for domestic
-        on to domestic and 3 hours for International inbound and outbound
-        connections.
-      </div>
-      <div class="py-2 f-12">
-        <strong>International route</strong>: Passenger who hold only one-way
-        ticket may be denied entry at the destination. Please ensure you are in
-        compliance with the entry requirements and regulations at your
-        destination before payment.
+    <div class="container-fluid">
+      <div class="pb-5 f-14">
+        <div class="py-2">
+          Please note that the final price will be displayed on the last step of
+          the booking process. The fuel cost fluctuation (included in price).
+        </div>
+        <div class="py-2">
+          For “Muti-city” booking which involved flight connections, do ensure
+          sufficient time for aircraft changes. A minimum of 2 hours for
+          domestic on to domestic and 3 hours for International inbound and
+          outbound connections.
+        </div>
+        <div class="py-2">
+          <strong>International route</strong>: Passenger who hold only one-way
+          ticket may be denied entry at the destination. Please ensure you are
+          in compliance with the entry requirements and regulations at your
+          destination before payment.
+        </div>
+        <div class="col-12 d-flex justify-content-space-between py-1">
+          <div class="col text-align-start">
+            <button mat-button class="px-4 py-3"><u>Previous</u></button>
+          </div>
+          <div class="col text-align-end">
+            <button mat-raised-button class="px-4 py-3">Next</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
