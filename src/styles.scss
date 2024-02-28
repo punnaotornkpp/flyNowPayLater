@@ -32,6 +32,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     text-align: start;
 }
 
+.align-self-center {
+    align-self: center;
+}
+
 .d-flex {
     display: flex;
 }
