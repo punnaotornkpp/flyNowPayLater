@@ -16,7 +16,7 @@
         </div>
         <div class="col-11">
           <h2>Depart</h2>
-          <div>{{ saveValue.journeys[0].origin }}</div>
+          <div>{{ route.origin || "" }}</div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>
@@ -32,7 +32,7 @@
         </div>
         <div class="col-11">
           <h2>Return</h2>
-          <div>{{ saveValue.journeys[0].destination }}</div>
+          <div>{{ route.destination || "" }}</div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>

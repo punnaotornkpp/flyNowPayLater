@@ -11,14 +11,17 @@ export class SelectScheduleComponent
   extends SubscriptionDestroyer
   implements OnInit
 {
-  saveValue: any;
+  route = { origin: '', destination: '' };
+
   constructor(private session: SessionStorage) {
     super();
   }
 
   ngOnInit(): void {
-    const saveValue = JSON.parse(this.session.get('data'));
-    console.log(saveValue.form);
-    this.saveValue = saveValue.form;
+    // const saveValue = JSON.parse(this.session.get('data'));
+    // console.log(saveValue.form);
+    // this.saveValue = saveValue.form;
+    this.route.origin = 'DMK';
+    this.route.destination = 'CNX';
   }
 }
