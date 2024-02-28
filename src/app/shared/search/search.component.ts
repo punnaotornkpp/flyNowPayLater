@@ -14,6 +14,10 @@ import { AirportService } from '../../service/airport.service';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { HostListener } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { BookingService } from '../../service/booking.service';
+import { SessionStorage } from '../../core/helper/session.helper';
+import { setControls } from '../../core/helper/form.helper';
 
 @Component({
   selector: 'app-search',
@@ -32,16 +36,20 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     child: 0,
     infant: 0,
   };
+  minDate = new Date();
 
   constructor(
     private route: Router,
     private fb: FormBuilder,
-    private airportService: AirportService
+    private airportService: AirportService,
+    private datePipe: DatePipe,
+    private booking: BookingService,
+    private session: SessionStorage
   ) {
     super();
     this.bookingForm = this.fb.group({
       currency: ['THB', Validators.required],
-      adult: [0],
+      adult: [0, Validators.required],
       child: [0],
       infant: [0],
       promoCode: [''],
@@ -55,16 +63,23 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }),
       ]),
     });
+    // this.journeys.get('returnDate')?.setValidators(Validators.required);
+  }
+
+  ngOnInit(): void {
+    // const savedDataString = this.session.get('data');
+    // const savedData = JSON.parse(savedDataString || '');
+    // console.log(savedData.form);
+    // setControls(savedData.form, this.bookingForm);
+    // this.bookingForm.controls['promoCode'].setValue(savedData.form.promoCode);
     const obs = this.airportService
       .getAirport<IAirport[]>()
-      .subscribe((resp) => {
+      .subscribe((resp: IAirport[]) => {
         this.airport = resp;
         this.initFilteredAirports();
       });
     this.AddSubscription(obs);
   }
-
-  ngOnInit(): void {}
 
   initFilteredAirports(): void {
     this.journeys.controls.forEach((_, index) => {
@@ -111,24 +126,44 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   onSubmit(): void {
-    const formValue = this.bookingForm.value;
-    if (this.selectedToggleValue == 0) {
-      if (formValue.journeys && formValue.journeys.length > 0) {
-        const firstJourney = formValue.journeys[0];
-        const returnJourney = {
-          origin: firstJourney.destination,
-          destination: firstJourney.origin,
-          departureDate: firstJourney.returnDate,
-        };
-        const result = {
-          ...formValue,
-          journeys: [...formValue.journeys, returnJourney],
-        };
-        console.log(result);
+    try {
+      if (this.bookingForm.valid) {
+        let formValue = this.bookingForm.value;
+        formValue.journeys.forEach(
+          (journey: {
+            departureDate: string | number | Date | null;
+            returnDate: string | number | Date | null;
+          }) => {
+            journey.departureDate = this.datePipe.transform(
+              journey.departureDate,
+              'yyyy-MM-dd'
+            );
+            journey.returnDate = this.datePipe.transform(
+              journey.returnDate,
+              'yyyy-MM-dd'
+            );
+          }
+        );
+        if (this.selectedToggleValue == 0) {
+          if (formValue.journeys && formValue.journeys.length > 0) {
+            const firstJourney = formValue.journeys[0];
+            const returnJourney = {
+              origin: firstJourney.destination,
+              destination: firstJourney.origin,
+              departureDate: firstJourney.returnDate,
+            };
+            const result = {
+              ...formValue,
+              journeys: [...formValue.journeys, returnJourney],
+            };
+            formValue = result;
+          }
+        }
+        delete formValue.journeys[0].returnDate;
+        this.session.set('data', { form: formValue });
+        this.route.navigateByUrl('select');
       }
-    } else {
-      console.log(formValue);
-    }
+    } catch (error) {}
   }
 
   onToggleChange(event: MatButtonToggleChange) {

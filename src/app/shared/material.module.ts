@@ -12,6 +12,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -27,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
     BrowserAnimationsModule,
     MatChipsModule,
     MatListModule,
+    MatTabsModule,
   ],
 })
 export class MaterialModule {}

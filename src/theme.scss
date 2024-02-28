@@ -8,11 +8,13 @@
 }
 @include mat.core();
 $my-primary: mat.define-palette(mat.$gray-palette, 700);
-$my-accent: mat.define-palette(mat.$gray-palette, A200, A100, A400);
+$my-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$my-warn: mat.define-palette(mat.$deep-orange-palette);
 $my-theme: mat.define-light-theme((
     color: (
         primary: $my-primary,
         accent: $my-accent,
+        warn: $my-warn,
     ),
     typography: mat.define-typography-config(),
     density: 0,
@@ -63,3 +65,23 @@ $my-theme: mat.define-light-theme((
     width: auto !important;
 }
 
+.mat-mdc-tab:not(.mdc-tab--stacked) {
+    background-color: lightblue;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab:first-child {
+    border-top-left-radius: 12px;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+    margin-right: 1px;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab:last-child {
+    border-top-right-radius: 12px;
+}
+
+.mdc-tab {
+    padding-right: 0px;
+    padding-left: 0px;
+}

@@ -7,6 +7,7 @@ import { MaterialModule } from './material.module';
 import { StepComponent } from './step/step.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { FlightComponent } from './flight/flight.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -14,6 +15,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
     SearchComponent,
     StepComponent,
     ScheduleComponent,
+    FlightComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [

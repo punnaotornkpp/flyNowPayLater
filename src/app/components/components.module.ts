@@ -8,9 +8,14 @@ import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { SelectScheduleComponent } from './select-schedule/select-schedule.component';
 import { PassengersComponent } from './passengers/passengers.component';
+import { SessionStorage } from '../core/helper/session.helper';
 
 @NgModule({
-  declarations: [SearchFlightComponent, SelectScheduleComponent, PassengersComponent],
+  declarations: [
+    SearchFlightComponent,
+    SelectScheduleComponent,
+    PassengersComponent,
+  ],
   imports: [
     CommonModule,
     SharedModule,
@@ -19,5 +24,6 @@ import { PassengersComponent } from './passengers/passengers.component';
     RouterModule,
     CoreModule,
   ],
+  providers: [SessionStorage],
 })
 export class ComponentsModule {}
