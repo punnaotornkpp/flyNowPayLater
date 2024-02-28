@@ -1,126 +1,22 @@
-.top-header{
-    display: flex;
-    height: 60px;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 6px 0;
-}
+/* Custom CSS */
+.nokair-header {
+    background-color: #ffcb0b;
+    padding: 10px 0;
+  }
 
-.header-menu {
-    display: flex;
-    box-sizing: border-box;
-    width: 100%;
-}
-.header-menu img {
+.div-logo-image img {
     max-height: 48px;
     width: auto;
 }
-.flex-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.header-item {
-    margin: 10px;
-    text-decoration: none;
-    color: #000;
-}
-.flex-div-image {
-    margin: 0 25px 0 0;
-}
-
-.border-header {
+.border-top-header {
     border-top: 1px solid rgba(0,0,0,.15);
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgba(0, 0, 0, 0.15);
-    color: #000;
 }
-
-.language-selector {
-    margin-left: auto;
-}
-
-.main-header {
-    font-family: Arial, sans-serif;
-    width: 100%;
-    text-align: center;
-}
-.header-journey {
-    display: flex;
-    flex-wrap: wrap; 
-}
-
-.grid-item {
-    flex: 1;
-    padding: 2px;
-    box-sizing: border-box;
-}
-
-.grid-item:nth-child(1), .grid-item:nth-child(2) {
-    flex-basis: 35%;
-}
-.grid-item:nth-child(3), .grid-item:nth-child(4) {
-    flex-basis: 15%;
-}
-
-
-.header {
-    text-align: center;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-  
-
-.dropdown-content {
-    display: none;
-    background-color: #f9f9f9;
-    color: #333;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.content {
-  position: absolute;
-}
-
-.material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 28px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-smoothing: antialiased;
-}
-
 
 @media screen and (max-width: 768px) {
-    .grid-item{
+    .responsive-action{
         display: none;
     }
-
-    .top-header{
-        display: flex;
-        height: 50px;
-        flex-wrap: wrap;
-        margin: 0 auto;
-        padding: 6px 0;
-    }
-
-    .header-menu img {
+    .div-logo-image img {
         max-height: 40px!important;
         width: auto;
     }
