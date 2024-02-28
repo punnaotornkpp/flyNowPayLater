@@ -34,7 +34,6 @@ import { SessionStorage } from './core/helper/session.helper';
     provideAnimationsAsync(),
     provideNativeDateAdapter(),
     DatePipe,
-    SessionStorage,
   ],
   bootstrap: [AppComponent],
 })

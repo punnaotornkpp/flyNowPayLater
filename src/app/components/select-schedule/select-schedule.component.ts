@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-select-schedule',
@@ -13,7 +14,7 @@ export class SelectScheduleComponent
 {
   route = { origin: '', destination: '' };
 
-  constructor(private session: SessionStorage) {
+  constructor(private session: SessionStorage, private router: Router) {
     super();
   }
 
@@ -23,5 +24,12 @@ export class SelectScheduleComponent
     // this.saveValue = saveValue.form;
     this.route.origin = 'DMK';
     this.route.destination = 'CNX';
+  }
+
+  redirectPrevious() {
+    this.router.navigateByUrl('');
+  }
+  redirectNext() {
+    this.router.navigateByUrl('passengers');
   }
 }
