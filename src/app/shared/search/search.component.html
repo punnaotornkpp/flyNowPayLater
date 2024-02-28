@@ -1,7 +1,7 @@
 <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
   <mat-card class="mx-2">
     <div>
-      <div class="row align-items-center">
+      <div class="row align-items-center px-3">
         <div
           class="col-12 col-lg-4 col-md-12 d-flex justify-content-space-between"
         >
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div
-        class="row row-cols-1 row-cols-sm-2 row-cols-lg-5"
+        class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 px-3"
         [class.row-cols-lg-6]="selectedToggleValue != 1"
       >
         <div class="col py-2">
@@ -98,6 +98,7 @@
                 readonly
                 formControlName="departureDate"
                 id="departureDate"
+                [min]="minDate"
               />
               <mat-datepicker-toggle
                 matSuffix
@@ -124,6 +125,7 @@
                 readonly
                 formControlName="returnDate"
                 id="returnDate"
+                [min]="minDate"
               />
               <mat-datepicker-toggle
                 matSuffix
@@ -183,7 +185,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="d-flex justify-content-end py-1">
+      <div class="d-flex justify-content-end py-1 px-3">
         <button mat-raised-button>
           <span class="px-3">Search</span>
         </button>

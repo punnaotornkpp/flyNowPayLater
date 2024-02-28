@@ -1,0 +1,41 @@
+<div class="px-1">
+  <div class="pb-3">
+    <div class="row col-12 text-align-center f-14">
+      <div class="col-2 bold d-flex justify-content-center">
+        <div class="row col-12">
+          <div class="col-6">Departure</div>
+          <div class="col-6">Arrival</div>
+        </div>
+      </div>
+      <div class="col-5 bold text-align-start">Flight Information</div>
+      <div class="col bold">Nok Lite</div>
+      <div class="col bold">
+        <div class="text-align-center">Nok X-tra</div>
+        <div>(Recommended!)</div>
+      </div>
+      <div class="col bold">Nok MAX</div>
+    </div>
+  </div>
+  <div class="border-top" *ngFor="let item of [1, 2, 3, 4, 5]">
+    <div class="row col-12 py-3 text-align-center">
+      <div class="col-2 bold d-flex align-items-center justify-content-center">
+        <div class="f-20">06:20</div>
+        <mat-icon class="f-24 gray px-2">east</mat-icon>
+        <div class="f-20">07:40</div>
+      </div>
+      <div class="col-5 text-align-start">
+        <div>
+          <mat-icon class="f-24">flight</mat-icon>
+        </div>
+        <div>1h 10m | DD 121 | B737-800</div>
+      </div>
+      <div class="col bold"><button mat-button>1,399.00</button></div>
+      <div class="col bold">
+        <button mat-flat-button color="accent">1,699.00</button>
+      </div>
+      <div class="col bold">
+        <button mat-flat-button color="warn">2,099.00</button>
+      </div>
+    </div>
+  </div>
+</div>
