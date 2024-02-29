@@ -1,23 +1,18 @@
-/* Custom CSS */
-.nokair-header {
-    background-color: #ffcb0b;
-    padding: 10px 0;
+
+
+
+.logo img {
+  max-width: 100px; 
+  height: auto;
+}
+
+
+.language-selector mat-select {
+  margin-left: 10px; 
+}
+
+@media (max-width: 1023px) {
+  .language-selector {
+    justify-content: flex-end;
   }
-
-.div-logo-image img {
-    max-height: 48px;
-    width: auto;
-}
-.border-top-header {
-    border-top: 1px solid rgba(0,0,0,.15);
-}
-
-@media screen and (max-width: 768px) {
-    .responsive-action{
-        display: none;
-    }
-    .div-logo-image img {
-        max-height: 40px!important;
-        width: auto;
-    }
 }
