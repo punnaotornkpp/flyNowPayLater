@@ -1,5 +1,5 @@
 <div>
-  <mat-toolbar class="background-nokair">
+  <mat-toolbar class="background-nokair border-bottom-black">
     <div
       class="col-12 d-flex justify-content-between align-items-center container-fluid container-max-width"
     >
@@ -33,4 +33,97 @@
       </div>
     </div>
   </mat-toolbar>
+  <mat-accordion>
+    <mat-expansion-panel
+      class="background-nokair"
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          ><div
+            class="col-12 d-flex align-items-center container-fluid container-max-width f-12"
+          >
+            <div class="col-12 col-lg-4 d-flex border-right-black">
+              <div class="align-self-center px-3">
+                <mat-icon class="f-24 center transform45">flight</mat-icon>
+              </div>
+              <div>
+                <div>Don Mueang (Bangkok) To Chiang Mai</div>
+                <div class="bold">Tuesday 27 February 2024</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 d-flex border-right-black">
+              <div class="align-self-center px-3">
+                <mat-icon class="f-24 center transform45">flight</mat-icon>
+              </div>
+              <div>
+                <div>Don Mueang (Bangkok) To Chiang Mai</div>
+                <div class="bold">Tuesday 27 February 2024</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-2 d-flex border-right-black">
+              <div class="align-self-center px-3">1</div>
+              <div>
+                <button
+                  mat-stroked-button
+                  class="f-10"
+                  (click)="openSearch(); $event.stopPropagation()"
+                >
+                  <mat-icon class="f-20">edit</mat-icon>Edit Search
+                </button>
+              </div>
+            </div>
+            <div class="col-12 col-lg-2 d-flex border-right-black">
+              <div class="align-self-center px-3"></div>
+              <div>
+                <button mat-button class="bold f-24 d-flex text-align-cente">
+                  9,999.00
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste soluta,
+        facere molestiae possimus consequuntur error earum totam inventore
+        dolorum? Soluta quasi eaque harum cum! Non omnis inventore itaque
+        architecto enim?
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
+
+<!-- <div
+      class="col-12 d-flex align-items-center container-fluid container-max-width f-12"
+    >
+      <div class="col-12 col-lg-4 d-flex border-right-black">
+        <div class="align-self-center px-3">
+          <mat-icon class="f-24 center transform45">flight</mat-icon>
+        </div>
+        <div>
+          <div>Don Mueang (Bangkok) To Chiang Mai</div>
+          <div class="bold">Tuesday 27 February 2024</div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4 d-flex border-right-black">
+        <div class="align-self-center px-3">
+          <mat-icon class="f-24 center transform45">flight</mat-icon>
+        </div>
+        <div>
+          <div>Don Mueang (Bangkok) To Chiang Mai</div>
+          <div class="bold">Tuesday 27 February 2024</div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-2 d-flex border-right-black">
+        <div class="align-self-center px-3">1</div>
+        <div>
+          <button mat-stroked-button class="f-10">
+            <span><mat-icon class="f-24">edit</mat-icon></span
+            >Edit Search
+          </button>
+        </div>
+      </div>
+      <div class="col-12 col-lg-2 d-flex"></div>
+    </div> -->

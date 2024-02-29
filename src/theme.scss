@@ -85,3 +85,11 @@ $my-theme: mat.define-light-theme((
     padding-right: 0px;
     padding-left: 0px;
 }
+
+.mat-expantion-panel {
+   &.backgound-nokair {
+     .mat-expansion-panel-body {
+           background-color: var(--nokair);
+     }
+   }
+}

@@ -1,6 +1,4 @@
 
-
-
 .logo img {
   max-width: 100px; 
   height: auto;
@@ -16,3 +14,13 @@
     justify-content: flex-end;
   }
 }
+
+mat-expansion-panel-header {
+  background-color: var(--nokair) !important;
+  border-radius: 0px !important;
+}
+
+mat-accordion mat-expansion-panel{
+    border-radius: 0px !important;
+}
+

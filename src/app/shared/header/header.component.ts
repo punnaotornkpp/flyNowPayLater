@@ -10,6 +10,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class HeaderComponent {
   isSmallScreen: boolean = false;
+  panelOpenState = false;
 
   constructor(
     private dialog: MatDialog,
