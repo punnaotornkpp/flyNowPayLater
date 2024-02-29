@@ -1,38 +1,42 @@
-<div class="container-fluid">
+<div class="container-fluid container-max-width">
   <div class="px-2">
     <div class="py-3">
       <app-step></app-step>
     </div>
     <div class="py-3">
-      <div class="row py-4">
-        <div class="col-1">
-          <span>
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
             <img
               class="image"
               src="../../../assets/image/airplane.png"
               alt=""
             />
-          </span>
-        </div>
-        <div class="col-11">
-          <h2>Depart</h2>
-          <div>{{ route.origin || "" }} To {{ route.destination || "" }}</div>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Depart</div>
+            <div class="bold">
+              {{ route.origin || "" }} To {{ route.destination || "" }}
+            </div>
+          </div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>
-      <div class="row py-4">
-        <div class="col-1">
-          <span>
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
             <img
               class="image"
               src="../../../assets/image/airplane.png"
               alt=""
             />
-          </span>
-        </div>
-        <div class="col-11">
-          <h2>Return</h2>
-          <div>{{ route.destination || "" }} To {{ route.origin || "" }}</div>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Return</div>
+            <div class="bold">
+              {{ route.destination || "" }} To {{ route.origin || "" }}
+            </div>
+          </div>
         </div>
       </div>
       <div><app-schedule></app-schedule></div>
