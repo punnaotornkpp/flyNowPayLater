@@ -21,7 +21,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .background-nokair {
-    background-color: var(--nokair);
+    background-color: var(--nokair) !important;
 }
 
 .background-black {
@@ -29,33 +29,42 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .justify-content-space-between {
-    justify-content: space-between;
+    justify-content: space-between !important;
 }
 
+.justify-content-end {
+    justify-content: end !important;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+
 .text-align-center {
-    text-align: center;
+    text-align: center !important;
 }
 
 .text-align-start {
-    text-align: start;
+    text-align: start !important;
 }
 
 .text-align-end {
-    text-align: end;
+    text-align: end !important;
 }
 
 .align-self-center {
-    align-self: center;
+    align-self: center !important;
 }
 
 .center {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
 }
 
 .d-flex {
-    display: flex;
+    display: flex !important;
 }
 
 .f-32 {
@@ -103,7 +112,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: 100%;
 }
 
-img{
+img {
     width: 100%;
 }
-

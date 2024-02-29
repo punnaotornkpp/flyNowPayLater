@@ -1,25 +1,36 @@
-<div class="container-fluid">
-  <div class="row nokair-header">
-    <div class="col-md-2 div-logo-image">
-      <!-- Nok Air Logo -->
-      <img
-        src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
-        alt="Nok Air Logo"
-      />
+<div>
+  <mat-toolbar class="background-nokair">
+    <div
+      class="col-12 d-flex justify-content-between align-items-center container-fluid container-max-width"
+    >
+      <div class="col logo text-align-start">
+        <img
+          src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
+          alt="Nok Air Logo"
+        />
+      </div>
+      <div
+        class="col language-selector d-flex text-align-end align-self-center"
+      >
+        <div>
+          <mat-menu #langMenu="matMenu">
+            <button mat-menu-item value="TH">TH</button>
+            <button mat-menu-item value="EN">EN</button>
+          </mat-menu>
+        </div>
+        <div
+          *ngIf="isSmallScreen"
+          mat-icon-button
+          [matMenuTriggerFor]="langMenu"
+          class="cursor"
+        >
+          <mat-icon>menu</mat-icon>
+        </div>
+        <mat-select *ngIf="!isSmallScreen">
+          <mat-option value="TH">TH</mat-option>
+          <mat-option value="EN">EN</mat-option>
+        </mat-select>
+      </div>
     </div>
-  </div>
-  <div class="row nokair-header border-top-header">
-    <div class="col-md-4 justify-content-center text-align-center">
-      <h3 style="display: inline">
-        DMK-CNX : อังคาร 26 มีนาคม 2567 | 05:30 - 06:40
-      </h3>
-    </div>
-    <div class="col-md-4 justify-content-center text-align-center">
-      <h3 style="display: inline">
-        CNX-DMK : อังคาร 26 มีนาคม 2567 | 18:30 - 20:20
-      </h3>
-    </div>
-    <div class="col-md-2 justify-content-center text-align-center">123</div>
-    <div class="col-md-2 justify-content-center text-align-center">123</div>
-  </div>
+  </mat-toolbar>
 </div>
