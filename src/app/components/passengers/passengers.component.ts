@@ -31,7 +31,7 @@ export class PassengersComponent
   }
 
   redirectPrevious() {
-    this.route.navigateByUrl('passengers');
+    this.route.navigateByUrl('select');
   }
   redirectNext() {
     this.route.navigateByUrl('extras');

@@ -1,4 +1,4 @@
-<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="bookingForm">
   <mat-card class="mx-2">
     <div>
       <div class="row align-items-center px-3">
@@ -185,9 +185,9 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="d-flex justify-content-end py-1 px-3">
-        <button mat-raised-button>
-          <span class="px-3">Search</span>
+      <div class="d-flex justify-content-end py-2 px-3 text-align-end">
+        <button mat-raised-button (click)="onSubmit()" class="large-button">
+          <span>Search</span>
         </button>
       </div>
     </div>
