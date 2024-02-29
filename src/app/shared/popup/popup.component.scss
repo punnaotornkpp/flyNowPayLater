@@ -1,0 +1,36 @@
+#popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 450px; 
+  z-index: 9999;
+}
+
+.notification-box {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 2px solid var(--success); 
+  color: var(--success); 
+  border-radius: 4px;
+  background-color: white;
+  margin-bottom: 1rem;
+}
+
+.notification-box.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.notification-box.warning {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.notification-box.info {
+  border-color: var(--info);
+  color: var(--info);
+}
+
+
+

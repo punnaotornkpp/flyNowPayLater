@@ -10,6 +10,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { FlightComponent } from './flight/flight.component';
 import { DialogDetailFlightComponent } from './dialog-detail-flight/dialog-detail-flight.component';
 import { DetailFlightComponent } from './detail-flight/detail-flight.component';
+import { PopupComponent } from './popup/popup.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -20,6 +21,7 @@ import { DetailFlightComponent } from './detail-flight/detail-flight.component';
     FlightComponent,
     DialogDetailFlightComponent,
     DetailFlightComponent,
+    PopupComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -28,6 +30,7 @@ import { DetailFlightComponent } from './detail-flight/detail-flight.component';
     SearchComponent,
     StepComponent,
     ScheduleComponent,
+    PopupComponent,
   ],
 })
 export class SharedModule {}

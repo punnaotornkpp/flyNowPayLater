@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 import { BookingService } from '../../service/booking.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls } from '../../core/helper/form.helper';
+import { PopupService } from '../../service/popup.service';
 
 @Component({
   selector: 'app-search',
@@ -44,7 +45,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private airportService: AirportService,
     private datePipe: DatePipe,
     private booking: BookingService,
-    private session: SessionStorage
+    private session: SessionStorage,
+    private popup: PopupService
   ) {
     super();
     this.bookingForm = this.fb.group({
@@ -162,6 +164,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         delete formValue.journeys[0].returnDate;
         this.session.set('data', { form: formValue });
         this.route.navigateByUrl('select');
+      } else {
+        this.popup.failed('Form is invalid');
       }
     } catch (error) {}
   }
