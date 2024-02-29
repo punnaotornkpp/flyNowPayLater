@@ -45,15 +45,20 @@
           </div>
         </div>
       </div>
-      <div class="col-12 d-flex justify-content-space-between pt-3">
+      <div class="col-12 d-flex justify-content-space-between py-2">
         <div class="col text-align-start">
-          <button mat-button class="px-4 py-3" (click)="redirectPrevious()">
+          <button mat-button (click)="redirectPrevious()" class="large-button">
             <u>Previous</u>
           </button>
         </div>
         <div class="col text-align-end">
-          <button mat-raised-button class="px-4 py-3" (click)="redirectNext()">
-            Next
+          <button
+            mat-raised-button
+            (click)="redirectNext()"
+            class="large-button"
+            color="accent"
+          >
+            <span>Next</span>
           </button>
         </div>
       </div>
