@@ -1,7 +1,7 @@
 <div>
   <mat-toolbar class="background-nokair border-bottom-black">
     <div
-      class="col-12 d-flex justify-content-between align-items-center container-fluid container-max-width"
+      class="col-12 d-flex justify-content-between align-items-center container container-max-width"
     >
       <div class="col logo text-align-start">
         <img
@@ -39,11 +39,9 @@
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false"
     >
-      <mat-expansion-panel-header>
+      <mat-expansion-panel-header class="container container-max-width">
         <mat-panel-title
-          ><div
-            class="col-12 d-flex align-items-center container-fluid container-max-width f-12"
-          >
+          ><div class="col-12 d-flex align-items-center h f-12">
             <div class="col-12 col-lg-4 d-flex border-right-black">
               <div class="align-self-center px-3">
                 <mat-icon class="f-24 center transform45">flight</mat-icon>
@@ -85,7 +83,7 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div>
+      <div class="container container-max-width">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste soluta,
         facere molestiae possimus consequuntur error earum totam inventore
         dolorum? Soluta quasi eaque harum cum! Non omnis inventore itaque
@@ -94,36 +92,3 @@
     </mat-expansion-panel>
   </mat-accordion>
 </div>
-
-<!-- <div
-      class="col-12 d-flex align-items-center container-fluid container-max-width f-12"
-    >
-      <div class="col-12 col-lg-4 d-flex border-right-black">
-        <div class="align-self-center px-3">
-          <mat-icon class="f-24 center transform45">flight</mat-icon>
-        </div>
-        <div>
-          <div>Don Mueang (Bangkok) To Chiang Mai</div>
-          <div class="bold">Tuesday 27 February 2024</div>
-        </div>
-      </div>
-      <div class="col-12 col-lg-4 d-flex border-right-black">
-        <div class="align-self-center px-3">
-          <mat-icon class="f-24 center transform45">flight</mat-icon>
-        </div>
-        <div>
-          <div>Don Mueang (Bangkok) To Chiang Mai</div>
-          <div class="bold">Tuesday 27 February 2024</div>
-        </div>
-      </div>
-      <div class="col-12 col-lg-2 d-flex border-right-black">
-        <div class="align-self-center px-3">1</div>
-        <div>
-          <button mat-stroked-button class="f-10">
-            <span><mat-icon class="f-24">edit</mat-icon></span
-            >Edit Search
-          </button>
-        </div>
-      </div>
-      <div class="col-12 col-lg-2 d-flex"></div>
-    </div> -->
