@@ -1,9 +1,29 @@
 <div class="background-nokair">
   <div class="nav">
-    <button class="nav-button">Search</button>
-    <button class="nav-button">Select Flight</button>
-    <button class="nav-button disabled">Passenger Info</button>
-    <button class="nav-button disabled">Extra Services</button>
-    <button class="nav-button disabled">Payment</button>
+    <button class="nav-button" disabled="">
+      <div class="step-center">
+        {{ !this.isSmallScreen ? "Search" : "1" }}
+      </div>
+    </button>
+    <button class="nav-button" disabled="">
+      <div class="step-center">
+        {{ !this.isSmallScreen ? "Select Flight" : "2" }}
+      </div>
+    </button>
+    <button class="nav-button" disabled="">
+      <div class="step-center">
+        {{ !this.isSmallScreen ? "Passenger Info" : "3" }}
+      </div>
+    </button>
+    <button class="nav-button" disabled="">
+      <div class="step-center">
+        {{ !this.isSmallScreen ? "Extra Services" : "4" }}
+      </div>
+    </button>
+    <button class="nav-button" disabled="">
+      <div class="step-center">
+        {{ !this.isSmallScreen ? "Payment" : "5" }}
+      </div>
+    </button>
   </div>
 </div>

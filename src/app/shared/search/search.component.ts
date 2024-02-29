@@ -162,7 +162,10 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
           }
         }
         delete formValue.journeys[0].returnDate;
+        this.popup.success('Search success');
+
         this.session.set('data', { form: formValue });
+
         this.route.navigateByUrl('select');
       } else {
         this.popup.failed('Form is invalid');
