@@ -7,6 +7,7 @@
     --danger : #ff4444;
     --warning :#ffbb33;
     --info : #33b5e5;
+    --black50 : #00000026;
 }
 
 .f-nokair {
@@ -136,4 +137,28 @@ img {
   .text-responsive {
     font-size: 70%; 
   }
+}
+
+.border-top-black {
+  border-top: 1px solid var(--black50);
+}
+
+.border-right-black {
+  border-right: 1px solid var(--black50);
+}
+
+.border-left-black {
+  border-left: 1px solid var(--black50);
+}
+
+.border-bottom-black {
+  border-bottom: 1px solid var(--black50);
+}
+
+.border-black {
+  border: 1px solid var(--black50);
+}
+
+.transform45 {
+    transform: rotate(60deg);
 }
