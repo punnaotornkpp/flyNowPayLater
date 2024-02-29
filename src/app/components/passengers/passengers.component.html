@@ -17,16 +17,20 @@
       </div>
       <div>
         <mat-card
-          ><mat-accordion class="example-headers-align">
+          ><mat-accordion>
             <mat-expansion-panel
               [expanded]="step === 0"
               (opened)="setStep(0)"
               hideToggle
             >
               <mat-expansion-panel-header class="background-expansion">
-                <mat-panel-title class="f-20 bold text-dark"
-                  ><mat-icon class="f-32 px-2 f-nokair">account_circle</mat-icon
-                  >Passenger 1 (Primary passenger)</mat-panel-title
+                <mat-panel-title class="f-20 bold text-dark">
+                  <div>
+                    <mat-icon class="f-32 px-2 f-nokair"
+                      >account_circle</mat-icon
+                    >
+                  </div>
+                  <div>Passenger 1 (Primary passenger)</div></mat-panel-title
                 >
               </mat-expansion-panel-header>
               <div class="row col-12 pt-2">
