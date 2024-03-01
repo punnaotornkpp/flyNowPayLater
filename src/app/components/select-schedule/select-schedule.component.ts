@@ -13,6 +13,7 @@ export class SelectScheduleComponent
   implements OnInit
 {
   route = { origin: '', destination: '' };
+  check: any;
 
   constructor(private session: SessionStorage, private router: Router) {
     super();
@@ -22,13 +23,13 @@ export class SelectScheduleComponent
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         const item = this.session.get('data');
-        console.log(JSON.parse(item as string));
+        this.check = JSON.parse(item);
+        // this.route.origin = item.form!.journeys[0]!.origin;
+        // this.route.destination = item.form!.journeys[0]!.destination;
       } catch (error) {
         this.router.navigateByUrl('');
       }
     }
-    this.route.origin = 'DMK';
-    this.route.destination = 'CNX';
   }
 
   redirectPrevious() {

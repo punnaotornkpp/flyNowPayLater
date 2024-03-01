@@ -12,8 +12,16 @@
 }
 
 .disabled {
-    border-left-color: #f0f0ef !important;
+    cursor: default;
+    background: var(--gray);
+    border-left-color: var(--gray) !important;
 }
+
+.inActive {
+    background: var(--nokair50) !important;
+    border-left-color: var(--nokair50) !important;
+}
+
 
 .nav-button{
     position: relative;
@@ -27,16 +35,16 @@
     flex-grow: 1;
     border: none;
     border-radius: 0% !important;
-    border-right: 8px solid #fff;
-    border-left: #fff;
-    background: #fff;
-    background-color: #ffefb5;
-    border-left-color: #ffefb5;
+    border-right: 8px solid white;
+    border-left: white;
+    background: var((--white));
+    background-color: var(--nokair);
+    border-left-color: var(--nokair);
 }
 
 .nav-button:after {
     right: -14px;
-    border-left: 15px solid #fff;
+    border-left: 15px solid white;
     border-left-color: inherit;
     border-bottom: 20px solid transparent;
     z-index: 1;
@@ -59,5 +67,6 @@
 
 .nav-button:before {
     left: 0;
-    border-left: 14px solid #fff;
+    border-left: 14px solid white;
 }
+

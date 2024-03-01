@@ -38,6 +38,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     infant: 0,
   };
   minDate = new Date();
+  sessionData: any;
 
   constructor(
     private route: Router,
@@ -50,8 +51,9 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   ) {
     super();
     this.bookingForm = this.fb.group({
+      typeRoute: [0, Validators.required],
       currency: ['THB', Validators.required],
-      adult: [0, Validators.required],
+      adult: [null, Validators.required],
       child: [0],
       infant: [0],
       promoCode: [''],
@@ -61,7 +63,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
           origin: ['', Validators.required],
           destination: ['', Validators.required],
           departureDate: ['', Validators.required],
-          returnDate: [''],
+          returnDate: ['', Validators.required],
         }),
       ]),
     });
@@ -73,6 +75,36 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       .getAirport<IAirport[]>()
       .subscribe((resp: IAirport[]) => {
         this.airport = resp;
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+          try {
+            this.sessionData = JSON.parse(this.session.get('data'));
+            this.selectedToggleValue = this.sessionData!.form!.typeRoute;
+
+            setControls(this.sessionData.form, this.bookingForm);
+
+            const journeysArray = this.bookingForm.get('journeys') as FormArray;
+            const firstJourneyGroup = journeysArray.at(0) as FormGroup;
+            firstJourneyGroup.controls['returnDate'].setValue(
+              this.sessionData.form.journeys[0].returnDate
+            );
+            firstJourneyGroup.controls['departureDate'].setValue(
+              this.sessionData.form.journeys[0].departureDate
+            );
+            firstJourneyGroup.controls['origin'].setValue(
+              this.sessionData.form.journeys[0].origin
+            );
+            firstJourneyGroup.controls['destination'].setValue(
+              this.sessionData.form.journeys[0].destination
+            );
+            this.selections = {
+              adult: this.sessionData!.form!.adult,
+              child: this.sessionData!.form!.child,
+              infant: this.sessionData!.form!.infant,
+            };
+          } catch (error) {
+            this.route.navigateByUrl('');
+          }
+        }
         this.initFilteredAirports();
       });
     this.AddSubscription(obs);
@@ -124,6 +156,14 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
 
   onSubmit(): void {
     try {
+      //-------------//
+      if (this.selectedToggleValue === 1) {
+        const journeysArray = this.bookingForm.get('journeys') as FormArray;
+        const firstJourneyGroup = journeysArray.at(0) as FormGroup;
+        firstJourneyGroup.controls['returnDate'].clearValidators();
+        firstJourneyGroup.controls['returnDate'].updateValueAndValidity();
+      }
+      //-------------//
       if (this.bookingForm.valid) {
         let formValue = this.bookingForm.value;
         formValue.journeys.forEach(
@@ -156,7 +196,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             formValue = result;
           }
         }
-        delete formValue.journeys[0].returnDate;
+
+        // delete formValue.journeys[0].returnDate;
         this.popup.success('Search success');
 
         this.session.set('data', { form: formValue });
