@@ -4,10 +4,11 @@
       class="col-12 d-flex justify-content-between align-items-center container container-max-width"
     >
       <div class="col logo text-align-start">
-        <img
-          src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
-          alt="Nok Air Logo"
-        />
+        <a href="">
+          <img
+            src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
+            alt="Nok Air Logo"
+        /></a>
       </div>
       <div
         class="col language-selector d-flex text-align-end align-self-center"
@@ -41,8 +42,13 @@
     >
       <mat-expansion-panel-header class="container container-max-width">
         <mat-panel-title
-          ><div class="col-12 d-flex align-items-center h f-12">
-            <div class="col-12 col-lg-4 d-flex border-right-black">
+          ><div
+            class="col-12 d-flex align-items-center container-fluid container-max-width f-12"
+          >
+            <div
+              class="col-6 col-lg-4 d-flex border-right-black"
+              *ngIf="!isSmallScreen"
+            >
               <div class="align-self-center px-3">
                 <mat-icon class="f-24 center transform45">flight</mat-icon>
               </div>
@@ -51,7 +57,10 @@
                 <div class="bold">Tuesday 27 February 2024</div>
               </div>
             </div>
-            <div class="col-12 col-lg-4 d-flex border-right-black">
+            <div
+              class="col-6 col-lg-4 d-flex border-right-black"
+              *ngIf="!isSmallScreen"
+            >
               <div class="align-self-center px-3">
                 <mat-icon class="f-24 center transform45">flight</mat-icon>
               </div>
