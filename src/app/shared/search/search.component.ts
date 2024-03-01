@@ -69,11 +69,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   ngOnInit(): void {
-    // const savedDataString = this.session.get('data');
-    // const savedData = JSON.parse(savedDataString || '');
-    // console.log(savedData.form);
-    // setControls(savedData.form, this.bookingForm);
-    // this.bookingForm.controls['promoCode'].setValue(savedData.form.promoCode);
     const obs = this.airportService
       .getAirport<IAirport[]>()
       .subscribe((resp: IAirport[]) => {

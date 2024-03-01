@@ -15,7 +15,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
-import { SessionStorage } from './core/helper/session.helper';
 @NgModule({
   declarations: [AppComponent],
   imports: [
