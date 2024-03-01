@@ -9,7 +9,16 @@ import { SessionStorage } from '../../core/helper/session.helper';
   styleUrl: './extras.component.scss',
 })
 export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
-  selectedItem: any;
+  items = [
+    { id: 1, content: 'Content for item 1' },
+    { id: 2, content: 'Content for item 2' },
+    { id: 3, content: 'Content for item 3' },
+    { id: 4, content: 'Content for item 4' },
+    { id: 5, content: 'Content for item 5' },
+    { id: 6, content: 'Content for item 6' },
+  ];
+  selectedItem: any = null;
+
   constructor(private route: Router, private session: SessionStorage) {
     super();
   }
@@ -18,7 +27,6 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         const item = this.session.get('data');
-        console.log(JSON.parse(item as string));
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -28,11 +36,13 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   redirectPrevious() {
     this.route.navigateByUrl('passengers');
   }
+
   redirectNext() {
     this.route.navigateByUrl('payment');
   }
 
-  selectDetail(item: number): void {
-    this.selectedItem = item;
+  selectDetail(itemId: number): void {
+    this.selectedItem = this.items.find((item) => item.id === itemId);
+    console.log(this.selectedItem);
   }
 }

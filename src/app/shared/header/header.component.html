@@ -34,7 +34,7 @@
       </div>
     </div>
   </mat-toolbar>
-  <mat-accordion>
+  <mat-accordion *ngIf="!index">
     <mat-expansion-panel
       class="background-nokair"
       (opened)="panelOpenState = true"

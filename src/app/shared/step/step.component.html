@@ -1,26 +1,51 @@
 <div class="background-nokair">
   <div class="nav">
-    <button class="nav-button" disabled="">
+    <button
+      class="nav-button"
+      [class.disabled]="1 >= page"
+      [class.inActive]="page > 1"
+      (click)="redirect(1)"
+    >
       <div class="step-center">
         {{ !this.isSmallScreen ? "Search" : "1" }}
       </div>
     </button>
-    <button class="nav-button" disabled="">
+    <button
+      class="nav-button"
+      [class.disabled]="2 > page"
+      [class.inActive]="page > 2"
+      (click)="redirect(2)"
+    >
       <div class="step-center">
         {{ !this.isSmallScreen ? "Select Flight" : "2" }}
       </div>
     </button>
-    <button class="nav-button" disabled="">
+    <button
+      class="nav-button"
+      [class.disabled]="3 > page"
+      [class.inActive]="page > 3"
+      (click)="redirect(3)"
+    >
       <div class="step-center">
         {{ !this.isSmallScreen ? "Passenger Info" : "3" }}
       </div>
     </button>
-    <button class="nav-button" disabled="">
+    <button
+      class="nav-button"
+      [class.disabled]="4 > page"
+      [class.inActive]="page > 4"
+      (click)="redirect(4)"
+    >
       <div class="step-center">
         {{ !this.isSmallScreen ? "Extra Services" : "4" }}
       </div>
     </button>
-    <button class="nav-button" disabled="">
+    <button
+      class="nav-button"
+      [class.disabled]="5 > page"
+      [class.inActive]="page > 5"
+      (click)="redirect(5)"
+    >
       <div class="step-center">
         {{ !this.isSmallScreen ? "Payment" : "5" }}
       </div>

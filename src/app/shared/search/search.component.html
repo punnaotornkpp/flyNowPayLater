@@ -8,10 +8,10 @@
           <div>
             <mat-button-toggle-group
               (change)="onToggleChange($event)"
-              value="0"
+              formControlName="typeRoute"
             >
-              <mat-button-toggle value="0">Round Trip</mat-button-toggle>
-              <mat-button-toggle value="1">One Way</mat-button-toggle>
+              <mat-button-toggle [value]="0">Round Trip</mat-button-toggle>
+              <mat-button-toggle [value]="1">One Way</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
         </div>
@@ -140,9 +140,9 @@
             <mat-label>Select Passengers</mat-label>
             <input
               matInput
-              placeholder=""
-              [value]="selectionDisplay"
+              formControlName="adult"
               readonly
+              [value]="selectionDisplay"
               (click)="toggleDropdown($event)"
             />
           </mat-form-field>
