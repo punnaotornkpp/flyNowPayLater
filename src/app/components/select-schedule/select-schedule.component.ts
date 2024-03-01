@@ -19,9 +19,14 @@ export class SelectScheduleComponent
   }
 
   ngOnInit(): void {
-    // const saveValue = JSON.parse(this.session.get('data'));
-    // console.log(saveValue.form);
-    // this.saveValue = saveValue.form;
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      try {
+        const item = this.session.get('data');
+        console.log(JSON.parse(item as string));
+      } catch (error) {
+        this.router.navigateByUrl('');
+      }
+    }
     this.route.origin = 'DMK';
     this.route.destination = 'CNX';
   }

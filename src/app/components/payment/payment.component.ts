@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
+import { SessionStorage } from '../../core/helper/session.helper';
 
 @Component({
   selector: 'app-payment',
@@ -8,11 +9,21 @@ import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.h
   styleUrl: './payment.component.scss',
 })
 export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
-  constructor(private route: Router) {
+  constructor(private route: Router, private session: SessionStorage) {
     super();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      try {
+        const item = this.session.get('data');
+        console.log(JSON.parse(item as string));
+      } catch (error) {
+        this.route.navigateByUrl('');
+      }
+    }
+  }
+
   redirectPrevious() {
     this.route.navigateByUrl('extras');
   }
