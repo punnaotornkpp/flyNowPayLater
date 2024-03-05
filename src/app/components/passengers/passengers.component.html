@@ -3,7 +3,14 @@
     <div class="py-3">
       <app-step [page]="3"></app-step>
     </div>
-    <div class="py-3">
+    <div
+      class="py-3"
+      *ngIf="{
+        adultsLength: adults.controls.length,
+        childrenLength: children.controls.length,
+        infantsLength: infants.controls.length
+      } as lengths"
+    >
       <div>
         <div class="py-4 d-flex">
           <div class="align-self-center px-3">
@@ -15,111 +22,320 @@
           </div>
         </div>
       </div>
-      <div>
-        <mat-card
-          ><mat-accordion>
-            <mat-expansion-panel
-              [expanded]="step === 0"
-              (opened)="setStep(0)"
-              hideToggle
-            >
-              <mat-expansion-panel-header class="background-expansion">
-                <mat-panel-title class="f-20 bold text-dark">
-                  <div>
+      <form [formGroup]="form">
+        <div
+          formArrayName="adults"
+          *ngFor="let adult of adults.controls; let i = index"
+          class="py-1"
+        >
+          <mat-card>
+            <mat-accordion multi="true">
+              <mat-expansion-panel
+                [expanded]="openPanels[i]"
+                (opened)="openPanels[i] = true"
+                (closed)="openPanels[i] = false"
+              >
+                <mat-expansion-panel-header class="background-expansion">
+                  <mat-panel-title class="f-20 bold text-dark">
                     <mat-icon class="f-32 px-2 f-nokair"
                       >account_circle</mat-icon
                     >
+                    <div class="text-responsive">
+                      Passenger {{ i + 1 }}
+                      <span *ngIf="i === 0">(Primary passenger)</span>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div [formGroupName]="i">
+                  <div class="row col-12 pt-2">
+                    <div class="col-12 col-md-6 col-lg-2 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Title</mat-label>
+                        <mat-select formControlName="title" required>
+                          <mat-option value="Mr">Mr</mat-option>
+                          <mat-option value="Mrs">Mrs</mat-option>
+                          <mat-option value="Miss">Miss</mat-option>
+                          <mat-option value="Monk">Monk</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>First name & Middle name</mat-label>
+                        <input matInput formControlName="firstName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Date of birth</mat-label>
+                        <input
+                          matInput
+                          formControlName="birthDate"
+                          [matDatepicker]="picker"
+                          readonly
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
                   </div>
-                  <div class="text-responsive">
-                    Passenger 1 (Primary passenger)
-                  </div></mat-panel-title
-                >
-              </mat-expansion-panel-header>
-              <div class="row col-12 pt-2">
-                <div class="col-12 col-md-6 col-lg-2 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>Title</mat-label>
-                    <mat-select required>
-                      <mat-option value="Mr">Mr</mat-option>
-                      <mat-option value="Mrs">Mrs</mat-option>
-                      <mat-option value="Miss">Miss</mat-option>
-                      <mat-option value="Monk">Monk</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <div *ngIf="i === 0" class="py-3 f-24">
+                    Contact Information
+                  </div>
+                  <div *ngIf="i === 0" class="row col-12">
+                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Mobile Phone</mat-label>
+                        <input
+                          matInput
+                          formControlName="mobilePhone"
+                          required
+                          maxlength="10"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div *ngIf="i === 0" class="col-12 col-md-6 col-lg-6 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" required />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <section *ngIf="i === 0" class="py-2">
+                    <mat-checkbox formControlName="newsletter"
+                      >I would like to receive news and special offers from Nok
+                      Air at the contact provided and accept Nok Air’s privacy
+                      policy.</mat-checkbox
+                    >
+                  </section>
+                  <mat-action-row>
+                    <button
+                      *ngIf="i !== 0"
+                      mat-button
+                      color="warn"
+                      (click)="prevStep(); $event.stopPropagation()"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      mat-button
+                      color="primary"
+                      (click)="nextStep(); $event.stopPropagation()"
+                    >
+                      Next
+                    </button>
+                  </mat-action-row>
                 </div>
-                <div class="col-12 col-md-6 col-lg-5 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>First name & Middle name </mat-label>
-                    <input matInput required />
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-md-6 col-lg-5 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>Last name</mat-label>
-                    <input matInput required />
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-md-6 col-lg-6 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>Date of birth</mat-label>
-                    <input matInput [matDatepicker]="picker" required />
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle
-                      matSuffix
-                      [for]="picker"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="py-3 f-24">Contact Information</div>
-              <div class="row col-12">
-                <div class="col-12 col-md-6 col-lg-6 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>Mobile Phone</mat-label>
-                    <input matInput required maxlength="10" />
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-md-6 col-lg-6 py-2">
-                  <mat-form-field class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput required />
-                  </mat-form-field>
-                </div>
-              </div>
-              <section class="py-2">
-                <mat-checkbox
-                  >I would like to receive news and special offers from Nok Air
-                  at the contact provided and accept Nok Air’s privacy
-                  policy.</mat-checkbox
-                >
-              </section>
-              <mat-action-row>
-                <button mat-button color="primary" (click)="nextStep()">
-                  Next
-                </button>
-              </mat-action-row>
-            </mat-expansion-panel>
-          </mat-accordion></mat-card
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card>
+        </div>
+        <div
+          formArrayName="children"
+          *ngFor="let child of children.controls; let i = index"
+          class="py-1"
         >
-      </div>
-      <div class="col-12 d-flex justify-content-space-between py-2">
-        <div class="col text-align-start">
-          <button mat-button (click)="redirectPrevious()" class="large-button">
-            <u>Previous</u>
-          </button>
+          <mat-card>
+            <mat-accordion multi="true">
+              <mat-expansion-panel
+                [expanded]="openPanels[lengths.adultsLength + i]"
+                (opened)="openPanels[i] = true"
+                (closed)="openPanels[i] = false"
+              >
+                <mat-expansion-panel-header class="background-expansion">
+                  <mat-panel-title class="f-20 bold text-dark">
+                    <mat-icon class="f-32 px-2 f-nokair"
+                      >account_circle</mat-icon
+                    >
+                    <div class="text-responsive">
+                      Passenger {{ lengths.adultsLength + i + 1 }}
+                      (Child)
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div [formGroupName]="i">
+                  <div class="row col-12 pt-2">
+                    <div class="col-12 col-md-6 col-lg-2 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Title</mat-label>
+                        <mat-select formControlName="title" required>
+                          <mat-option value="Mstr">Mstr</mat-option>
+                          <mat-option value="Miss">Miss</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>First name & Middle name</mat-label>
+                        <input matInput formControlName="firstName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Date of birth</mat-label>
+                        <input
+                          matInput
+                          formControlName="birthDate"
+                          [matDatepicker]="picker"
+                          readonly
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <mat-action-row>
+                    <button
+                      *ngIf="i !== 0"
+                      mat-button
+                      color="warn"
+                      (click)="prevStep(); $event.stopPropagation()"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      mat-button
+                      color="primary"
+                      (click)="nextStep(); $event.stopPropagation()"
+                    >
+                      Next
+                    </button>
+                  </mat-action-row>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card>
         </div>
-        <div class="col text-align-end">
-          <button
-            mat-raised-button
-            (click)="redirectNext()"
-            class="large-button"
-            color="accent"
-          >
-            <span>Next</span>
-          </button>
+        <div
+          formArrayName="infants"
+          *ngFor="let infant of infants.controls; let i = index"
+          class="py-1"
+        >
+          <mat-card>
+            <mat-accordion multi="true">
+              <mat-expansion-panel
+                [expanded]="
+                  openPanels[lengths.adultsLength + lengths.childrenLength + i]
+                "
+                (opened)="openPanels[i] = true"
+                (closed)="openPanels[i] = false"
+              >
+                <mat-expansion-panel-header class="background-expansion">
+                  <mat-panel-title class="f-20 bold text-dark">
+                    <mat-icon class="f-32 px-2 f-nokair"
+                      >account_circle</mat-icon
+                    >
+                    <div class="text-responsive">
+                      Passenger
+                      {{
+                        lengths.adultsLength + lengths.childrenLength + i + 1
+                      }}
+                      (Infant)
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div [formGroupName]="i">
+                  <div class="row col-12 pt-2">
+                    <div class="col-12 col-md-6 col-lg-2 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Title</mat-label>
+                        <mat-select formControlName="title" required>
+                          <mat-option value="Boy">Boy</mat-option>
+                          <mat-option value="Girl">Girl</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>First name & Middle name</mat-label>
+                        <input matInput formControlName="firstName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName" required />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label>Date of birth</mat-label>
+                        <input
+                          matInput
+                          formControlName="birthDate"
+                          [matDatepicker]="picker"
+                          readonly
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <mat-action-row>
+                    <button
+                      *ngIf="i !== 0"
+                      mat-button
+                      color="warn"
+                      (click)="prevStep(); $event.stopPropagation()"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      mat-button
+                      color="primary"
+                      (click)="nextStep(); $event.stopPropagation()"
+                    >
+                      Next
+                    </button>
+                  </mat-action-row>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card>
         </div>
-      </div>
+        <div class="col-12 d-flex justify-content-space-between py-2">
+          <div class="col text-align-start">
+            <button
+              mat-button
+              (click)="redirectPrevious()"
+              class="large-button"
+            >
+              <u>Previous</u>
+            </button>
+          </div>
+          <div class="col text-align-end">
+            <button
+              mat-raised-button
+              (click)="redirectNext()"
+              class="large-button"
+              color="accent"
+            >
+              <span>Next</span>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

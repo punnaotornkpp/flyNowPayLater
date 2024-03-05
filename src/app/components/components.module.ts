@@ -10,6 +10,8 @@ import { SelectScheduleComponent } from './select-schedule/select-schedule.compo
 import { PassengersComponent } from './passengers/passengers.component';
 import { ExtrasComponent } from './extras/extras.component';
 import { PaymentComponent } from './payment/payment.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { PaymentComponent } from './payment/payment.component';
     PaymentComponent,
   ],
   imports: [
+    BrowserModule,
     CommonModule,
     SharedModule,
     MaterialModule,
     AppRoutingModule,
     RouterModule,
     CoreModule,
+    ReactiveFormsModule,
   ],
 })
 export class ComponentsModule {}
