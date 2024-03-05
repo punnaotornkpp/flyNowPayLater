@@ -17,7 +17,7 @@ import { HostListener } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BookingService } from '../../service/booking.service';
 import { SessionStorage } from '../../core/helper/session.helper';
-import { setControls } from '../../core/helper/form.helper';
+import { setControls, setControlsArray } from '../../core/helper/form.helper';
 import { PopupService } from '../../service/popup.service';
 
 @Component({
@@ -39,6 +39,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   };
   minDate = new Date();
   sessionData: any;
+  journeysArray: FormArray;
+  formSubmitted = false;
 
   constructor(
     private route: Router,
@@ -53,7 +55,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     this.bookingForm = this.fb.group({
       typeRoute: [0, Validators.required],
       currency: ['THB', Validators.required],
-      adult: [null, Validators.required],
+      adult: [1, [Validators.required, Validators.min(1)]],
       child: [0],
       infant: [0],
       promoCode: [''],
@@ -61,13 +63,19 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       journeys: this.fb.array([
         this.fb.group({
           origin: ['', Validators.required],
+          originName: ['', Validators.required],
           destination: ['', Validators.required],
+          destinationName: ['', Validators.required],
           departureDate: ['', Validators.required],
           returnDate: ['', Validators.required],
         }),
       ]),
     });
-    // this.journeys.get('returnDate')?.setValidators(Validators.required);
+    this.journeysArray = this.bookingForm.get('journeys') as FormArray;
+  }
+
+  isValidAdultCount(): boolean {
+    return this.selections.adult >= 1;
   }
 
   ngOnInit(): void {
@@ -78,23 +86,21 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         if (typeof window !== 'undefined' && window.sessionStorage) {
           try {
             this.sessionData = JSON.parse(this.session.get('data'));
-            this.selectedToggleValue = this.sessionData!.form!.typeRoute;
-
+            this.selectedToggleValue = this.sessionData.form.typeRoute;
             setControls(this.sessionData.form, this.bookingForm);
-
-            const journeysArray = this.bookingForm.get('journeys') as FormArray;
-            const firstJourneyGroup = journeysArray.at(0) as FormGroup;
-            firstJourneyGroup.controls['returnDate'].setValue(
-              this.sessionData.form.journeys[0].returnDate
-            );
-            firstJourneyGroup.controls['departureDate'].setValue(
-              this.sessionData.form.journeys[0].departureDate
-            );
-            firstJourneyGroup.controls['origin'].setValue(
-              this.sessionData.form.journeys[0].origin
-            );
-            firstJourneyGroup.controls['destination'].setValue(
-              this.sessionData.form.journeys[0].destination
+            const firstJourneyData = this.sessionData.form.journeys[0];
+            const fieldsToUpdate = [
+              'returnDate',
+              'departureDate',
+              'originName',
+              'origin',
+              'destinationName',
+              'destination',
+            ];
+            setControlsArray(
+              this.journeysArray.at(0) as FormGroup,
+              fieldsToUpdate,
+              firstJourneyData
             );
             this.selections = {
               adult: this.sessionData!.form!.adult,
@@ -111,14 +117,17 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   initFilteredAirports(): void {
-    this.journeys.controls.forEach((_, index) => {
-      this.setupFilteredAirports(index, 'origin');
-      this.setupFilteredAirports(index, 'destination');
+    this.journeysArray.controls.forEach((_, index) => {
+      this.setupFilteredAirports(index, 'originName');
+      this.setupFilteredAirports(index, 'destinationName');
     });
   }
 
-  setupFilteredAirports(index: number, field: 'origin' | 'destination'): void {
-    const journey = this.journeys.at(index);
+  setupFilteredAirports(
+    index: number,
+    field: 'originName' | 'destinationName'
+  ): void {
+    const journey = this.journeysArray.at(index);
     if (!journey) return;
 
     const control = journey.get(field);
@@ -128,16 +137,11 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       startWith(''),
       map((value) => this._filter(value))
     );
-
-    if (field === 'origin') {
+    if (field === 'originName') {
       this.filteredAirports[index] = observable;
     } else {
       this.filteredDestinations[index] = observable;
     }
-  }
-
-  get journeys(): FormArray {
-    return this.bookingForm.get('journeys') as FormArray;
   }
 
   @HostListener('document:click', ['$event'])
@@ -145,7 +149,10 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     this.showDropdown = false;
   }
 
-  private _filter(value: string): IAirport[] {
+  private _filter(value: any): IAirport[] {
+    if (typeof value !== 'string') {
+      value = value && value.toString ? value.toString() : '';
+    }
     const filterValue = value.toLowerCase();
     return this.airport.filter(
       (option) =>
@@ -155,15 +162,13 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.bookingForm.value);
     try {
-      //-------------//
       if (this.selectedToggleValue === 1) {
-        const journeysArray = this.bookingForm.get('journeys') as FormArray;
-        const firstJourneyGroup = journeysArray.at(0) as FormGroup;
+        const firstJourneyGroup = this.journeysArray.at(0) as FormGroup;
         firstJourneyGroup.controls['returnDate'].clearValidators();
         firstJourneyGroup.controls['returnDate'].updateValueAndValidity();
       }
-      //-------------//
       if (this.bookingForm.valid) {
         let formValue = this.bookingForm.value;
         formValue.journeys.forEach(
@@ -186,7 +191,9 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             const firstJourney = formValue.journeys[0];
             const returnJourney = {
               origin: firstJourney.destination,
+              originName: firstJourney.destinationName,
               destination: firstJourney.origin,
+              destinationName: firstJourney.originName,
               departureDate: firstJourney.returnDate,
             };
             const result = {
@@ -196,12 +203,9 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             formValue = result;
           }
         }
-
         // delete formValue.journeys[0].returnDate;
         this.popup.success('Search success');
-
         this.session.set('data', { form: formValue });
-
         this.route.navigateByUrl('select');
       } else {
         this.popup.failed('Form is invalid');
@@ -256,5 +260,17 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       return this.selections[category];
     }
     return 0;
+  }
+
+  onOptionSelected(event: any, journeyIndex: number, type: number) {
+    const option = event.option.value;
+    const journeyGroup = this.journeysArray.at(journeyIndex) as FormGroup;
+    if (type === 0) {
+      journeyGroup.controls['origin'].setValue(option.code);
+      journeyGroup.controls['originName'].setValue(option.name);
+    } else if (type === 1) {
+      journeyGroup.controls['destination'].setValue(option.code);
+      journeyGroup.controls['destinationName'].setValue(option.name);
+    }
   }
 }

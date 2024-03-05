@@ -22,4 +22,16 @@ function setControls<T extends { [key: string]: any }>(
   }
 }
 
-export { setControls };
+function setControlsArray(
+  formGroup: FormGroup,
+  controlNames: string[],
+  data: any
+): void {
+  controlNames.forEach((controlName) => {
+    if (formGroup.controls[controlName]) {
+      formGroup.controls[controlName].setValue(data[controlName]);
+    }
+  });
+}
+
+export { setControls, setControlsArray };

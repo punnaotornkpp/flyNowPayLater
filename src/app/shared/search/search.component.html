@@ -35,7 +35,7 @@
         <div class="col py-2">
           <div formArrayName="journeys">
             <div
-              *ngFor="let journey of journeys.controls; let i = index"
+              *ngFor="let journey of journeysArray.controls; let i = index"
               [formGroupName]="i"
             >
               <mat-form-field appearance="fill" class="custom-mat-form-field">
@@ -43,12 +43,16 @@
                 <input
                   matInput
                   [matAutocomplete]="auto"
-                  formControlName="origin"
+                  formControlName="originName"
                 />
-                <mat-autocomplete [panelWidth]="352" #auto="matAutocomplete">
+                <mat-autocomplete
+                  [panelWidth]="352"
+                  #auto="matAutocomplete"
+                  (optionSelected)="onOptionSelected($event, i, 0)"
+                >
                   <mat-option
                     *ngFor="let option of filteredAirports[i] | async"
-                    [value]="option.code"
+                    [value]="option"
                   >
                     {{ option.name }} ({{ option.code }})
                   </mat-option>
@@ -60,7 +64,7 @@
         <div class="col py-2">
           <div formArrayName="journeys">
             <div
-              *ngFor="let journey of journeys.controls; let i = index"
+              *ngFor="let journey of journeysArray.controls; let i = index"
               [formGroupName]="i"
             >
               <mat-form-field appearance="fill" class="custom-mat-form-field">
@@ -68,15 +72,16 @@
                 <input
                   matInput
                   [matAutocomplete]="autoDestination"
-                  formControlName="destination"
+                  formControlName="destinationName"
                 />
                 <mat-autocomplete
                   [panelWidth]="352"
                   #autoDestination="matAutocomplete"
+                  (optionSelected)="onOptionSelected($event, i, 1)"
                 >
                   <mat-option
                     *ngFor="let option of filteredDestinations[i] | async"
-                    [value]="option.code"
+                    [value]="option"
                   >
                     {{ option.name }} ({{ option.code }})
                   </mat-option>
@@ -87,7 +92,7 @@
         </div>
         <div class="col py-2" formArrayName="journeys">
           <div
-            *ngFor="let journey of journeys.controls; let i = index"
+            *ngFor="let journey of journeysArray.controls; let i = index"
             [formGroupName]="i"
           >
             <mat-form-field appearance="fill" class="custom-mat-form-field">
@@ -114,7 +119,7 @@
           formArrayName="journeys"
         >
           <div
-            *ngFor="let journey of journeys.controls; let i = index"
+            *ngFor="let journey of journeysArray.controls; let i = index"
             [formGroupName]="i"
           >
             <mat-form-field appearance="fill" class="custom-mat-form-field">
@@ -140,12 +145,15 @@
             <mat-label>Select Passengers</mat-label>
             <input
               matInput
-              formControlName="adult"
               readonly
               [value]="selectionDisplay"
               (click)="toggleDropdown($event)"
             />
+            <div *ngIf="!isValidAdultCount()" class="text-red f-12">
+              At least one adult must be selected.
+            </div>
           </mat-form-field>
+
           <div class="custom-dropdown" *ngIf="showDropdown">
             <mat-nav-list>
               <div

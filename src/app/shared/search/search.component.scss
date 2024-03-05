@@ -26,7 +26,6 @@ mat-button-toggle {
     padding-left: 30px;
 }
 
-
 .custom-mat-form-field-container {
   position: relative; 
 }
@@ -48,8 +47,6 @@ mat-button-toggle {
   justify-content: space-between;
 }
 
-
-
 @media screen and (max-width: 768px) {
     .custom-dropdown {
       width: 100%; 
@@ -59,9 +56,13 @@ mat-button-toggle {
 .icon {
   background-color: var(--nokair);
   border-radius: 4px;
-  padding: 5px;
+  padding: 8px;
   display: inline;
   vertical-align: middle;
+}
+
+.text-red {
+  color: var(--danger);
 }
 
 
