@@ -1,7 +1,7 @@
 <form [formGroup]="bookingForm">
-  <mat-card>
+  <mat-card class="no-select">
     <div>
-      <div class="row align-items-center px-3">
+      <div class="row align-items-center px-1">
         <div
           class="col-12 col-lg-4 col-md-12 d-flex justify-content-space-between"
         >
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div
-        class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 px-3"
+        class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 px-1"
         [class.row-cols-lg-6]="selectedToggleValue != 1"
       >
         <div class="col py-2">
@@ -130,7 +130,7 @@
                 readonly
                 formControlName="returnDate"
                 id="returnDate"
-                [min]="minDate"
+                [min]="minReturnDate[i]"
               />
               <mat-datepicker-toggle
                 matSuffix
@@ -152,6 +152,9 @@
             <div *ngIf="!isValidAdultCount()" class="text-red f-12">
               At least one adult must be selected.
             </div>
+            <div *ngIf="!isValidInfantCount()" class="text-red f-12">
+              The number of infants cannot exceed the number of adults.
+            </div>
           </mat-form-field>
 
           <div class="custom-dropdown" *ngIf="showDropdown">
@@ -164,14 +167,14 @@
                 <div>
                   <span
                     class="cursor icon"
-                    (click)="decreaseCount(category, $event)"
+                    (click)="updateCount(category, false, $event)"
                   >
                     <mat-icon matSuffix>remove</mat-icon>
                   </span>
-                  <span class="px-2">{{ getSelectionCount(category) }}</span>
+                  <span class="px-2">{{ selections[category] }}</span>
                   <span
                     class="cursor icon"
-                    (click)="increaseCount(category, $event)"
+                    (click)="updateCount(category, true, $event)"
                   >
                     <mat-icon matSuffix>add</mat-icon>
                   </span>
@@ -193,7 +196,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="d-flex justify-content-end py-2 px-3 text-align-end">
+      <div class="d-flex justify-content-end py-2 px-4 text-align-end">
         <button mat-raised-button (click)="onSubmit()" class="large-button">
           <span>Search</span>
         </button>

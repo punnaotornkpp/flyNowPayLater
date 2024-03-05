@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { IAirport } from '../../model/airport.model';
+import { Observable } from 'rxjs';
+import { IAirport, IAirportConnection } from '../../model/airport.model';
 import { AirportService } from '../../service/airport.service';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
@@ -19,6 +19,7 @@ import { BookingService } from '../../service/booking.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls, setControlsArray } from '../../core/helper/form.helper';
 import { PopupService } from '../../service/popup.service';
+import { PassengerSelections } from '../../model/passenger.model';
 
 @Component({
   selector: 'app-search',
@@ -32,12 +33,13 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   filteredAirports: Observable<IAirport[]>[] = [];
   filteredDestinations: Observable<IAirport[]>[] = [];
   showDropdown = false;
-  selections = {
-    adult: 0,
+  selections: PassengerSelections = {
+    adult: 1,
     child: 0,
     infant: 0,
   };
   minDate = new Date();
+  minReturnDate: Date[] = [];
   sessionData: any;
   journeysArray: FormArray;
   formSubmitted = false;
@@ -62,6 +64,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       languageCode: ['th', Validators.required],
       journeys: this.fb.array([
         this.fb.group({
+          title: ['Depart'],
           origin: ['', Validators.required],
           originName: ['', Validators.required],
           destination: ['', Validators.required],
@@ -72,10 +75,24 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       ]),
     });
     this.journeysArray = this.bookingForm.get('journeys') as FormArray;
-  }
-
-  isValidAdultCount(): boolean {
-    return this.selections.adult >= 1;
+    this.journeysArray.valueChanges.subscribe((changes) => {
+      changes.forEach((journey: any, index: number) => {
+        if (journey.departureDate) {
+          this.minReturnDate[index] = new Date(journey.departureDate);
+          this.minReturnDate[index].setDate(
+            this.minReturnDate[index].getDate()
+          );
+          if (
+            journey.returnDate &&
+            new Date(journey.returnDate) < journey.departureDate
+          ) {
+            const control = (this.journeysArray.at(index) as FormGroup)
+              .controls['returnDate'];
+            control.setValue(journey.departureDate);
+          }
+        }
+      });
+    });
   }
 
   ngOnInit(): void {
@@ -195,6 +212,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
               destination: firstJourney.origin,
               destinationName: firstJourney.originName,
               departureDate: firstJourney.returnDate,
+              title: 'Return',
             };
             const result = {
               ...formValue,
@@ -203,7 +221,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             formValue = result;
           }
         }
-        // delete formValue.journeys[0].returnDate;
         this.popup.success('Search success');
         this.session.set('data', { form: formValue });
         this.route.navigateByUrl('select');
@@ -231,23 +248,25 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     this.showDropdown = !this.showDropdown;
   }
 
-  increaseCount(category: string, event: MouseEvent): void {
-    if (category === 'adult' || category === 'child' || category === 'infant') {
-      this.selections[category]++;
-      this.bookingForm.controls[category].setValue(this.selections[category]);
+  updateCount(category: string, increment: boolean, event: MouseEvent): void {
+    if (increment) {
+      if (
+        (category === 'adult' || category === 'child') &&
+        this.selections[category] < 9
+      ) {
+        this.selections[category]++;
+      } else if (
+        category === 'infant' &&
+        this.selections[category] < this.selections.adult
+      ) {
+        this.selections[category]++;
+      }
+    } else {
+      if (this.selections[category] > 0) {
+        this.selections[category]--;
+      }
     }
-    event.stopPropagation();
-  }
-
-  decreaseCount(category: string, event: MouseEvent): void {
-    if (
-      (category === 'adult' && this.selections[category] > 0) ||
-      (category === 'child' && this.selections[category] > 0) ||
-      (category === 'infant' && this.selections[category] > 0)
-    ) {
-      this.selections[category]--;
-      this.bookingForm.controls[category].setValue(this.selections[category]);
-    }
+    this.bookingForm.controls[category].setValue(this.selections[category]);
     event.stopPropagation();
   }
 
@@ -255,11 +274,12 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     return `${this.selections.adult} adult, ${this.selections.child} child, ${this.selections.infant} infant`;
   }
 
-  getSelectionCount(category: string): number {
-    if (category === 'adult' || category === 'child' || category === 'infant') {
-      return this.selections[category];
-    }
-    return 0;
+  isValidAdultCount(): boolean {
+    return this.selections.adult >= 1;
+  }
+
+  isValidInfantCount(): boolean {
+    return this.selections.infant <= this.selections.adult;
   }
 
   onOptionSelected(event: any, journeyIndex: number, type: number) {

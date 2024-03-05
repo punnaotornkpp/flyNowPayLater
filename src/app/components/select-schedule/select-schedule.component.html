@@ -4,7 +4,7 @@
       <app-step [page]="2"></app-step>
     </div>
     <div class="py-3">
-      <div>
+      <div *ngFor="let journey of sessionValue?.journeys">
         <div class="py-4 d-flex">
           <div class="align-self-center px-3">
             <img
@@ -14,31 +14,16 @@
             />
           </div>
           <div>
-            <div class="bold f-24 py-2">Depart</div>
-            <div class="bold">
-              {{ route.origin || "" }} To {{ route.destination || "" }}
+            <div class="bold f-24 py-2">{{ journey.title || "" }}</div>
+            <div class="">
+              {{ journey.originName || "" }} ({{ journey.origin || "" }}) To
+              {{ journey.destinationName || "" }} ({{
+                journey.destination || ""
+              }})
             </div>
           </div>
         </div>
-        <app-schedule></app-schedule>
-      </div>
-      <div *ngIf="this.check!.form!.journeys!.length > 1 || false">
-        <div class="py-4 d-flex">
-          <div class="align-self-center px-3">
-            <img
-              class="image"
-              src="../../../assets/image/airplane.png"
-              alt=""
-            />
-          </div>
-          <div>
-            <div class="bold f-24 py-2">Return</div>
-            <div class="bold">
-              {{ route.destination || "" }} To {{ route.origin || "" }}
-            </div>
-          </div>
-        </div>
-        <app-schedule></app-schedule>
+        <app-schedule [value]="journey"></app-schedule>
       </div>
     </div>
     <div class="container-fluid">
