@@ -76,7 +76,7 @@
                         <mat-label>Date of birth</mat-label>
                         <input
                           matInput
-                          formControlName="birthDate"
+                          formControlName="birthdayDate"
                           [matDatepicker]="picker"
                           readonly
                         />
@@ -117,23 +117,6 @@
                       policy.</mat-checkbox
                     >
                   </section>
-                  <mat-action-row>
-                    <button
-                      *ngIf="i !== 0"
-                      mat-button
-                      color="warn"
-                      (click)="prevStep(); $event.stopPropagation()"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      mat-button
-                      color="primary"
-                      (click)="nextStep(); $event.stopPropagation()"
-                    >
-                      Next
-                    </button>
-                  </mat-action-row>
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
@@ -148,8 +131,8 @@
             <mat-accordion multi="true">
               <mat-expansion-panel
                 [expanded]="openPanels[lengths.adultsLength + i]"
-                (opened)="openPanels[i] = true"
-                (closed)="openPanels[i] = false"
+                (opened)="setPanelState(lengths.adultsLength + i, true)"
+                (closed)="setPanelState(lengths.adultsLength + i, false)"
               >
                 <mat-expansion-panel-header class="background-expansion">
                   <mat-panel-title class="f-20 bold text-dark">
@@ -190,7 +173,7 @@
                         <mat-label>Date of birth</mat-label>
                         <input
                           matInput
-                          formControlName="birthDate"
+                          formControlName="birthdayDate"
                           [matDatepicker]="picker"
                           readonly
                         />
@@ -202,23 +185,6 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <mat-action-row>
-                    <button
-                      *ngIf="i !== 0"
-                      mat-button
-                      color="warn"
-                      (click)="prevStep(); $event.stopPropagation()"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      mat-button
-                      color="primary"
-                      (click)="nextStep(); $event.stopPropagation()"
-                    >
-                      Next
-                    </button>
-                  </mat-action-row>
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
@@ -235,8 +201,18 @@
                 [expanded]="
                   openPanels[lengths.adultsLength + lengths.childrenLength + i]
                 "
-                (opened)="openPanels[i] = true"
-                (closed)="openPanels[i] = false"
+                (opened)="
+                  setPanelState(
+                    lengths.adultsLength + lengths.childrenLength + i,
+                    true
+                  )
+                "
+                (closed)="
+                  setPanelState(
+                    lengths.adultsLength + lengths.childrenLength + i,
+                    false
+                  )
+                "
               >
                 <mat-expansion-panel-header class="background-expansion">
                   <mat-panel-title class="f-20 bold text-dark">
@@ -280,7 +256,7 @@
                         <mat-label>Date of birth</mat-label>
                         <input
                           matInput
-                          formControlName="birthDate"
+                          formControlName="birthdayDate"
                           [matDatepicker]="picker"
                           readonly
                         />
@@ -292,23 +268,6 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <mat-action-row>
-                    <button
-                      *ngIf="i !== 0"
-                      mat-button
-                      color="warn"
-                      (click)="prevStep(); $event.stopPropagation()"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      mat-button
-                      color="primary"
-                      (click)="nextStep(); $event.stopPropagation()"
-                    >
-                      Next
-                    </button>
-                  </mat-action-row>
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
@@ -318,7 +277,7 @@
           <div class="col text-align-start">
             <button
               mat-button
-              (click)="redirectPrevious()"
+              (click)="redirectPrevious(); $event.stopPropagation()"
               class="large-button"
             >
               <u>Previous</u>

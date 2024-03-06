@@ -31,7 +31,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
   ngOnInit(): void {}
 
-  openDetailFlight(item: any) {
+  openDetailFlight(item: number) {
     this.dialog.open(DialogDetailFlightComponent, { data: item });
   }
 

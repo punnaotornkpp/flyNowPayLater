@@ -20,6 +20,9 @@ import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls, setControlsArray } from '../../core/helper/form.helper';
 import { PopupService } from '../../service/popup.service';
 import { PassengerSelections } from '../../model/passenger.model';
+import { Journey } from '../../model/session.model';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { SharedService } from '../../service/shared.service';
 
 @Component({
   selector: 'app-search',
@@ -51,7 +54,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private datePipe: DatePipe,
     private booking: BookingService,
     private session: SessionStorage,
-    private popup: PopupService
+    private popup: PopupService,
+    private sharedService: SharedService
   ) {
     super();
     this.bookingForm = this.fb.group({
@@ -76,7 +80,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     });
     this.journeysArray = this.bookingForm.get('journeys') as FormArray;
     this.journeysArray.valueChanges.subscribe((changes) => {
-      changes.forEach((journey: any, index: number) => {
+      changes.forEach((journey: Journey, index: number) => {
         if (journey.departureDate) {
           this.minReturnDate[index] = new Date(journey.departureDate);
           this.minReturnDate[index].setDate(
@@ -84,7 +88,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
           );
           if (
             journey.returnDate &&
-            new Date(journey.returnDate) < journey.departureDate
+            new Date(journey.returnDate) < new Date(journey.departureDate)
           ) {
             const control = (this.journeysArray.at(index) as FormGroup)
               .controls['returnDate'];
@@ -166,11 +170,9 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     this.showDropdown = false;
   }
 
-  private _filter(value: any): IAirport[] {
-    if (typeof value !== 'string') {
-      value = value && value.toString ? value.toString() : '';
-    }
-    const filterValue = value.toLowerCase();
+  private _filter(value: string | { toString: () => string }): IAirport[] {
+    const stringValue = typeof value === 'string' ? value : value.toString();
+    const filterValue = stringValue.toLowerCase();
     return this.airport.filter(
       (option) =>
         option.name.toLowerCase().includes(filterValue) ||
@@ -223,7 +225,10 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }
         this.popup.success('Search success');
         this.session.set('data', { form: formValue });
-        this.route.navigateByUrl('select');
+        this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.sharedService.triggerHeaderRefresh();
+          this.route.navigate(['select']);
+        });
       } else {
         this.popup.failed('Form is invalid');
       }
@@ -282,7 +287,11 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     return this.selections.infant <= this.selections.adult;
   }
 
-  onOptionSelected(event: any, journeyIndex: number, type: number) {
+  onOptionSelected(
+    event: MatAutocompleteSelectedEvent,
+    journeyIndex: number,
+    type: number
+  ) {
     const option = event.option.value;
     const journeyGroup = this.journeysArray.at(journeyIndex) as FormGroup;
     if (type === 0) {
