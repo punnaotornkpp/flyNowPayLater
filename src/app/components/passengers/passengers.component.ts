@@ -2,9 +2,16 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { Router } from '@angular/router';
 import { SessionStorage } from '../../core/helper/session.helper';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { FlightSearchForm } from '../../model/session.model';
 import { PopupService } from '../../service/popup.service';
+import { ageValidator } from '../../core/helper/ageValidate.helper';
 
 @Component({
   selector: 'app-passengers',
@@ -36,7 +43,7 @@ export class PassengersComponent
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('data');
+        const item = this.session.get('history');
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
         this.populateFormArrays(this.sessionValue);
       } catch (error) {
@@ -66,7 +73,7 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthdayDate: ['', Validators.required],
+      birthdayDate: ['', [Validators.required, ageValidator(12, 99)]],
     };
     if (isFirstAdult) {
       Object.assign(groupConfig, {
@@ -84,7 +91,7 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthdayDate: ['', Validators.required],
+      birthdayDate: ['', [Validators.required, ageValidator(2, 11)]],
     });
     this.children.push(childGroup);
   }
@@ -94,7 +101,7 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthdayDate: ['', Validators.required],
+      birthdayDate: ['', [Validators.required, ageValidator(0, 1)]],
       associateInfantToAdult: ['', Validators.required],
     });
     this.infants.push(infantGroup);
@@ -122,7 +129,7 @@ export class PassengersComponent
 
   redirectNext() {
     if (this.form.valid) {
-      this.session.set('data', { passenger: this.form.value });
+      // this.session.set('data', { passenger: this.form.value });
       this.route.navigateByUrl('/extras');
     } else {
       this.openPanels.fill(true);

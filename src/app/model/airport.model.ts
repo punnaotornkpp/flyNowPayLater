@@ -5,7 +5,7 @@ export interface IAirport {
   countryCode: string;
   restrictedOnDeparture?: boolean;
   restrictedOnDestination?: boolean;
-  connections: IAirportConnection[];
+  connections?: IAirportConnection[];
 }
 
 export interface IAirportConnection {

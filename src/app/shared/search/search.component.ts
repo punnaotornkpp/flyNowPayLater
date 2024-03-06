@@ -1,20 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormArray,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IAirport, IAirportConnection } from '../../model/airport.model';
+import { IAirport } from '../../model/airport.model';
 import { AirportService } from '../../service/airport.service';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { HostListener } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { BookingService } from '../../service/booking.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls, setControlsArray } from '../../core/helper/form.helper';
@@ -23,6 +16,7 @@ import { PassengerSelections } from '../../model/passenger.model';
 import { Journey } from '../../model/session.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SharedService } from '../../service/shared.service';
+import { DateTime } from '../../core/helper/date.helper';
 
 @Component({
   selector: 'app-search',
@@ -51,7 +45,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private airportService: AirportService,
-    private datePipe: DatePipe,
     private booking: BookingService,
     private session: SessionStorage,
     private popup: PopupService,
@@ -106,7 +99,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         this.airport = resp;
         if (typeof window !== 'undefined' && window.sessionStorage) {
           try {
-            this.sessionData = JSON.parse(this.session.get('data'));
+            this.sessionData = JSON.parse(this.session.get('history'));
             this.selectedToggleValue = this.sessionData.form.typeRoute;
             setControls(this.sessionData.form, this.bookingForm);
             const firstJourneyData = this.sessionData.form.journeys[0];
@@ -195,14 +188,15 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             departureDate: string | number | Date | null;
             returnDate: string | number | Date | null;
           }) => {
-            journey.departureDate = this.datePipe.transform(
-              journey.departureDate,
-              'yyyy-MM-dd'
-            );
-            journey.returnDate = this.datePipe.transform(
-              journey.returnDate,
-              'yyyy-MM-dd'
-            );
+            if (journey.departureDate) {
+              const date = new Date(journey.departureDate);
+              journey.departureDate = DateTime.setTimeZone(date);
+            }
+
+            if (journey.returnDate) {
+              const date = new Date(journey.returnDate);
+              journey.returnDate = DateTime.setTimeZone(date);
+            }
           }
         );
         if (this.selectedToggleValue == 0) {
@@ -223,12 +217,16 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             formValue = result;
           }
         }
+        // const obs = this.booking.getFlightFare(formValue).subscribe((resp) => {
+        //   console.log(resp);
         this.popup.success('Search success');
-        this.session.set('data', { form: formValue });
+        this.session.set('history', { form: formValue });
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();
           this.route.navigate(['select']);
         });
+        // });
+        // this.AddSubscription(obs);
       } else {
         this.popup.failed('Form is invalid');
       }

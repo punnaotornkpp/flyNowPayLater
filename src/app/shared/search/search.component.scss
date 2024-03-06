@@ -14,32 +14,9 @@ mat-button-toggle {
     padding-right: 15px;
 }
 
-.custom-mat-form-field {
-  width: 100%; 
-}
-
 .row > * {
   padding-right: 5px !important;
   padding-left: 5px !important;
-}
-
-.select-currency {
-    padding-left: 30px;
-}
-
-.custom-mat-form-field-container {
-  position: relative; 
-}
-
-.custom-dropdown {
-  position: absolute;
-  top: 100%; 
-  left: 0;
-  width: 120%; 
-  background: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,.2);
-  border-radius: 4px;
-  z-index: 1000; 
 }
 
 .passenger-selection {
@@ -66,9 +43,7 @@ mat-button-toggle {
   background-color: var(--nokair50);
 }
 
-.text-red {
-  color: var(--danger);
-}
+
 
 
 

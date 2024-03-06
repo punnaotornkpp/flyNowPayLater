@@ -16,7 +16,7 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('data');
+        const item = this.session.get('history');
         console.log(JSON.parse(item as string));
       } catch (error) {
         this.route.navigateByUrl('');

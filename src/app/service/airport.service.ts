@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { Observable } from 'rxjs';
-import { IAirport } from '../model/airport.model';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
+import { MOCK_AIRPORT } from '../../assets/mock';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +11,8 @@ export class AirportService {
   constructor(private http: HttpService) {}
 
   getAirport<T>(): Observable<T> {
-    return this.http.get<T>(`${environment.fly}airport`);
+    const airport = MOCK_AIRPORT;
+    // return this.http.get<T>(`${environment.fly}airport`);
+    return of(airport as T);
   }
 }
