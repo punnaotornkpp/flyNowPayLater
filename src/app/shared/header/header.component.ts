@@ -52,7 +52,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   getSessionValue(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('data');
+        const item = this.session.get('history');
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');

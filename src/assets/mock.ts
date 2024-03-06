@@ -1,4 +1,6 @@
-export const MOCK_AIRPORT = [
+import { IAirport } from '../app/model/airport.model';
+
+export const MOCK_AIRPORT: IAirport[] = [
   {
     name: 'Chumphon Downtown',
     code: 'CJ1',

@@ -71,7 +71,7 @@
                         <input matInput formControlName="lastName" required />
                       </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                    <div class="col-12 col-md-6 col-lg-4 py-2">
                       <mat-form-field class="full-width">
                         <mat-label>Date of birth</mat-label>
                         <input
@@ -86,6 +86,11 @@
                         ></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
+                      <mat-error
+                        *ngIf="adult.get('birthdayDate')?.errors?.['ageRange']"
+                      >
+                        {{ adult.get('birthdayDate')?.errors?.['ageRange']?.message }}
+                      </mat-error>
                     </div>
                   </div>
                   <div *ngIf="i === 0" class="py-3 f-24">
@@ -168,7 +173,7 @@
                         <input matInput formControlName="lastName" required />
                       </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                    <div class="col-12 col-md-6 col-lg-4 py-2">
                       <mat-form-field class="full-width">
                         <mat-label>Date of birth</mat-label>
                         <input
@@ -183,6 +188,11 @@
                         ></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
+                      <mat-error
+                        *ngIf="child.get('birthdayDate')?.errors?.['ageRange']"
+                      >
+                        {{ child.get('birthdayDate')?.errors?.['ageRange']?.message }}
+                      </mat-error>
                     </div>
                   </div>
                 </div>
@@ -230,6 +240,31 @@
                 </mat-expansion-panel-header>
                 <div [formGroupName]="i">
                   <div class="row col-12 pt-2">
+                    <div class="col-12 col-md-6 col-lg-4 py-2">
+                      <mat-form-field class="full-width">
+                        <mat-label
+                          >Associate Infant To Adult Passenger</mat-label
+                        >
+                        <mat-select
+                          formControlName="associateInfantToAdult"
+                          required
+                        >
+                          <mat-option
+                            *ngFor="
+                              let adult of form.controls['adults'].value;
+                              let idx = index
+                            "
+                            [value]="
+                              adult.title + adult.firstName + adult.lastName
+                            "
+                            >{{ adult.title }} {{ adult.firstName }}
+                            {{ adult.lastName }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row col-12 pt-2">
                     <div class="col-12 col-md-6 col-lg-2 py-2">
                       <mat-form-field class="full-width">
                         <mat-label>Title</mat-label>
@@ -251,7 +286,7 @@
                         <input matInput formControlName="lastName" required />
                       </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-6 py-2">
+                    <div class="col-12 col-md-6 col-lg-4 py-2">
                       <mat-form-field class="full-width">
                         <mat-label>Date of birth</mat-label>
                         <input
@@ -266,6 +301,11 @@
                         ></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
+                      <mat-error
+                        *ngIf="infant.get('birthdayDate')?.errors?.['ageRange']"
+                      >
+                        {{ infant.get('birthdayDate')?.errors?.['ageRange']?.message }}
+                      </mat-error>
                     </div>
                   </div>
                 </div>

@@ -19,7 +19,7 @@
         <div
           class="col-12 col-lg-2 col-md-6 d-flex justify-content-space-between py-2"
         >
-          <mat-form-field appearance="fill" class="custom-mat-form-field">
+          <mat-form-field appearance="fill" class="full-width">
             <mat-label>Currency</mat-label>
             <mat-select value="THB" formControlName="currency" id="currency">
               <mat-option value="THB">Thai - Baht</mat-option>
@@ -38,7 +38,7 @@
               *ngFor="let journey of journeysArray.controls; let i = index"
               [formGroupName]="i"
             >
-              <mat-form-field appearance="fill" class="custom-mat-form-field">
+              <mat-form-field appearance="fill" class="full-width">
                 <mat-label>From</mat-label>
                 <input
                   matInput
@@ -67,7 +67,7 @@
               *ngFor="let journey of journeysArray.controls; let i = index"
               [formGroupName]="i"
             >
-              <mat-form-field appearance="fill" class="custom-mat-form-field">
+              <mat-form-field appearance="fill" class="full-width">
                 <mat-label>To</mat-label>
                 <input
                   matInput
@@ -95,7 +95,7 @@
             *ngFor="let journey of journeysArray.controls; let i = index"
             [formGroupName]="i"
           >
-            <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-form-field appearance="fill" class="full-width">
               <mat-label>Depart</mat-label>
               <input
                 matInput
@@ -122,7 +122,7 @@
             *ngFor="let journey of journeysArray.controls; let i = index"
             [formGroupName]="i"
           >
-            <mat-form-field appearance="fill" class="custom-mat-form-field">
+            <mat-form-field appearance="fill" class="full-width">
               <mat-label>Return</mat-label>
               <input
                 matInput
@@ -141,13 +141,13 @@
           </div>
         </div>
         <div class="col py-2 custom-mat-form-field-container">
-          <mat-form-field appearance="fill" class="custom-mat-form-field">
+          <mat-form-field appearance="fill" class="full-width">
             <mat-label>Select Passengers</mat-label>
             <input
               matInput
               readonly
               [value]="selectionDisplay"
-              (click)="toggleDropdown($event)"
+              [matMenuTriggerFor]="menu"
             />
             <div *ngIf="!isValidAdultCount()" class="text-red f-12">
               At least one adult must be selected.
@@ -157,7 +157,7 @@
             </div>
           </mat-form-field>
 
-          <div class="custom-dropdown" *ngIf="showDropdown">
+          <mat-menu #menu="matMenu" class="custom-dropdown no-select">
             <mat-nav-list>
               <div
                 *ngFor="let category of ['adult', 'child', 'infant']"
@@ -181,10 +181,10 @@
                 </div>
               </div>
             </mat-nav-list>
-          </div>
+          </mat-menu>
         </div>
         <div class="col py-2">
-          <mat-form-field appearance="fill" class="custom-mat-form-field">
+          <mat-form-field appearance="fill" class="full-width">
             <mat-label>Promo Code</mat-label>
             <input
               matInput

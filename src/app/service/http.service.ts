@@ -8,8 +8,14 @@ import { Observable } from 'rxjs';
 export class HttpService {
   header = new HttpHeaders();
 
+  client_id = '8cc36b34120e43cbad3b4ac3c5b3f37c';
+  client_secret = '4de6c9f8f7874Bd582BE9Aac31E45009';
+
   constructor(private http: HttpClient) {
     this.header = this.header.append('content-type', 'application/json');
+    this.header = this.header.append('client_id', this.client_id);
+    this.header = this.header.append('client_secret', this.client_secret);
+    this.header = this.header.append('Security-Token', '');
   }
 
   get<T>(url: string): Observable<T> {

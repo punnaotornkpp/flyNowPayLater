@@ -11,6 +11,9 @@ export class BookingService {
   constructor(private http: HttpService) {}
 
   getFlightFare<T>(body: string[]): Observable<T> {
-    return this.http.post(`${environment.book}v1/flight-fare`, body);
+    return this.http.post(
+      `https://nok-booking-pro-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/api/v1/available-flight-fare-date-range`,
+      body
+    );
   }
 }

@@ -71,9 +71,15 @@
             <div class="col-12 col-lg-2 border-right-black center">
               <div class="align-self-center pt-2 pb-1 f-14">
                 <div *ngIf="this.sessionValue">
-                  {{ this.sessionValue.adult || 0 }} adult,
-                  {{ this.sessionValue.child || 0 }} child,
-                  {{ this.sessionValue.infant || 0 }} infant
+                  <span *ngIf="this.sessionValue.adult > 0"
+                    >{{ this.sessionValue.adult || 0 }} adult
+                  </span>
+                  <span *ngIf="this.sessionValue.child > 0"
+                    >, {{ this.sessionValue.child || 0 }} child
+                  </span>
+                  <span *ngIf="this.sessionValue.infant > 0"
+                    >, {{ this.sessionValue.infant || 0 }} infant
+                  </span>
                 </div>
               </div>
               <div>
@@ -86,13 +92,12 @@
                 </button>
               </div>
             </div>
-            <div class="col-12 col-lg-2 d-flex border-right-black">
-              <div class="align-self-center px-3"></div>
-              <div>
-                <button mat-button class="bold f-24 d-flex text-align-cente">
-                  9,999.00
-                </button>
-              </div>
+            <div
+              class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+            >
+              <span class="bold f-24 d-flex" *ngIf="this.sessionValue">
+                {{ this.sessionValue.currency || "" }} 9,999.00
+              </span>
             </div>
           </div>
         </mat-panel-title>
