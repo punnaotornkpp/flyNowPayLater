@@ -43,32 +43,39 @@
       <mat-expansion-panel-header class="container container-max-width">
         <mat-panel-title
           ><div class="col-12 d-flex align-items-center f-12">
-            <div
-              class="col-6 col-lg-4 d-flex border-right-black"
-              *ngIf="!isSmallScreen"
-            >
-              <div class="align-self-center px-3">
-                <mat-icon class="f-24 center transform45">flight</mat-icon>
+            <ng-container *ngIf="!isSmallScreen">
+              <div
+                class="col-6 col-lg-4 d-flex border-right-black"
+                *ngFor="let journey of sessionValue?.journeys"
+                [ngClass]="{
+                  'col-6': true,
+                  'col-lg-4': sessionValue.journeys.length > 1,
+                  'col-lg-8': sessionValue.journeys.length === 1
+                }"
+              >
+                <div class="align-self-center px-3">
+                  <mat-icon class="f-24 center transform45">flight</mat-icon>
+                </div>
+                <div>
+                  <div>
+                    {{ journey.originName || "" }}
+                    To {{ journey.destinationName || "" }}
+                  </div>
+                  <div class="bold">
+                    {{ journey.departureDate | date : "EEEE d MMMM y" }}
+                  </div>
+                </div>
               </div>
-              <div>
-                <div>Don Mueang (Bangkok) To Chiang Mai</div>
-                <div class="bold">Tuesday 27 February 2024</div>
+            </ng-container>
+
+            <div class="col-12 col-lg-2 border-right-black center">
+              <div class="align-self-center pt-2 pb-1 f-14">
+                <div *ngIf="this.sessionValue">
+                  {{ this.sessionValue.adult || 0 }} adult,
+                  {{ this.sessionValue.child || 0 }} child,
+                  {{ this.sessionValue.infant || 0 }} infant
+                </div>
               </div>
-            </div>
-            <div
-              class="col-6 col-lg-4 d-flex border-right-black"
-              *ngIf="!isSmallScreen"
-            >
-              <div class="align-self-center px-3">
-                <mat-icon class="f-24 center transform45">flight</mat-icon>
-              </div>
-              <div>
-                <div>Don Mueang (Bangkok) To Chiang Mai</div>
-                <div class="bold">Tuesday 27 February 2024</div>
-              </div>
-            </div>
-            <div class="col-12 col-lg-2 d-flex border-right-black">
-              <div class="align-self-center px-3">1</div>
               <div>
                 <button
                   mat-stroked-button

@@ -17,7 +17,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     { id: 5, content: 'Content for item 5' },
     { id: 6, content: 'Content for item 6' },
   ];
-  selectedItem: any = null;
+  selectedItem: { id: number; content: string } | undefined;
 
   constructor(private route: Router, private session: SessionStorage) {
     super();
@@ -43,6 +43,5 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
 
   selectDetail(itemId: number): void {
     this.selectedItem = this.items.find((item) => item.id === itemId);
-    console.log(this.selectedItem);
   }
 }

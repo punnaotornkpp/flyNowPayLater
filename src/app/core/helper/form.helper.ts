@@ -1,9 +1,8 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
-function setControls<T extends { [key: string]: any }>(
-  data: T,
-  form: FormGroup
-) {
+type FormDataType = { [key: string]: any };
+
+function setControls<T extends FormDataType>(data: T, form: FormGroup) {
   for (const [key, value] of Object.entries(data)) {
     if (
       typeof value === 'object' &&
@@ -22,10 +21,10 @@ function setControls<T extends { [key: string]: any }>(
   }
 }
 
-function setControlsArray(
+function setControlsArray<T extends FormDataType>(
   formGroup: FormGroup,
   controlNames: string[],
-  data: any
+  data: T
 ): void {
   controlNames.forEach((controlName) => {
     if (formGroup.controls[controlName]) {

@@ -38,7 +38,6 @@ export class PassengersComponent
       try {
         const item = this.session.get('data');
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
-        console.log(this.sessionValue);
         this.populateFormArrays(this.sessionValue);
       } catch (error) {
         this.route.navigateByUrl('');
@@ -46,20 +45,18 @@ export class PassengersComponent
     }
   }
 
-  openPanel(adjustedIndex: number) {
-    this.openPanels[adjustedIndex] = true;
-  }
-
-  populateFormArrays(data: any) {
+  populateFormArrays(data: FlightSearchForm) {
     for (let i = 0; i < data.adult; i++) {
       this.addAdult();
-      this.openPanels.push(i === 0);
+      this.openPanels.push(true);
     }
     for (let i = 0; i < data.child; i++) {
       this.addChild();
+      this.openPanels.push(true);
     }
     for (let i = 0; i < data.infant; i++) {
       this.addInfant();
+      this.openPanels.push(true);
     }
   }
 
@@ -69,7 +66,7 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthDate: ['', Validators.required],
+      birthdayDate: ['', Validators.required],
     };
     if (isFirstAdult) {
       Object.assign(groupConfig, {
@@ -87,7 +84,7 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      brithDate: ['', Validators.required],
+      birthdayDate: ['', Validators.required],
     });
     this.children.push(childGroup);
   }
@@ -97,10 +94,14 @@ export class PassengersComponent
       title: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      brithDate: ['', Validators.required],
+      birthdayDate: ['', Validators.required],
       associateInfantToAdult: ['', Validators.required],
     });
     this.infants.push(infantGroup);
+  }
+
+  setPanelState(index: number, state: boolean) {
+    this.openPanels[index] = state;
   }
 
   get adults() {
@@ -115,30 +116,16 @@ export class PassengersComponent
     return this.form.get('infants') as FormArray;
   }
 
-  nextStep() {
-    const currentIndex = this.openPanels.findIndex((open) => open);
-    if (currentIndex >= 0 && currentIndex < this.openPanels.length - 1) {
-      this.openPanels[currentIndex] = false;
-      this.openPanels[currentIndex + 1] = true;
-    }
-  }
-
-  prevStep() {
-    const currentIndex = this.openPanels.findIndex((open) => open);
-    if (currentIndex > 0) {
-      this.openPanels[currentIndex] = false;
-      this.openPanels[currentIndex - 1] = true;
-    }
-  }
-
   redirectPrevious() {
     this.route.navigateByUrl('select');
   }
 
   redirectNext() {
     if (this.form.valid) {
-      this.route.navigateByUrl('extras');
+      this.session.set('data', { passenger: this.form.value });
+      this.route.navigateByUrl('/extras');
     } else {
+      this.openPanels.fill(true);
       this.popup.failed('Form is invalid');
     }
   }
