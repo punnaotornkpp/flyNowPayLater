@@ -8,7 +8,6 @@ import { AirportService } from '../../service/airport.service';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { HostListener } from '@angular/core';
-import { BookingService } from '../../service/booking.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls, setControlsArray } from '../../core/helper/form.helper';
 import { PopupService } from '../../service/popup.service';
@@ -45,7 +44,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private airportService: AirportService,
-    private booking: BookingService,
     private session: SessionStorage,
     private popup: PopupService,
     private sharedService: SharedService
@@ -218,7 +216,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
           }
         }
         // const obs = this.booking.getFlightFare(formValue).subscribe((resp) => {
-        //   console.log(resp);
         this.popup.success('Search success');
         this.session.set('history', { form: formValue });
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {

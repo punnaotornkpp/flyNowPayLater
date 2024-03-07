@@ -23,7 +23,10 @@
             </div>
           </div>
         </div>
-        <app-schedule [value]="journey"></app-schedule>
+        <app-schedule [value]="journey" *ngIf="spinner"></app-schedule>
+        <div class="d-flex center">
+          <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+        </div>
       </div>
     </div>
     <div class="container-fluid">
