@@ -2,6 +2,7 @@
 :root {
     --nokair: #FFCB0B;
     --nokair50: #ffe68d;
+    --nokair25: #fdedb1;
     --black : #111111;
     --gray : #f0f0ef;
     --success : #00C851;
@@ -11,8 +12,16 @@
     --black50 : #00000026;
 }
 
+.text-spacing {
+  line-height: 1.8;
+}
+
 .f-nokair {
     color: var(--nokair);
+}
+
+.f-black {
+    color: var(--black);
 }
 
 .text-red {
@@ -74,6 +83,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .align-self-center {
     align-self: center !important;
+}
+
+.align-item-center {
+    align-items: center !important;
 }
 
 .center {

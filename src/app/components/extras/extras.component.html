@@ -17,21 +17,42 @@
       </div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
         <div class="col py-2" *ngFor="let item of items">
-          <mat-card class="p-2">
-            <img mat-card-image src="https://placehold.co/600x400" alt="" />
-            <div class="py-2">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-              animi dolorum eaque temporibus non velit aspernatur nostrum
-              corporis, nulla molestiae nesciunt aut libero omnis veritatis?
-              Repellendus dolorum officia ut nihil.
+          <mat-card>
+            <img mat-card-image [src]="item.img" [alt]="item.title" />
+            <div class="p-3">
+              <div class="d-flex align-item-center">
+                <mat-checkbox
+                  color="warn"
+                  [checked]="item.status"
+                  (change)="item.status = !item.status"
+                  class="not-click"
+                >
+                </mat-checkbox>
+                <mat-card-title class="py-2">
+                  {{ item.title }}
+                </mat-card-title>
+              </div>
+              <div class="p-2 text-spacing">
+                {{ item.content }}
+                <span *ngIf="item.detail.title != ''">
+                  <a
+                    class="f-black bold"
+                    [href]="item.detail.link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ({{ item.detail.title }})
+                  </a>
+                </span>
+              </div>
             </div>
-            <mat-card-actions class="center">
+            <mat-card-actions class="justify-content-center bottom">
               <button
                 mat-flat-button
                 color="accent"
-                (click)="selectDetail(item.id)"
+                (click)="openDialog(item.id)"
               >
-                <span class="px-3 py-2">ADD</span>
+                <span class="px-3 py-2">{{ item.button }}</span>
               </button>
             </mat-card-actions>
           </mat-card>
