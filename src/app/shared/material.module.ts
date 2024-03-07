@@ -20,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   exports: [
@@ -44,6 +45,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatToolbarModule,
     MatMenuModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}
