@@ -6,10 +6,10 @@ export interface FlightSearchForm {
   infant: number;
   promoCode: string;
   languageCode: string;
-  journeys: Journey[];
+  journeys: JourneySearch[];
 }
 
-export interface Journey {
+export interface JourneySearch {
   title?: string;
   origin: string;
   originName: string;

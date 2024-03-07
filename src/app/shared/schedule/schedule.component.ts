@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
-import { Journey } from '../../model/session.model';
+import { IJourney } from '../../model/flight-schedule';
 
 @Component({
   selector: 'app-schedule',
@@ -9,15 +9,13 @@ import { Journey } from '../../model/session.model';
   styleUrl: './schedule.component.scss',
 })
 export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
-  @Input() value!: Journey;
+  @Input() value!: IJourney[];
 
   constructor() {
     super();
   }
 
-  ngOnInit(): void {
-    console.log(this.value);
-  }
+  ngOnInit(): void {}
 
   defaultTabIndex: number = 4;
 

@@ -16,15 +16,19 @@
       <div class="col bold">Nok MAX</div>
     </div>
   </div>
-  <div class="border-top" *ngFor="let item of [1, 2, 3, 4, 5]">
+  <div class="border-top" *ngFor="let item of value; let i = index">
     <div class="hover-background cursor" (click)="openDetailFlight(item)">
       <div class="row p-0 py-3 text-align-center">
         <div
           class="col-12 col-lg-2 bold d-flex align-items-center justify-content-center"
         >
-          <div class="f-20">06:20</div>
+          <div class="f-20">
+            {{ item.departureDate | transformDateToTime }}
+          </div>
           <mat-icon class="f-24 gray px-2">east</mat-icon>
-          <div class="f-20">07:40</div>
+          <div class="f-20">
+            {{ item.arrivalDate | transformDateToTime }}
+          </div>
         </div>
         <div
           class="col-12 col-lg-5 text-align-start"
@@ -34,42 +38,55 @@
           <div>
             <mat-icon class="f-24">flight</mat-icon>
           </div>
-          <div>1h 10m | DD 121 | B737-800</div>
+          <div>
+            {{ item.travelInfos[0].duration || "" }} |
+            {{ item.travelInfos[0].flightNumber || "" }} |
+            {{ item.travelInfos[0].aircraftDescription || "" }}
+          </div>
         </div>
         <div class="row p-0 col">
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
             <button
               mat-raised-button
-              (click)="selectDetail(item, 1399); $event.stopPropagation()"
+              (click)="
+                selectDetail(i, item.fares[0].fareAmount);
+                $event.stopPropagation()
+              "
               class="price-button"
             >
-              1,399.00
+              {{ item.fares[0].fareAmount }}
             </button>
           </div>
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
             <button
               mat-raised-button
               color="accent"
-              (click)="selectDetail(item, 1699); $event.stopPropagation()"
+              (click)="
+                selectDetail(i, item.fares[1].fareAmount);
+                $event.stopPropagation()
+              "
               class="price-button"
             >
-              1,699.00
+              {{ item.fares[1].fareAmount }}
             </button>
           </div>
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
             <button
               mat-raised-button
               color="warn"
-              (click)="selectDetail(item, 2099); $event.stopPropagation()"
+              (click)="
+                selectDetail(i, item.fares[2].fareAmount);
+                $event.stopPropagation()
+              "
               class="price-button"
             >
-              2,099.00
+              {{ item.fares[2].fareAmount }}
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="selectedItem === item">
+    <div *ngIf="selectedItem === i">
       <app-detail-flight [price]="selectedPrice"></app-detail-flight>
     </div>
   </div>

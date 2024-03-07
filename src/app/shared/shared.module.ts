@@ -11,6 +11,8 @@ import { FlightComponent } from './flight/flight.component';
 import { DialogDetailFlightComponent } from './dialog-detail-flight/dialog-detail-flight.component';
 import { DetailFlightComponent } from './detail-flight/detail-flight.component';
 import { PopupComponent } from './popup/popup.component';
+import { CoreModule } from '../core/core.module';
+import { TransformDateToTimePipe } from '../core/pipe/transform-date-to-time.pipe';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -23,7 +25,6 @@ import { PopupComponent } from './popup/popup.component';
     DetailFlightComponent,
     PopupComponent,
   ],
-  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
     HeaderComponent,
     FooterComponent,
@@ -31,6 +32,13 @@ import { PopupComponent } from './popup/popup.component';
     StepComponent,
     ScheduleComponent,
     PopupComponent,
+  ],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CoreModule,
   ],
 })
 export class SharedModule {}

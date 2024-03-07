@@ -4,7 +4,7 @@
       <app-step [page]="2"></app-step>
     </div>
     <div class="py-3">
-      <div *ngFor="let journey of sessionValue?.journeys">
+      <div *ngFor="let journey of this.form?.journeys; let i = index">
         <div class="py-4 d-flex">
           <div class="align-self-center px-3">
             <img
@@ -23,7 +23,10 @@
             </div>
           </div>
         </div>
-        <app-schedule [value]="journey" *ngIf="spinner"></app-schedule>
+        <app-schedule
+          [value]="sessionValue.content[i].journey"
+          *ngIf="spinner"
+        ></app-schedule>
         <div class="d-flex center">
           <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
         </div>
