@@ -12,7 +12,7 @@ import { SessionStorage } from '../../core/helper/session.helper';
 import { setControls, setControlsArray } from '../../core/helper/form.helper';
 import { PopupService } from '../../service/popup.service';
 import { PassengerSelections } from '../../model/passenger.model';
-import { Journey } from '../../model/session.model';
+import { JourneySearch } from '../../model/session.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SharedService } from '../../service/shared.service';
 import { DateTime } from '../../core/helper/date.helper';
@@ -71,7 +71,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     });
     this.journeysArray = this.bookingForm.get('journeys') as FormArray;
     this.journeysArray.valueChanges.subscribe((changes) => {
-      changes.forEach((journey: Journey, index: number) => {
+      changes.forEach((journey: JourneySearch, index: number) => {
         if (journey.departureDate) {
           this.minReturnDate[index] = new Date(journey.departureDate);
           this.minReturnDate[index].setDate(

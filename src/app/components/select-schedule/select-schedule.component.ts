@@ -4,6 +4,7 @@ import { SessionStorage } from '../../core/helper/session.helper';
 import { Router } from '@angular/router';
 import { FlightSearchForm } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
+import { IFlight } from '../../model/flight-schedule';
 
 @Component({
   selector: 'app-select-schedule',
@@ -14,8 +15,9 @@ export class SelectScheduleComponent
   extends SubscriptionDestroyer
   implements OnInit
 {
-  sessionValue!: FlightSearchForm;
+  sessionValue!: IFlight;
   spinner: boolean = false;
+  form!: FlightSearchForm;
 
   constructor(
     private session: SessionStorage,
@@ -28,13 +30,13 @@ export class SelectScheduleComponent
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('history');
-        this.sessionValue = JSON.parse(item).form as FlightSearchForm;
-        const obs = this.booking
-          .getFlightFare(JSON.parse(item).form)
-          .subscribe((resp) => {
-            this.spinner = true;
-          });
+        const session = this.session.get('history');
+        this.form = JSON.parse(session).form as FlightSearchForm;
+        const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
+          this.session.set('schedule', resp);
+          this.sessionValue = resp as IFlight;
+          this.spinner = true;
+        });
         this.AddSubscription(obs);
       } catch (error) {
         this.router.navigateByUrl('');

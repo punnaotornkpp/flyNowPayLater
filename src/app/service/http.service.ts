@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 export class HttpService {
   header = new HttpHeaders();
 
-  client_id = '8cc36b34120e43cbad3b4ac3c5b3f37c';
-  client_secret = '4de6c9f8f7874Bd582BE9Aac31E45009';
+  client_id = 'b0694604fda441668870ec8fcd4077c9';
+  client_secret = 'f609B938947c4d9294B42611b21eC1F2';
 
   constructor(private http: HttpClient) {
     this.header = this.header.append('content-type', 'application/json');

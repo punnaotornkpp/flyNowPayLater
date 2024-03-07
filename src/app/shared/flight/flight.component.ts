@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-detail-flight.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ISchedule } from '../../model/flight-schedule';
 
 @Component({
   selector: 'app-flight',
@@ -14,6 +11,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   styleUrl: './flight.component.scss',
 })
 export class FlightComponent extends SubscriptionDestroyer implements OnInit {
+  @Input() value!: ISchedule[];
   selectedItem: number = 0;
   selectedPrice: number = 0;
   isSmallScreen: boolean = false;
@@ -31,8 +29,8 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
   ngOnInit(): void {}
 
-  openDetailFlight(item: number) {
-    this.dialog.open(DialogDetailFlightComponent, { data: item });
+  openDetailFlight(data: ISchedule) {
+    this.dialog.open(DialogDetailFlightComponent, { data: data });
   }
 
   selectDetail(item: number, price: number): void {
