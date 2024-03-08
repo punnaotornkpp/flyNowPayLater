@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FlightSearchForm } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
 import { IFlight } from '../../model/flight-schedule';
+import { DateTime } from '../../core/helper/date.helper';
 
 @Component({
   selector: 'app-select-schedule',
@@ -32,12 +33,8 @@ export class SelectScheduleComponent
       try {
         const session = this.session.get('history');
         this.form = JSON.parse(session).form as FlightSearchForm;
-        const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
-          this.session.set('schedule', resp);
-          this.sessionValue = resp as IFlight;
-          this.spinner = true;
-        });
-        this.AddSubscription(obs);
+        console.log(this.form);
+        this.getFlightFare();
       } catch (error) {
         this.router.navigateByUrl('');
       }
@@ -50,5 +47,27 @@ export class SelectScheduleComponent
 
   redirectNext() {
     this.router.navigateByUrl('passengers');
+  }
+
+  handleNextClick(index: number) {
+    console.log(index);
+    let currentJourney = this.form.journeys[index];
+    let newDepartureDate = new Date(currentJourney.departureDate);
+    newDepartureDate.setDate(newDepartureDate.getDate() + 7);
+    currentJourney.departureDate = DateTime.setTimeZone(newDepartureDate);
+    this.form.journeys[index] = currentJourney;
+    console.log(this.form);
+    // this.spinner = false;
+    // this.getFlightFare();
+  }
+
+  getFlightFare() {
+    const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
+      this.session.set('schedule', resp);
+      this.sessionValue = resp as IFlight;
+      this.spinner = true;
+      console.log(this.sessionValue);
+    });
+    this.AddSubscription(obs);
   }
 }

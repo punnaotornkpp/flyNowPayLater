@@ -12,7 +12,7 @@ import { ISchedule } from '../../model/flight-schedule';
 })
 export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: ISchedule[];
-  selectedItem: number = 0;
+  selectedItem: number = 99;
   selectedPrice: number = 0;
   isSmallScreen: boolean = false;
 

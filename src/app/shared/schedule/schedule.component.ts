@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { IJourney } from '../../model/flight-schedule';
@@ -10,6 +10,7 @@ import { IJourney } from '../../model/flight-schedule';
 })
 export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: IJourney[];
+  @Output() onNextClick = new EventEmitter<any>();
 
   constructor() {
     super();
@@ -20,8 +21,11 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   defaultTabIndex: number = 4;
 
   onTabChange(event: MatTabChangeEvent): void {
-    if (event.index === 0 || event.index === 8) {
-      window.location.reload();
+    const totalTabs = this.value.length + 2;
+    if (event.index === 0) {
+      this.onNextClick.emit();
+    } else if (event.index === totalTabs - 1) {
+      this.onNextClick.emit();
     }
   }
 }
