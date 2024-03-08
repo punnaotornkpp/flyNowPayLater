@@ -54,7 +54,7 @@
               "
               class="price-button"
             >
-              {{ item.fares[0].fareAmount }}
+              {{ item.fares[0].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>
           </div>
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
@@ -67,7 +67,7 @@
               "
               class="price-button"
             >
-              {{ item.fares[1].fareAmount }}
+              {{ item.fares[1].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>
           </div>
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
@@ -80,7 +80,7 @@
               "
               class="price-button"
             >
-              {{ item.fares[2].fareAmount }}
+              {{ item.fares[2].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>
           </div>
         </div>
