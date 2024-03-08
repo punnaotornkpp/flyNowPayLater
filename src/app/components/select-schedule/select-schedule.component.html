@@ -25,6 +25,7 @@
         </div>
         <app-schedule
           [value]="sessionValue.content[i].journey"
+          (onNextClick)="handleNextClick(i)"
           *ngIf="spinner"
         ></app-schedule>
         <div class="d-flex center">
