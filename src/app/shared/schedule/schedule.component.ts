@@ -33,21 +33,24 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   onTabChange(event: MatTabChangeEvent, value: IJourney[]): void {
+    if (event.index === 0) {
+      this.onBackClick.emit((resp: boolean) => {
+        this.empty = resp;
+        this.defaultTabIndex = 1;
+      });
+      console.log('back');
+      return;
+    } else if (event.index === this.totalIndex - 1) {
+      this.onNextClick.emit();
+      console.log('next');
+      return;
+    }
     if (typeof window !== 'undefined' && window.sessionStorage) {
       const sessionvalue = JSON.parse(this.session.get('history'));
       sessionvalue.form.journeys[this.currentIndex].departureDate =
         value[event.index - 1].departureDate;
       this.session.set('history', { form: sessionvalue.form });
       this.sharedService.triggerHeaderRefresh();
-    }
-
-    if (event.index === 0) {
-      this.onBackClick.emit((resp: boolean) => {
-        this.empty = resp;
-        this.defaultTabIndex = 1;
-      });
-    } else if (event.index === this.totalIndex - 1) {
-      this.onNextClick.emit();
     }
   }
 }
