@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SessionStorage {
-  get(key: string): string {
+  get(key: string): any {
     const val = sessionStorage.getItem(key);
     if (!val) {
-      throw new Error(`SessionStorage: ${key} is null`);
+      return '';
     } else {
       return val;
     }

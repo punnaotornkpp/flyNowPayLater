@@ -5,20 +5,151 @@
       <div>Instantly add more convenience to travel</div>
     </div>
     <div class="col-12 col-lg-6 py-3">
-      <mat-card class="p-3"
-        ><div class="border-bottom pb-2">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis,
-          consequatur labore eveniet asperiores fuga placeat obcaecati delectus
-          natus esse quibusdam a harum quam quasi tempora, laudantium ipsa iure
-          eligendi veniam!
+      <mat-card
+        class="p-3"
+        [ngClass]="{
+          info: item.productCode === 'NF',
+          warning: item.productCode === 'NB',
+          danger: item.productCode === 'NE'
+        }"
+        ><div class="border-bottom-black pb-2">
+          <div class="f-20" *ngIf="item.productCode === 'NF'">Nok Lite</div>
+          <div class="f-20" *ngIf="item.productCode === 'NB'">
+            Nok X-tra (Recommended!)
+          </div>
+          <div class="f-20" *ngIf="item.productCode === 'NE'">Nok MAX</div>
         </div>
-
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NF'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">7kg Carry-on baggage</div>
+          </div>
+        </div>
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NB'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">7kg Carry-on baggage</div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">luggage</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              15kg Checked baggage for domestic flight / 20kg Checked baggage
+              for international flight
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Advanced seat selection (DD flight only)
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">change_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Eligible for reroute only domestic flight through Airport Ticket
+              Counter or Call Center 1318 or +66 (0) 2 439 3344
+            </div>
+          </div>
+        </div>
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NE'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">restaurant</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Hot meal for international flights/ Snack box for domestic flights
+              *Booked at least 48 hours before departure* For cross-regional
+              routes , meals and drinks on board will not be available.
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">luggage</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              25kg Checked baggage for domestic flight / 30kg Checked baggage
+              for international flight
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">7kg Carry-on baggage</div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Advanced seat selection (DD flight only)
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">run_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Priority boarding (Nok First)
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_flat</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Lounge Access (Available at Bangkok-Don Mueang and for Domestic
+              flights only)
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">change_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Eligible for reroute only domestic flight through Airport Ticket
+              Counter or Call Center 1318 or +66 (0) 2 439 3344
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">flight_takeoff</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              Changing your flights without additional fee
+            </div>
+          </div>
+        </div>
         <div class="col-12 d-flex justify-content-space-between py-1">
           <div class="col text-align-start">
-            <mat-radio-button> </mat-radio-button>
+            <mat-checkbox
+              color="amber"
+              [checked]="internalCheck"
+              (change)="selectFlight($event.checked)"
+            >
+            </mat-checkbox>
           </div>
           <div class="col text-align-end f-18 align-self-center bold">
-            {{ price | number : "1.2-2" }}
+            {{ item.fareAmount | number : "1.2-2" }}
           </div>
         </div>
       </mat-card>

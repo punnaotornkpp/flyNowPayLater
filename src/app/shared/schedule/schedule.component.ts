@@ -50,13 +50,4 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
       this.onNextClick.emit();
     }
   }
-
-  centerIndex() {
-    this.totalIndex = this.value.length + 2;
-    if (this.totalIndex % 2 === 0) {
-      this.defaultTabIndex = this.totalIndex / 2 - 1;
-    } else {
-      this.defaultTabIndex = Math.floor(this.totalIndex / 2);
-    }
-  }
 }

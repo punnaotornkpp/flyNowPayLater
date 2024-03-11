@@ -3,7 +3,7 @@ import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.h
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-detail-flight.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { ISchedule } from '../../model/flight-schedule';
+import { IFare, ISchedule } from '../../model/flight-schedule';
 
 @Component({
   selector: 'app-flight',
@@ -13,7 +13,7 @@ import { ISchedule } from '../../model/flight-schedule';
 export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: ISchedule[];
   selectedItem: number = 99;
-  selectedPrice: number = 0;
+  selectedDate!: IFare;
   isSmallScreen: boolean = false;
 
   constructor(
@@ -33,8 +33,8 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
     this.dialog.open(DialogDetailFlightComponent, { data: data });
   }
 
-  selectDetail(item: number, price: number): void {
-    this.selectedItem = item;
-    this.selectedPrice = price;
+  selectDetail(index: number, fare: IFare): void {
+    this.selectedItem = index;
+    this.selectedDate = fare;
   }
 }

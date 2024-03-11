@@ -22,6 +22,7 @@ export class SelectScheduleComponent
   spinner: boolean = false;
   form!: FlightSearchForm;
   status: boolean = false;
+  defaultDate = '';
 
   constructor(
     private session: SessionStorage,
@@ -36,10 +37,17 @@ export class SelectScheduleComponent
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const session = this.session.get('history');
-        this.form = JSON.parse(session).form as FlightSearchForm;
-
-        this.getFlightFare();
+        const history = this.session.get('history');
+        const schedule = this.session.get('schedule') || '';
+        this.form = JSON.parse(history).form as FlightSearchForm;
+        if (schedule) {
+          const data = JSON.parse(schedule);
+          this.sessionValue = data as IFlight;
+          this.spinner = true;
+          return;
+        } else {
+          this.getFlightFare();
+        }
       } catch (error) {
         this.router.navigateByUrl('');
       }
@@ -60,6 +68,7 @@ export class SelectScheduleComponent
   }
 
   handleNewSchedule(index: number, type: number) {
+    /// fix later so confuse
     let currentJourney = this.form.journeys[index];
     let newDepartureDate = new Date(currentJourney.departureDate);
     let currentDate = new Date();
@@ -93,19 +102,34 @@ export class SelectScheduleComponent
   }
 
   getFlightFare() {
-    this.checkDateRange(this.form.journeys);
+    const originalDates = this.checkDateRange();
     const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
-      this.session.set('schedule', resp);
-      this.sessionValue = resp as IFlight;
-      this.spinner = true;
+      this.form.journeys.forEach((journey, index) => {
+        journey.departureDate = originalDates[index];
+        this.session.set('schedule', resp);
+        this.sessionValue = resp as IFlight;
+        this.spinner = true;
+      });
     });
     this.AddSubscription(obs);
   }
 
-  checkDateRange(journeys: JourneySearch[]) {
+  checkDateRange(): string[] {
     const today = new Date();
-    journeys.forEach((resp) => {
-      console.log(new Date(resp.departureDate));
+    const originalDates: string[] = [];
+    this.form.journeys.forEach((journey) => {
+      const departureDate = new Date(journey.departureDate);
+      originalDates.push(journey.departureDate);
+      const diffDate = departureDate.getDate() - today.getDate();
+      if (diffDate === 0) {
+        departureDate.setDate(departureDate.getDate() + 3);
+      } else if (diffDate === 1) {
+        departureDate.setDate(departureDate.getDate() + 2);
+      } else if (diffDate === 2) {
+        departureDate.setDate(departureDate.getDate() + 1);
+      }
+      journey.departureDate = DateTime.setTimeZone(departureDate);
     });
+    return originalDates;
   }
 }
