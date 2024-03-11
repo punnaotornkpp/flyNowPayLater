@@ -12,7 +12,7 @@ import { SessionStorage } from '../../core/helper/session.helper';
 })
 export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: IJourney[];
-  @Input() currentDate: string = '';
+  @Input() currentIndex: number = 0;
   @Output() onNextClick = new EventEmitter<any>();
   @Output() onBackClick = new EventEmitter<any>();
   empty = false;
@@ -35,10 +35,10 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   onTabChange(event: MatTabChangeEvent, value: IJourney[]): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       const sessionvalue = JSON.parse(this.session.get('history'));
-      // sessionvalue.form.journey[0].departureDate =
-      //   value[event.index].departureDate;
-      // console.log(value[event.index]);
-      // console.log(sessionvalue.form.journeys[0].departureDate);
+      sessionvalue.form.journeys[this.currentIndex].departureDate =
+        value[event.index - 1].departureDate;
+      this.session.set('history', { form: sessionvalue.form });
+      this.sharedService.triggerHeaderRefresh();
     }
 
     if (event.index === 0) {
@@ -49,7 +49,6 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
     } else if (event.index === this.totalIndex - 1) {
       this.onNextClick.emit();
     }
-    this.sharedService.triggerHeaderRefresh();
   }
 
   centerIndex() {

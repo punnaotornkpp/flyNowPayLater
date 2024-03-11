@@ -25,6 +25,7 @@
         </div>
         <app-schedule
           [value]="sessionValue.content[i].journey"
+          [currentIndex]="i"
           (onNextClick)="handleNewSchedule(i, 0)"
           (onBackClick)="handleBackClick(i, $event)"
           *ngIf="spinner"

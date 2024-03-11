@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { Router } from '@angular/router';
-import { FlightSearchForm } from '../../model/session.model';
+import { FlightSearchForm, JourneySearch } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
-import { IFlight } from '../../model/flight-schedule';
+import { IFlight, IJourney } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
@@ -38,6 +38,7 @@ export class SelectScheduleComponent
       try {
         const session = this.session.get('history');
         this.form = JSON.parse(session).form as FlightSearchForm;
+
         this.getFlightFare();
       } catch (error) {
         this.router.navigateByUrl('');
@@ -92,11 +93,19 @@ export class SelectScheduleComponent
   }
 
   getFlightFare() {
+    this.checkDateRange(this.form.journeys);
     const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
       this.session.set('schedule', resp);
       this.sessionValue = resp as IFlight;
       this.spinner = true;
     });
     this.AddSubscription(obs);
+  }
+
+  checkDateRange(journeys: JourneySearch[]) {
+    const today = new Date();
+    journeys.forEach((resp) => {
+      console.log(new Date(resp.departureDate));
+    });
   }
 }
