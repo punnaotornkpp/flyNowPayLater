@@ -19,6 +19,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   panelOpenState = false;
   index: boolean = false;
   sessionValue!: FlightSearchForm;
+  display: any;
 
   constructor(
     private dialog: MatDialog,
@@ -53,6 +54,8 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         const item = this.session.get('history');
+        const display = this.session.get('display') || '';
+        this.display = JSON.parse(display);
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');

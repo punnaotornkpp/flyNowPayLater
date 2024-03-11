@@ -3,7 +3,9 @@
   max-width: 150px; 
   height: auto;
 }
-
+.language img {
+  width: 20px;
+}
 
 .language-selector mat-select {
   margin-left: 10px; 
@@ -14,6 +16,9 @@
     justify-content: flex-end;
   }
 }
+
+
+
 
 mat-expansion-panel-header {
   background-color: var(--nokair) !important;

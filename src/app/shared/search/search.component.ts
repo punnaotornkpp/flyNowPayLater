@@ -172,7 +172,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.bookingForm.value);
+    // console.log(this.bookingForm.value);
     try {
       if (this.selectedToggleValue === 1) {
         const firstJourneyGroup = this.journeysArray.at(0) as FormGroup;
@@ -215,15 +215,14 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
             formValue = result;
           }
         }
-        // const obs = this.booking.getFlightFare(formValue).subscribe((resp) => {
         this.popup.success('Search success');
         this.session.set('history', { form: formValue });
+        this.session.set('display', '');
+        this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();
           this.route.navigate(['select']);
         });
-        // });
-        // this.AddSubscription(obs);
       } else {
         this.popup.failed('Form is invalid');
       }

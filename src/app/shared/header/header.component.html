@@ -10,13 +10,18 @@
             alt="Nok Air Logo"
         /></a>
       </div>
+
       <div
-        class="col language-selector d-flex text-align-end align-self-center"
+        class="col col-lg-1 language-selector d-flex text-align-end align-self-center"
       >
         <div>
           <mat-menu #langMenu="matMenu">
-            <button mat-menu-item value="TH">TH</button>
-            <button mat-menu-item value="EN">EN</button>
+            <div class="language center">
+              <img src="../../../assets/image/th.svg" alt="TH" />
+            </div>
+            <div class="language center">
+              <img src="../../../assets/image/gb.svg" alt="EN" />
+            </div>
           </mat-menu>
         </div>
         <div
@@ -28,8 +33,12 @@
           <mat-icon>menu</mat-icon>
         </div>
         <mat-select *ngIf="!isSmallScreen">
-          <mat-option value="TH">TH</mat-option>
-          <mat-option value="EN">EN</mat-option>
+          <mat-option value="TH" class="language">
+            <img src="../../../assets/image/th.svg" alt="TH" />
+          </mat-option>
+          <mat-option value="EN" class="language">
+            <img src="../../../assets/image/gb.svg" alt="EN" />
+          </mat-option>
         </mat-select>
       </div>
     </div>
@@ -95,18 +104,16 @@
             <div
               class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
             >
-              <span class="bold f-24 d-flex" *ngIf="this.sessionValue">
-                {{ this.sessionValue.currency || "" }} 9,999.00
+              <span class="bold f-24 d-flex" *ngIf="this.display">
+                {{ this.sessionValue.currency || "" }}
+                {{ display.fareAmount || "" }}
               </span>
             </div>
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="container container-max-width">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste soluta,
-        facere molestiae possimus consequuntur error earum totam inventore
-        dolorum? Soluta quasi eaque harum cum! Non omnis inventore itaque
-        architecto enim?
+        {{ display || "" }}
       </div>
     </mat-expansion-panel>
   </mat-accordion>
