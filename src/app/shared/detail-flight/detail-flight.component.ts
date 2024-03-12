@@ -1,8 +1,15 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { IFare } from '../../model/flight-schedule';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { SharedService } from '../../service/shared.service';
+import { IFlightFareKey } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-detail-flight',
@@ -14,27 +21,23 @@ export class DetailFlightComponent
   implements OnChanges
 {
   @Input() item!: IFare;
-  @Input() check = false;
+  @Input() check: boolean = false;
+  @Input() currentIndex: number = 0;
+  @Output() onSelect = new EventEmitter<IFare>();
+
   internalCheck = false;
-  constructor(
-    private session: SessionStorage,
-    private sharedService: SharedService
-  ) {
+
+  constructor() {
     super();
   }
 
   ngOnChanges(): void {
-    if (this.internalCheck === this.check) {
-      this.internalCheck = false;
-    } else {
-      this.internalCheck = true;
-    }
+    this.internalCheck = false;
   }
 
-  selectFlight() {
-    this.check = true;
-    this.internalCheck = this.check;
-    this.session.set('display', this.item);
-    this.sharedService.triggerHeaderRefresh();
+  selectFlight(isChecked: boolean) {
+    this.check = isChecked; // true
+    this.internalCheck = isChecked;
+    this.onSelect.emit(this.item);
   }
 }

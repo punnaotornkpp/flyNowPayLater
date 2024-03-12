@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
-import { IJourney } from '../../model/flight-schedule';
+import { IFare, IJourney } from '../../model/flight-schedule';
 import { SharedService } from '../../service/shared.service';
 import { SessionStorage } from '../../core/helper/session.helper';
+import { IFlightFareKey } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-schedule',
@@ -15,6 +16,8 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   @Input() currentIndex: number = 0;
   @Output() onNextClick = new EventEmitter<any>();
   @Output() onBackClick = new EventEmitter<any>();
+  @Output() onSelect = new EventEmitter<IFlightFareKey>();
+
   empty = false;
   defaultTabIndex: number = 4;
   totalIndex: number = 9;
@@ -63,5 +66,9 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
       );
       this.defaultTabIndex = matchingIndex + 1;
     }
+  }
+
+  selectFlightFare(item: IFlightFareKey) {
+    this.onSelect.emit(item);
   }
 }

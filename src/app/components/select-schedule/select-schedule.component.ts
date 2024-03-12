@@ -4,10 +4,11 @@ import { SessionStorage } from '../../core/helper/session.helper';
 import { Router } from '@angular/router';
 import { FlightSearchForm, JourneySearch } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
-import { IFlight, IJourney } from '../../model/flight-schedule';
+import { IFare, IFlight, IJourney } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
+import { IFlightFareKey } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-select-schedule',
@@ -23,6 +24,8 @@ export class SelectScheduleComponent
   form!: FlightSearchForm;
   status: boolean = false;
   defaultDate = '';
+  combineItem: IFlightFareKey[] = [];
+  securityToken = '';
 
   constructor(
     private session: SessionStorage,
@@ -94,6 +97,7 @@ export class SelectScheduleComponent
       this.form.journeys[1].departureDate =
         DateTime.setTimeZone(newDepartureDate1);
     }
+
     this.form.journeys[index] = currentJourney;
     this.session.set('history', { form: this.form });
     this.sharedService.triggerHeaderRefresh();
@@ -108,6 +112,8 @@ export class SelectScheduleComponent
         journey.departureDate = originalDates[index];
         this.session.set('schedule', resp);
         this.sessionValue = resp as IFlight;
+        this.securityToken = this.sessionValue.securityToken;
+        console.log(this.securityToken);
         this.spinner = true;
       });
     });
@@ -131,5 +137,24 @@ export class SelectScheduleComponent
       journey.departureDate = DateTime.setTimeZone(departureDate);
     });
     return originalDates;
+  }
+
+  selectFlightFare(item: IFlightFareKey, index: number) {
+    if (index >= this.combineItem.length) {
+      this.combineItem.length = index + 1;
+    }
+    this.combineItem[index] = item;
+    const pricing = {
+      flightFareKey: this.combineItem,
+      includeExtraServices: true,
+    };
+    const obs = this.booking
+      .getPricingDetail(pricing, this.securityToken)
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.session.set('display', resp);
+        this.sharedService.triggerHeaderRefresh();
+      });
+    this.AddSubscription(obs);
   }
 }

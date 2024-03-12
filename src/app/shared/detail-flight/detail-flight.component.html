@@ -142,8 +142,9 @@
         <div class="col-12 d-flex justify-content-space-between py-1">
           <div class="col text-align-start">
             <mat-radio-button
+              [name]="currentIndex.toString()"
               [checked]="internalCheck"
-              (change)="selectFlight()"
+              (change)="selectFlight(true)"
             >
             </mat-radio-button>
           </div>

@@ -24,7 +24,11 @@
             </div>
           </ng-template>
           <div class="py-5 px-2">
-            <app-flight [value]="item.schedules"></app-flight></div
+            <app-flight
+              [value]="item.schedules"
+              [currentIndex]="this.currentIndex"
+              (onSelect)="selectFlightFare($event)"
+            ></app-flight></div
         ></mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>

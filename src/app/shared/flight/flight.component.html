@@ -17,10 +17,11 @@
     </div>
   </div>
   <div class="border-top" *ngFor="let item of value; let i = index">
-    <div class="hover-background cursor" (click)="openDetailFlight(item)">
+    <div class="hover-background cursor">
       <div class="row p-0 py-3 text-align-center">
         <div
           class="col-12 col-lg-2 bold d-flex align-items-center justify-content-center"
+          (click)="openDetailFlight(item)"
         >
           <div class="f-20">
             {{ item.departureDate | transformDateToTime }}
@@ -34,6 +35,7 @@
           class="col-12 col-lg-5 text-align-start"
           [class.center]="isSmallScreen"
           [class.py-2]="isSmallScreen"
+          (click)="openDetailFlight(item)"
         >
           <div>
             <mat-icon class="f-24">flight</mat-icon>
@@ -81,6 +83,8 @@
       <app-detail-flight
         [item]="selectedDate"
         [check]="false"
+        [currentIndex]="this.currentIndex"
+        (onSelect)="selectFlightFare($event)"
       ></app-detail-flight>
     </div>
   </div>
