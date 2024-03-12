@@ -11,7 +11,7 @@
         /></a>
       </div>
 
-      <div
+      <!-- <div
         class="col col-lg-1 language-selector d-flex text-align-end align-self-center"
       >
         <div>
@@ -40,7 +40,7 @@
             <img src="../../../assets/image/gb.svg" alt="EN" />
           </mat-option>
         </mat-select>
-      </div>
+      </div> -->
     </div>
   </mat-toolbar>
   <mat-accordion *ngIf="!index">
@@ -104,16 +104,45 @@
             <div
               class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
             >
-              <span class="bold f-24 d-flex" *ngIf="this.sessionValue">
+              <span
+                class="bold f-24 d-flex"
+                *ngIf="this.sessionValue && this.display"
+              >
                 {{ this.sessionValue.currency || "" }}
-                {{ display.fareAmount || "0.00" }}
+                {{ display.totalAmount | number : "1.2-2" || 0 }}
+              </span>
+              <span
+                class="bold f-24 d-flex"
+                *ngIf="this.sessionValue && !this.display"
+              >
+                {{ this.sessionValue.currency || "" }}
+                {{ 0 | number : "1.2-2" }}
               </span>
             </div>
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div class="container container-max-width">
-        {{ display || "" }}
+      <div
+        class="container container-max-width"
+        *ngIf="this.sessionValue && this.display"
+      >
+        <div class="col-12 d-flex align-items-center f-12">
+          <div
+            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+          >
+            Lorem ipsum dolor sit amet.
+          </div>
+          <div
+            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+          >
+            Lorem ipsum dolor sit amet.
+          </div>
+          <div
+            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+          >
+            Lorem ipsum dolor sit amet.
+          </div>
+        </div>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

@@ -24,10 +24,11 @@
           </div>
         </div>
         <app-schedule
-          [value]="sessionValue.content[i].journey"
+          [value]="sessionValue.data[i].journey"
           [currentIndex]="i"
           (onNextClick)="handleNewSchedule(i, 0)"
           (onBackClick)="handleBackClick(i, $event)"
+          (onSelect)="selectFlightFare($event, i)"
           *ngIf="spinner"
         ></app-schedule>
         <div class="d-flex center">

@@ -4,7 +4,7 @@ export interface IFlight {
   correlationId: string;
   securityToken: string;
   timestamp: string;
-  content: IFlightRoute[];
+  data: IFlightRoute[];
 }
 
 export interface IFlightRoute {

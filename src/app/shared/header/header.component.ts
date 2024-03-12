@@ -9,6 +9,11 @@ import { FlightSearchForm } from '../../model/session.model';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SharedService } from '../../service/shared.service';
+import { IFare } from '../../model/flight-schedule';
+import {
+  IResponseDetailPricing,
+  IResponsePricing,
+} from '../../model/pricing-detail.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,7 +24,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   panelOpenState = false;
   index: boolean = false;
   sessionValue!: FlightSearchForm;
-  display: any;
+  display!: IResponseDetailPricing;
 
   constructor(
     private dialog: MatDialog,
@@ -55,7 +60,8 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       try {
         const item = this.session.get('history');
         const display = this.session.get('display') || '';
-        this.display = JSON.parse(display);
+        this.display = JSON.parse(display).data;
+        console.log(this.display);
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');
