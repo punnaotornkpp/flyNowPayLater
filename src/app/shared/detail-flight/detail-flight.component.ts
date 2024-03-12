@@ -31,9 +31,9 @@ export class DetailFlightComponent
     }
   }
 
-  selectFlight(isChecked: boolean) {
-    this.check = isChecked;
-    this.internalCheck = isChecked;
+  selectFlight() {
+    this.check = true;
+    this.internalCheck = this.check;
     this.session.set('display', this.item);
     this.sharedService.triggerHeaderRefresh();
   }
