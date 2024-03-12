@@ -104,9 +104,9 @@
             <div
               class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
             >
-              <span class="bold f-24 d-flex" *ngIf="this.display">
+              <span class="bold f-24 d-flex" *ngIf="this.sessionValue">
                 {{ this.sessionValue.currency || "" }}
-                {{ display.fareAmount || "" }}
+                {{ display.fareAmount || "0.00" }}
               </span>
             </div>
           </div>

@@ -27,6 +27,7 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   ngOnInit(): void {
+    this.findDefaultIndex();
     if (this.value.length < 7) {
       this.empty = true;
     }
@@ -36,13 +37,11 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
     if (event.index === 0) {
       this.onBackClick.emit((resp: boolean) => {
         this.empty = resp;
-        this.defaultTabIndex = 1;
+        this.findDefaultIndex();
       });
-      console.log('back');
       return;
     } else if (event.index === this.totalIndex - 1) {
       this.onNextClick.emit();
-      console.log('next');
       return;
     }
     if (typeof window !== 'undefined' && window.sessionStorage) {
@@ -51,6 +50,18 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
         value[event.index - 1].departureDate;
       this.session.set('history', { form: sessionvalue.form });
       this.sharedService.triggerHeaderRefresh();
+    }
+  }
+
+  findDefaultIndex() {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const sessionvalue = JSON.parse(this.session.get('history'));
+      const targetDepartureDate =
+        sessionvalue.form.journeys[this.currentIndex].departureDate;
+      const matchingIndex = this.value.findIndex(
+        (element) => element.departureDate === targetDepartureDate
+      );
+      this.defaultTabIndex = matchingIndex + 1;
     }
   }
 }

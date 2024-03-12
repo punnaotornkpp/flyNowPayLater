@@ -141,12 +141,11 @@
         </div>
         <div class="col-12 d-flex justify-content-space-between py-1">
           <div class="col text-align-start">
-            <mat-checkbox
-              color="amber"
+            <mat-radio-button
               [checked]="internalCheck"
-              (change)="selectFlight($event.checked)"
+              (change)="selectFlight()"
             >
-            </mat-checkbox>
+            </mat-radio-button>
           </div>
           <div class="col text-align-end f-18 align-self-center bold">
             {{ item.fareAmount | number : "1.2-2" }}
