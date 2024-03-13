@@ -15,10 +15,7 @@ export class HttpService {
     this.header = this.header.append('content-type', 'application/json');
     this.header = this.header.append('client_id', this.client_id);
     this.header = this.header.append('client_secret', this.client_secret);
-    this.header = this.header.append(
-      'Security-Token',
-      '66b10ayt13vftc6dtd206483q39aa5ff6c8d9da8c5ac'
-    );
+    this.header = this.header.append('Security-Token', '');
   }
 
   get<T>(url: string): Observable<T> {

@@ -11,6 +11,7 @@ import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.h
 import { SharedService } from '../../service/shared.service';
 import { IFare } from '../../model/flight-schedule';
 import {
+  IFlightFareKey,
   IResponseDetailPricing,
   IResponsePricing,
 } from '../../model/pricing-detail.model';
@@ -25,6 +26,8 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   index: boolean = false;
   sessionValue!: FlightSearchForm;
   display!: IResponseDetailPricing;
+  flightFareKey!: IFlightFareKey;
+  show: boolean = true;
 
   constructor(
     private dialog: MatDialog,
@@ -60,6 +63,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       try {
         const item = this.session.get('history');
         const display = this.session.get('display') || '';
+        const flightFareKey = this.session.get('flightFareKey') || '';
         this.display = JSON.parse(display).data;
         console.log(this.display);
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
@@ -76,5 +80,13 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   openSearch() {
     const dialogRef = this.dialog.open(SearchComponent, {});
     dialogRef.afterClosed().subscribe(() => {});
+  }
+
+  showMoreDetail(show: boolean) {
+    if (show) {
+      this.show = false;
+    } else {
+      this.show = true;
+    }
   }
 }

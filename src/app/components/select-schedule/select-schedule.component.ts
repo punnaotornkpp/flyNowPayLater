@@ -113,7 +113,6 @@ export class SelectScheduleComponent
         this.session.set('schedule', resp);
         this.sessionValue = resp as IFlight;
         this.securityToken = this.sessionValue.securityToken;
-        console.log(this.securityToken);
         this.spinner = true;
       });
     });
@@ -146,13 +145,13 @@ export class SelectScheduleComponent
     this.combineItem[index] = item;
     const pricing = {
       flightFareKey: this.combineItem,
-      includeExtraServices: true,
+      includeExtraServices: false,
     };
     const obs = this.booking
       .getPricingDetail(pricing, this.securityToken)
       .subscribe((resp: any) => {
-        console.log(resp);
         this.session.set('display', resp);
+        this.session.set('flightFareKey', pricing);
         this.sharedService.triggerHeaderRefresh();
       });
     this.AddSubscription(obs);

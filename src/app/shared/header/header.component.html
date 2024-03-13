@@ -55,7 +55,7 @@
             <ng-container *ngIf="!isSmallScreen">
               <div
                 class="col-6 col-lg-4 d-flex border-right-black"
-                *ngFor="let journey of sessionValue?.journeys"
+                *ngFor="let journey of sessionValue?.journeys; let i = index"
                 [ngClass]="{
                   'col-6': true,
                   'col-lg-4': sessionValue.journeys.length > 1,
@@ -70,13 +70,14 @@
                     {{ journey.originName || "" }}
                     To {{ journey.destinationName || "" }}
                   </div>
-                  <div class="bold">
-                    {{ journey.departureDate | date : "EEEE d MMMM y" }}
+                  <div class="bold d-flex justify-content-between">
+                    <span>{{
+                      journey.departureDate | date : "EEEE d MMMM y"
+                    }}</span>
                   </div>
                 </div>
               </div>
             </ng-container>
-
             <div class="col-12 col-lg-2 border-right-black center">
               <div class="align-self-center pt-2 pb-1 f-14">
                 <div *ngIf="this.sessionValue">
@@ -126,21 +127,68 @@
         class="container container-max-width"
         *ngIf="this.sessionValue && this.display"
       >
-        <div class="col-12 d-flex align-items-center f-12">
+        <div
+          class="col-12 d-flex align-items-center f-12 container-display-header"
+          *ngIf="!isSmallScreen"
+        >
           <div
-            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+            *ngFor="let airline of display.airlines; let i = index"
+            class="row col-12 col-lg-4 d-flex px-3"
+            [ngClass]="{
+              'col-lg-4': display.airlines.length > 1,
+              'col-lg-7': display.airlines.length === 1
+            }"
           >
-            Lorem ipsum dolor sit amet.
-          </div>
-          <div
-            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
-          >
-            Lorem ipsum dolor sit amet.
-          </div>
-          <div
-            class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
-          >
-            Lorem ipsum dolor sit amet.
+            <div class="row col-12 justify-content-between bold">
+              <span class="col">
+                {{
+                  airline.travelInfos[0].departureTime | date : "EEEE d MMMM y"
+                }}</span
+              >
+              <span class="col text-align-end">
+                {{
+                  airline.travelInfos[0].arrivalTime | date : "EEEE d MMMM y"
+                }}
+              </span>
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col">
+                {{ airline.travelInfos[0].departureTime | transformDateToTime }}
+              </span>
+              <span class="col text-align-end">
+                {{
+                  airline.travelInfos[0].arrivalTime | transformDateToTime
+                }}</span
+              >
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col text-align-end">
+                {{ airline.travelInfos[0].flightNumber }}</span
+              >
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col-7 f-14">Fare</span>
+              <span class="col-2 text-align-end"
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="show"
+                  (click)="showMoreDetail(show)"
+                  >expand_more</mat-icon
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="!show"
+                  (click)="showMoreDetail(show)"
+                  >expand_less</mat-icon
+                ></span
+              >
+            </div>
+            <div class="row col-12 justify-content-between bold" *ngIf="!show">
+              <span class="col f-14">{{ flightFareKey.fareKey }}</span>
+              <span class="col text-align-end"
+                >Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Saepe, nam?</span
+              >
+            </div>
           </div>
         </div>
       </div>
