@@ -218,6 +218,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         this.popup.success('Search success');
         this.session.set('history', { form: formValue });
         this.session.set('display', '');
+        this.session.set('flightFareKey', '');
         this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();

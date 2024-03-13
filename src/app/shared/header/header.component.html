@@ -128,12 +128,12 @@
         *ngIf="this.sessionValue && this.display"
       >
         <div
-          class="col-12 d-flex align-items-center f-12 container-display-header"
+          class="col-12 d-flex align-items-center f-12 container-display-header pt-2"
           *ngIf="!isSmallScreen"
         >
           <div
             *ngFor="let airline of display.airlines; let i = index"
-            class="row col-12 col-lg-4 d-flex px-3"
+            class="row col-12 col-lg-4 d-flex px-3 align-self-start"
             [ngClass]="{
               'col-lg-4': display.airlines.length > 1,
               'col-lg-7': display.airlines.length === 1
@@ -182,13 +182,74 @@
                 ></span
               >
             </div>
-            <div class="row col-12 justify-content-between bold" *ngIf="!show">
-              <span class="col f-14">{{ flightFareKey.fareKey }}</span>
-              <span class="col text-align-end"
-                >Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Saepe, nam?</span
+            <span
+              class="row col-12 justify-content-between text-spacing"
+              *ngIf="!show"
+            >
+              <div class="row col-12 justify-content-between">
+                <span class="col f-14 bold">{{
+                  getService(flightFareKey.flightFareKey[i].fareKey)
+                }}</span>
+                <span class="col text-align-end bold">{{
+                  getPriceDetail(airline.pricingDetails) | number : "1.2-2"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let item of airline.pricingDetails"
+              >
+                <span class="col"
+                  >{{ item.paxCount }} X {{ item.paxTypeCode }}</span
+                >
+                <span class="col text-align-end">{{
+                  item.fareAmount | number : "1.2-2"
+                }}</span>
+              </div>
+            </span>
+          </div>
+          <div class="row col-12 col-lg-4 d-flex px-3 align-self-start">
+            <div class="row col-12 justify-content-between bold">
+              <span class="col-7 f-14">Taxes</span>
+              <span class="col-2 text-align-end"
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="showTaxes"
+                  (click)="showMoreDetail(showTaxes)"
+                  >expand_more</mat-icon
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="!showTaxes"
+                  (click)="showMoreDetail(showTaxes)"
+                  >expand_less</mat-icon
+                ></span
               >
             </div>
+            <span
+              class="row col-12 justify-content-between text-spacing"
+              *ngIf="!showTaxes"
+            >
+              <div class="row col-12 justify-content-between bold">
+                <span class="col f-14">Airport Tax</span>
+                <span class="col text-align-end">{{
+                  0 | number : "1.2-2"
+                }}</span>
+              </div>
+              <!-- <div
+                class="row col-12 justify-content-between bold"
+                *ngFor="let item of paxDetails; let i = index"
+              >
+                <span class="col f-14">{{ item[i].code }}</span>
+                <span class="col text-align-end">
+                  {{ item[i].airportTax | number : "1.2-2" }}
+                </span>
+              </div> -->
+              <div class="row col-12 justify-content-between bold">
+                <span class="col f-14 bold">VAT</span>
+                <span class="col text-align-end">{{
+                  0 | number : "1.2-2"
+                }}</span>
+              </div>
+            </span>
           </div>
         </div>
       </div>
