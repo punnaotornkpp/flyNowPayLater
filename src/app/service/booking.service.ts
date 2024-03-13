@@ -12,7 +12,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BookingService {
   header = new HttpHeaders();
-  constructor(private http: HttpService) {}
+  client_id = '388023c5e52a4b179464a80c0eb6dcfb';
+  client_secret = 'F2F0930159684A76aCeeB37Dba8E4a2D';
+  constructor(private http: HttpService, private httpc: HttpClient) {}
 
   getFlightFare<T>(body: FlightSearchForm): Observable<T> {
     return this.http.post(
@@ -21,11 +23,17 @@ export class BookingService {
     );
   }
 
-  getPricingDetail<T>(body: IPRICING, securityToken: string): Observable<T> {
-    this.header.append('Security-Token', securityToken);
-    return this.http.post(
+  getPricingDetail(body: IPRICING, securityToken: string): Observable<any> {
+    let headers = new HttpHeaders()
+      .append('Security-Token', securityToken)
+      .append('Content-Type', 'application/json')
+      .append('client_id', this.client_id)
+      .append('client_secret', this.client_secret);
+
+    return this.httpc.post(
       `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/pricing-details`,
-      body
+      body,
+      { headers }
     );
   }
 }
