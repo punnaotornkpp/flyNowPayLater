@@ -36,4 +36,43 @@ export class BookingService {
       { headers }
     );
   }
+
+  getSSR(body: any, securityToken: string): Observable<any> {
+    let headers = new HttpHeaders()
+      .append('Security-Token', securityToken)
+      .append('Content-Type', 'application/json')
+      .append('client_id', this.client_id)
+      .append('client_secret', this.client_secret);
+    return this.httpc.post(
+      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/ssr`,
+      body,
+      { headers }
+    );
+  }
+
+  getSeat(body: any, securityToken: string): Observable<any> {
+    let headers = new HttpHeaders()
+      .append('Security-Token', securityToken)
+      .append('Content-Type', 'application/json')
+      .append('client_id', this.client_id)
+      .append('client_secret', this.client_secret);
+    return this.httpc.post(
+      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/seat-map`,
+      body,
+      { headers }
+    );
+  }
+
+  SubmitBooking(body: any, securityToken: string): Observable<any> {
+    let headers = new HttpHeaders()
+      .append('Security-Token', securityToken)
+      .append('Content-Type', 'application/json')
+      .append('client_id', this.client_id)
+      .append('client_secret', this.client_secret);
+    return this.httpc.post(
+      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/submit-hold-booking`,
+      body,
+      { headers }
+    );
+  }
 }

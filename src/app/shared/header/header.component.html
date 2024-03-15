@@ -136,7 +136,7 @@
             class="row col-12 col-lg-4 d-flex px-3 align-self-start"
             [ngClass]="{
               'col-lg-4': display.airlines.length > 1,
-              'col-lg-7': display.airlines.length === 1
+              'col-lg-8': display.airlines.length === 1
             }"
           >
             <div class="row col-12 justify-content-between bold">
@@ -190,7 +190,7 @@
                 <span class="col f-14 bold">{{
                   getService(flightFareKey.flightFareKey[i].fareKey)
                 }}</span>
-                <span class="col text-align-end bold">{{
+                <span class="col text-align-end bold f-14">{{
                   getPriceDetail(airline.pricingDetails) | number : "1.2-2"
                 }}</span>
               </div>
@@ -214,39 +214,53 @@
                 ><mat-icon
                   class="bold f-24 cursor"
                   *ngIf="showTaxes"
-                  (click)="showMoreDetail(showTaxes)"
+                  (click)="showMoreDetailTaxe(showTaxes)"
                   >expand_more</mat-icon
                 ><mat-icon
                   class="bold f-24 cursor"
                   *ngIf="!showTaxes"
-                  (click)="showMoreDetail(showTaxes)"
+                  (click)="showMoreDetailTaxe(showTaxes)"
                   >expand_less</mat-icon
                 ></span
               >
             </div>
+
             <span
               class="row col-12 justify-content-between text-spacing"
               *ngIf="!showTaxes"
             >
               <div class="row col-12 justify-content-between bold">
-                <span class="col f-14">Airport Tax</span>
+                <span class="col f-14">Total Airport Tax</span>
                 <span class="col text-align-end">{{
-                  0 | number : "1.2-2"
+                  totalAirportTax | currency : "THB"
                 }}</span>
               </div>
-              <!-- <div
-                class="row col-12 justify-content-between bold"
-                *ngFor="let item of paxDetails; let i = index"
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let detail of taxDetailsByPaxType"
               >
-                <span class="col f-14">{{ item[i].code }}</span>
-                <span class="col text-align-end">
-                  {{ item[i].airportTax | number : "1.2-2" }}
-                </span>
-              </div> -->
-              <div class="row col-12 justify-content-between bold">
-                <span class="col f-14 bold">VAT</span>
+                <span class="col f-14"
+                  >{{ detail.count }} x {{ detail.paxType }}</span
+                >
                 <span class="col text-align-end">{{
-                  0 | number : "1.2-2"
+                  detail.AT | currency : "THB"
+                }}</span>
+              </div>
+              <div class="row col-12 justify-content-between bold">
+                <span class="col f-14">Total VAT</span>
+                <span class="col text-align-end">{{
+                  totalVAT | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let detail of taxDetailsByPaxType"
+              >
+                <span class="col f-14"
+                  >{{ detail.count }} x {{ detail.paxType }}</span
+                >
+                <span class="col text-align-end">{{
+                  detail.VAT | currency : "THB"
                 }}</span>
               </div>
             </span>

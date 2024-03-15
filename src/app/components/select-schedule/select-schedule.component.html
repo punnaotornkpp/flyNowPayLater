@@ -64,7 +64,7 @@
               <u>Previous</u>
             </button>
           </div>
-          <div class="col text-align-end">
+          <div class="col text-align-end" *ngIf="loading">
             <button
               mat-raised-button
               (click)="redirectNext()"

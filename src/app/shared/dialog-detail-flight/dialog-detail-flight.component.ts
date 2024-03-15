@@ -16,7 +16,5 @@ export class DialogDetailFlightComponent
     super();
   }
 
-  ngOnInit(): void {
-    console.log(this.data);
-  }
+  ngOnInit(): void {}
 }

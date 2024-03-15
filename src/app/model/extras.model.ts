@@ -28,6 +28,8 @@ export interface DialogConfig {
     component: Type<DialogComponentType>;
     width: string;
     height: string;
+    maxWidth?: string;
+    panelClass?: string;
     data: string;
   };
 }

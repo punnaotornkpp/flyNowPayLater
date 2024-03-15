@@ -9,6 +9,13 @@ import { ExtraSelectionSeatComponent } from '../../shared/extra-selection-seat/e
 import { ExtraBaggageComponent } from '../../shared/extra-baggage/extra-baggage.component';
 import { ExtraSpecialBaggageComponent } from '../../shared/extra-special-baggage/extra-special-baggage.component';
 import { DialogConfig } from '../../model/extras.model';
+import {
+  IFlightFareKey,
+  IPRICING,
+  ISSR,
+  ISeat,
+} from '../../model/pricing-detail.model';
+import { BookingService } from '../../service/booking.service';
 
 @Component({
   selector: 'app-extras',
@@ -17,12 +24,17 @@ import { DialogConfig } from '../../model/extras.model';
 })
 export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   items = MOCK_EXTRAS;
+  ssr!: ISSR;
+  seat!: ISeat;
+  spinner: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private route: Router,
     private session: SessionStorage,
     private popup: PopupService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private booking: BookingService
   ) {
     super();
   }
@@ -30,12 +42,46 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('history');
-        console.log(JSON.parse(item).form);
+        const securityToken =
+          JSON.parse(this.session.get('schedule')).securityToken || '';
+        const flightFareKey: IPRICING = JSON.parse(
+          this.session.get('flightFareKey')
+        );
+        const extras = JSON.parse(this.session.get('extras'));
+        if (extras) {
+          this.ssr = extras.ssr;
+          this.seat = extras.seat;
+          this.spinner = true;
+          this.loading = true;
+        } else {
+          this.getSSR(flightFareKey, securityToken);
+        }
       } catch (error) {
         this.route.navigateByUrl('');
       }
     }
+  }
+
+  getSSR(flightFareKey: IPRICING, securityToken: string) {
+    const obs = this.booking
+      .getSSR(flightFareKey, securityToken)
+      .subscribe((resp) => {
+        this.ssr = resp.data;
+        this.getSeats(flightFareKey, securityToken);
+      });
+    this.AddSubscription(obs);
+  }
+
+  getSeats(flightFareKey: IPRICING, securityToken: string) {
+    const obs = this.booking
+      .getSeat(flightFareKey.flightFareKey[0], securityToken)
+      .subscribe((resp) => {
+        this.seat = resp;
+        this.session.set('extras', { ssr: this.ssr, seat: this.seat });
+        this.spinner = true;
+        this.loading = true;
+      });
+    this.AddSubscription(obs);
   }
 
   redirectPrevious() {
@@ -49,8 +95,9 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   private dialogConfig: DialogConfig = {
     0: {
       component: ExtraSelectionSeatComponent,
-      width: '1000px',
-      height: '500px',
+      width: '95vw',
+      height: '95vh',
+      maxWidth: '95vw',
       data: '',
     },
     1: {

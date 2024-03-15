@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'transformDateToTime',
 })
 export class TransformDateToTimePipe implements PipeTransform {
-  transform(value: any): string {
+  transform(value: string): string {
     if (!value) return '';
     const date = new Date(value);
     const hours = date.getHours();

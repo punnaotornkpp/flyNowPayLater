@@ -27,7 +27,7 @@
             <app-flight
               [value]="item.schedules"
               [currentIndex]="this.currentIndex"
-              (onSelect)="selectFlightFare($event)"
+              (onSelect)="selectFlightFare($event, item.schedules)"
             ></app-flight></div
         ></mat-tab>
         <mat-tab>

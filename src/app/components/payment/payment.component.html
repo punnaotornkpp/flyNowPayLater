@@ -16,16 +16,28 @@
             </div>
           </div>
           <div class="px-3">
-            <mat-card class="p-3">
+            <mat-card
+              class="p-3 mt-2"
+              *ngFor="let item of this.passengers; let i = index"
+            >
               <div class="row bold py-1">
-                <div class="col-sm-5 col-12">Adult</div>
+                <div class="col-sm-5 col-12">{{ item.type }}</div>
                 <div class="col-sm-2 col-12">Date of birth</div>
-                <div class="col-sm-5 col-12">E-mail</div>
+                <div class="col-sm-5 col-12" *ngIf="i === 0">E-mail</div>
+                <div class="col-sm-5 col-12" *ngIf="item.type === 'Infant'">
+                  {{ item.associateInfantToAdult || "" }}
+                </div>
               </div>
               <div class="row py-1">
-                <div class="col-sm-5 col-12">MR Punnatorn Yimpong</div>
-                <div class="col-sm-2 col-12">2001-12-13</div>
-                <div class="col-sm-5 col-12">Punnatorn.Yim-nokair.co.th</div>
+                <div class="col-sm-5 col-12">
+                  {{ item.title }} {{ item.firstName }} {{ item.lastName }}
+                </div>
+                <div class="col-sm-2 col-12">
+                  {{ setTimeZone(item.birthdayDate) }}
+                </div>
+                <div class="col-sm-5 col-12" *ngIf="i === 0">
+                  {{ item.email || "" }}
+                </div>
               </div>
             </mat-card>
           </div>
@@ -74,6 +86,16 @@
         <div class="col text-align-start">
           <button mat-button (click)="redirectPrevious()" class="large-button">
             <u>Previous</u>
+          </button>
+        </div>
+        <div class="col text-align-end">
+          <button
+            mat-raised-button
+            (click)="redirectNext()"
+            class="large-button"
+            color="accent"
+          >
+            <span>Next</span>
           </button>
         </div>
       </div>

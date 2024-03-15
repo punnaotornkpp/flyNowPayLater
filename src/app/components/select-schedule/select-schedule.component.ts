@@ -26,6 +26,7 @@ export class SelectScheduleComponent
   defaultDate = '';
   combineItem: IFlightFareKey[] = [];
   securityToken = '';
+  loading: boolean = false;
 
   constructor(
     private session: SessionStorage,
@@ -57,12 +58,27 @@ export class SelectScheduleComponent
     }
   }
 
+  // new Date(this.combineItem[0].departureTime) >=
+  //     new Date(this.combineItem[1].departureTime)
+
   redirectPrevious() {
     this.router.navigateByUrl('');
   }
 
   redirectNext() {
-    this.router.navigateByUrl('passengers');
+    if (this.combineItem.length === this.sessionValue.data.length) {
+      if (
+        this.combineItem[1] &&
+        this.combineItem[0].departureTime &&
+        this.combineItem[1].departureTime &&
+        new Date(this.combineItem[0].departureTime) <
+          new Date(this.combineItem[1].departureTime)
+      ) {
+        this.router.navigateByUrl('passengers');
+      }
+    } else {
+      this.popup.waring('You have not yet selected complete schedule flight.');
+    }
   }
 
   handleBackClick(index: number, callback: (status: boolean) => void): void {
@@ -71,7 +87,6 @@ export class SelectScheduleComponent
   }
 
   handleNewSchedule(index: number, type: number) {
-    /// fix later so confuse
     let currentJourney = this.form.journeys[index];
     let newDepartureDate = new Date(currentJourney.departureDate);
     let currentDate = new Date();
@@ -138,11 +153,31 @@ export class SelectScheduleComponent
     return originalDates;
   }
 
-  selectFlightFare(item: IFlightFareKey, index: number) {
+  selectFlightFare(item: [IFlightFareKey, string], index: number) {
+    this.loading = false;
     if (index >= this.combineItem.length) {
       this.combineItem.length = index + 1;
     }
-    this.combineItem[index] = item;
+    this.combineItem[index] = item[0];
+    this.combineItem[index].departureTime = new Date(item[1]);
+    if (this.combineItem[0] == null) {
+      this.popup.info('Please choose your depart trip first.');
+      this.loading = false;
+      return;
+    }
+    if (
+      this.combineItem[1] &&
+      this.combineItem[0].departureTime &&
+      this.combineItem[1].departureTime &&
+      new Date(this.combineItem[0].departureTime) >=
+        new Date(this.combineItem[1].departureTime)
+    ) {
+      this.popup.waring(
+        'The departure date cannot be greater than the return date.'
+      );
+      this.loading = false;
+      return;
+    }
     const pricing = {
       flightFareKey: this.combineItem,
       includeExtraServices: false,
@@ -152,6 +187,7 @@ export class SelectScheduleComponent
       .subscribe((resp: any) => {
         this.session.set('display', resp);
         this.session.set('flightFareKey', pricing);
+        this.loading = true;
         this.sharedService.triggerHeaderRefresh();
       });
     this.AddSubscription(obs);

@@ -6,6 +6,9 @@ export interface IPRICING {
 export interface IFlightFareKey {
   fareKey: string;
   journeyKey: string;
+  extraService?: any[];
+  selectedSeat?: any[];
+  departureTime?: Date;
 }
 
 export interface IResponsePricing {
@@ -60,6 +63,22 @@ export interface ITaxesAndFee {
   isSSR: boolean;
 }
 
+export interface TaxDetails {
+  paxType: string;
+  count: number;
+  AT: number;
+  VAT: number;
+}
+
+export interface ISSR {
+  code: number;
+  responseStatus: string;
+  correlationId: string;
+  securityToken: string;
+  timestamp: string;
+  data: IAvailableExtraService[];
+}
+
 export interface IAvailableExtraService {
   ssrCode: string;
   description: string;
@@ -75,4 +94,44 @@ export interface IVat {
   amount: string;
   taxCode: string;
   taxName: string;
+}
+
+export interface ISeat {
+  code: number;
+  responseStatus: string;
+  correlationId: string;
+  securityToken: string;
+  timestamp: string;
+  data: ISeatDetail[];
+}
+
+export interface ISeatDetail {
+  origin: string;
+  originName: string;
+  destination: string;
+  destinationName: string;
+  departureDate: string;
+  flightNumber: string;
+  seatAssignments: any[];
+  seatCharges: ISeatCharge[];
+  seatMaps: ISeatMap[];
+}
+
+export interface ISeatCharge {
+  rowNumber: number;
+  seat: string;
+  serviceCode: string;
+  description: string;
+  amount: string;
+  currency: string;
+  available: boolean;
+}
+
+export interface ISeatMap {
+  rowNumber: number;
+  seats: string;
+  wingSeats?: string;
+  exitSeats?: string;
+  blockedSeats: any;
+  preBlockedSeats: any;
 }

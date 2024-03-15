@@ -14,7 +14,7 @@ import { IFlightFareKey } from '../../model/pricing-detail.model';
 export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: ISchedule[];
   @Input() currentIndex: number = 0;
-  @Output() onSelect = new EventEmitter<IFlightFareKey>();
+  @Output() onSelect = new EventEmitter<[IFlightFareKey, number]>();
   selectedItem: number = 99;
   selectedDate!: IFare;
   isSmallScreen: boolean = false;
@@ -46,6 +46,6 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
       fareKey: item.fareKey,
       journeyKey: this.value[this.currentIndex].journeyKey,
     };
-    this.onSelect.emit(setItem);
+    this.onSelect.emit([setItem, this.selectedItem]);
   }
 }
