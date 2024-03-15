@@ -18,6 +18,7 @@ import {
   IResponseDetailPricing,
   IResponsePricing,
   ITaxesAndFee,
+  TaxDetails,
 } from '../../model/pricing-detail.model';
 @Component({
   selector: 'app-header',
@@ -35,7 +36,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   showTaxes: boolean = false;
   totalAirportTax: number = 0;
   totalVAT: number = 0;
-  paxDetails: any = {};
+  taxDetailsByPaxType: TaxDetails[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -73,9 +74,10 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
         const display = this.session.get('display') || '';
         const flightFareKey = this.session.get('flightFareKey') || '';
         this.flightFareKey = JSON.parse(flightFareKey);
-        // console.log(this.flightFareKey);
         this.display = JSON.parse(display).data;
-        // this.calculateSums(this.display.airlines);
+        if (this.display) {
+          this.calculateTaxesAndDetails();
+        }
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');
@@ -100,16 +102,24 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
+  showMoreDetailTaxe(show: boolean) {
+    if (show) {
+      this.showTaxes = false;
+    } else {
+      this.showTaxes = true;
+    }
+  }
+
   getService(fareKey: string): string {
     const parts = fareKey.split(':');
     if (parts.length > 1) {
       switch (parts[1].substring(3, 6)) {
         case 'LIT':
-          return 'NOK LITE';
+          return 'Nok Lite';
         case 'XTR':
-          return 'NOK X-TRA';
+          return 'Nok X-tra';
         case 'MAX':
-          return 'NOK MAX';
+          return 'Nok Max';
         default:
           return '';
       }
@@ -127,30 +137,29 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     return totalFareAmount;
   }
 
-  calculateSums(airlines: IAirlinePricing[]): void {
-    airlines.forEach((booking) => {
-      booking.pricingDetails.forEach((detail) => {
-        const paxType = detail.paxTypeCode;
-        const paxCount = detail.paxCount;
-        this.paxDetails[paxType] = this.paxDetails[paxType] || {
-          airportTax: 0,
-          VAT: 0,
-          count: 0,
-          code: '',
-        };
-        this.paxDetails[paxType].count = paxCount;
-        this.paxDetails[paxType].code = paxType;
-        detail.taxesAndFees.forEach((tax: ITaxesAndFee) => {
+  calculateTaxesAndDetails(): void {
+    this.totalAirportTax = 0;
+    this.totalVAT = 0;
+    let taxDetailsMap: { [key: string]: TaxDetails } = {};
+
+    this.display.airlines.forEach((flight) => {
+      flight.pricingDetails.forEach((pricingDetail) => {
+        const paxType = pricingDetail.paxTypeCode;
+        if (!taxDetailsMap[paxType]) {
+          taxDetailsMap[paxType] = { paxType, count: 0, AT: 0, VAT: 0 };
+        }
+        taxDetailsMap[paxType].count = pricingDetail.paxCount;
+        pricingDetail.taxesAndFees.forEach((tax) => {
           if (tax.taxCode === 'AT') {
             this.totalAirportTax += parseFloat(tax.amount);
-            this.paxDetails[paxType].airportTax += parseFloat(tax.amount);
+            taxDetailsMap[paxType].AT += parseFloat(tax.amount);
           } else if (tax.taxCode === 'VAT') {
             this.totalVAT += parseFloat(tax.amount);
-            this.paxDetails[paxType].VAT += parseFloat(tax.amount);
+            taxDetailsMap[paxType].VAT += parseFloat(tax.amount);
           }
         });
       });
     });
-    console.log(this.paxDetails);
+    this.taxDetailsByPaxType = Object.values(taxDetailsMap);
   }
 }

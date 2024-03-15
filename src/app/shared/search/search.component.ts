@@ -55,7 +55,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       adult: [1, [Validators.required, Validators.min(1)]],
       child: [0],
       infant: [0],
-      promoCode: [''],
       languageCode: ['th', Validators.required],
       journeys: this.fb.array([
         this.fb.group({
@@ -69,6 +68,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }),
       ]),
     });
+    // promoCode: [''],
+
     this.journeysArray = this.bookingForm.get('journeys') as FormArray;
     this.journeysArray.valueChanges.subscribe((changes) => {
       changes.forEach((journey: JourneySearch, index: number) => {
@@ -172,7 +173,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   onSubmit(): void {
-    // console.log(this.bookingForm.value);
     try {
       if (this.selectedToggleValue === 1) {
         const firstJourneyGroup = this.journeysArray.at(0) as FormGroup;
@@ -219,6 +219,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         this.session.set('history', { form: formValue });
         this.session.set('display', '');
         this.session.set('flightFareKey', '');
+        this.session.set('passengers', '');
         this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();

@@ -98,6 +98,10 @@ $my-theme: mat.define-light-theme((
     border-radius: 10px !important; 
 }
 
+.mat-mdc-dialog-container .mdc-dialog__surface {
+        background-color: var(--nokair25) !important;
+}
+
 .mat-mdc-menu-content {
     width: 210px;
 }

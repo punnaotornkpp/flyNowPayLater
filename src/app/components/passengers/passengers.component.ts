@@ -12,6 +12,7 @@ import {
 import { FlightSearchForm } from '../../model/session.model';
 import { PopupService } from '../../service/popup.service';
 import { ageValidator } from '../../core/helper/ageValidate.helper';
+import { setControl, setControls } from '../../core/helper/form.helper';
 
 @Component({
   selector: 'app-passengers',
@@ -44,8 +45,15 @@ export class PassengersComponent
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         const item = this.session.get('history');
+        const passenger = JSON.parse(this.session.get('passengers'));
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
-        this.populateFormArrays(this.sessionValue);
+
+        if (passenger) {
+          const setPassengers = passenger;
+          setControl(setPassengers, this.form, this.fb);
+        } else {
+          this.populateFormArrays(this.sessionValue);
+        }
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -129,7 +137,8 @@ export class PassengersComponent
 
   redirectNext() {
     if (this.form.valid) {
-      // this.session.set('data', { passenger: this.form.value });
+      this.session.set('passengers', this.form.value);
+      this.session.set('extras', '');
       this.route.navigateByUrl('/extras');
     } else {
       this.openPanels.fill(true);

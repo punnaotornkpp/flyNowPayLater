@@ -15,7 +15,10 @@
           </div>
         </div>
       </div>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+      <div class="d-flex center">
+        <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3" *ngIf="spinner">
         <div class="col py-2" *ngFor="let item of items">
           <mat-card>
             <img mat-card-image [src]="item.img" [alt]="item.title" />
@@ -64,7 +67,7 @@
             <u>Previous</u>
           </button>
         </div>
-        <div class="col text-align-end">
+        <div class="col text-align-end" *ngIf="loading">
           <button
             mat-raised-button
             (click)="redirectNext()"
