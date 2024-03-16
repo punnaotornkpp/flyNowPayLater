@@ -27,17 +27,4 @@ export const MOCK_EXTRAS: IExtras[] = [
     },
     img: 'https://images.prismic.io/nokair-ezycommerce/5feaf98f-63ad-45aa-8e54-6d3a1c8221a2_service-baggage.jpg?auto=compress,format',
   },
-  {
-    id: 2,
-    title: 'Nok Special Baggage',
-    content:
-      'Nok Air is ready to take care of you. Favorite sports equipment, musical instrument ready to facilitate the loading of your beloved items to reach their destination safely ',
-    status: false,
-    button: 'Add',
-    detail: {
-      title: 'Details',
-      link: 'https://content.nokair.com/en/Journey-Planning/Baggage.aspx',
-    },
-    img: 'https://images.prismic.io/nokair-ezycommerce/0534251f-87a5-4d79-9521-7c71b089ec50_service-special-baggage.jpg?auto=compress,format',
-  },
 ];

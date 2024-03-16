@@ -12,6 +12,7 @@ import { DialogConfig } from '../../model/extras.model';
 import {
   IFlightFareKey,
   IPRICING,
+  IResponseDetailPricing,
   ISSR,
   ISeat,
 } from '../../model/pricing-detail.model';
@@ -47,6 +48,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         const flightFareKey: IPRICING = JSON.parse(
           this.session.get('flightFareKey')
         );
+        const pricing: IResponseDetailPricing = JSON.parse(
+          this.session.get('pricing')
+        );
+        console.log(pricing);
         const extras = JSON.parse(this.session.get('extras'));
         if (extras) {
           this.ssr = extras.ssr;
@@ -56,6 +61,8 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         } else {
           this.getSSR(flightFareKey, securityToken);
         }
+        console.log(this.seat);
+        console.log(this.ssr);
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -102,8 +109,9 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     },
     1: {
       component: ExtraBaggageComponent,
-      width: '1000px',
-      height: '500px',
+      width: '80vw',
+      height: '80vh',
+      maxWidth: '80vw',
       data: '',
     },
     2: {

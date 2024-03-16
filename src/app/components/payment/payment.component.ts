@@ -21,12 +21,13 @@ import { IFlightFareKey } from '../../model/pricing-detail.model';
   styleUrl: './payment.component.scss',
 })
 export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
-  payment = {
+  form = {
     actionType: 'create',
+    paymentMethod: '',
     passengerInfos: [{}],
   };
   passengers: IDispalyPassenger[] = [];
-  form: FormGroup;
+  // form: FormGroup;
 
   constructor(
     private route: Router,
@@ -35,9 +36,9 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     private fb: FormBuilder
   ) {
     super();
-    this.form = this.fb.group({
-      policy: ['', Validators.required],
-    });
+    // this.form = this.fb.group({
+    //   policy: ['', Validators.required],
+    // });
   }
 
   ngOnInit() {
@@ -70,7 +71,7 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     const securityToken =
       JSON.parse(this.session.get('schedule')).securityToken || '';
     const obs = this.booking
-      .SubmitBooking(this.payment, securityToken)
+      .SubmitBooking(this.form, securityToken)
       .subscribe((resp) => {
         console.log(resp);
       });
@@ -80,7 +81,7 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   preparePassengerInfos() {
     const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
     let paxNumber = 1;
-    this.payment.passengerInfos = this.passengers.map((passenger) => {
+    this.form.passengerInfos = this.passengers.map((passenger) => {
       const age = this.calculateAge(passenger.birthdayDate);
       const passengerInfo: IPassengerInfo = {
         paxNumber: paxNumber++,

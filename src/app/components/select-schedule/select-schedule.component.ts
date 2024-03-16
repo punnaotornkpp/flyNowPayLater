@@ -8,7 +8,10 @@ import { IFare, IFlight, IJourney } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
-import { IFlightFareKey } from '../../model/pricing-detail.model';
+import {
+  IFlightFareKey,
+  IResponseDetailPricing,
+} from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-select-schedule',
@@ -58,9 +61,6 @@ export class SelectScheduleComponent
     }
   }
 
-  // new Date(this.combineItem[0].departureTime) >=
-  //     new Date(this.combineItem[1].departureTime)
-
   redirectPrevious() {
     this.router.navigateByUrl('');
   }
@@ -74,7 +74,16 @@ export class SelectScheduleComponent
         new Date(this.combineItem[0].departureTime) <
           new Date(this.combineItem[1].departureTime)
       ) {
-        this.router.navigateByUrl('passengers');
+        const display = JSON.parse(this.session.get('display'));
+        if (display) {
+          this.session.set('pricing', display);
+          this.router.navigateByUrl('passengers');
+        } else {
+          this.popup.failed(
+            'Unable to complete the schedule. Please try again.'
+          );
+          return;
+        }
       }
     } else {
       this.popup.waring('You have not yet selected complete schedule flight.');
