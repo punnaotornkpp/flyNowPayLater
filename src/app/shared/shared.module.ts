@@ -13,6 +13,8 @@ import { DetailFlightComponent } from './detail-flight/detail-flight.component';
 import { PopupComponent } from './popup/popup.component';
 import { CoreModule } from '../core/core.module';
 import { TransformDateToTimePipe } from '../core/pipe/transform-date-to-time.pipe';
+import { ExtraBaggageComponent } from './extra-baggage/extra-baggage.component';
+import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-selection-seat.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -24,6 +26,8 @@ import { TransformDateToTimePipe } from '../core/pipe/transform-date-to-time.pip
     DialogDetailFlightComponent,
     DetailFlightComponent,
     PopupComponent,
+    ExtraBaggageComponent,
+    ExtraSelectionSeatComponent,
   ],
   exports: [
     HeaderComponent,

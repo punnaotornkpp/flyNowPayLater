@@ -10,13 +10,18 @@ import { ExtraBaggageComponent } from '../../shared/extra-baggage/extra-baggage.
 import { ExtraSpecialBaggageComponent } from '../../shared/extra-special-baggage/extra-special-baggage.component';
 import { DialogConfig } from '../../model/extras.model';
 import {
-  IFlightFareKey,
   IPRICING,
-  IResponseDetailPricing,
+  IResponsePricing,
   ISSR,
   ISeat,
 } from '../../model/pricing-detail.model';
 import { BookingService } from '../../service/booking.service';
+import {
+  IAdult,
+  IChildren,
+  IDispalyPassenger,
+  IInfant,
+} from '../../model/passenger.model';
 
 @Component({
   selector: 'app-extras',
@@ -29,6 +34,9 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   seat!: ISeat;
   spinner: boolean = false;
   loading: boolean = false;
+  pricing!: IResponsePricing;
+  passengers: IDispalyPassenger[] = [];
+  dialogConfig!: DialogConfig;
 
   constructor(
     private route: Router,
@@ -48,10 +56,19 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         const flightFareKey: IPRICING = JSON.parse(
           this.session.get('flightFareKey')
         );
-        const pricing: IResponseDetailPricing = JSON.parse(
-          this.session.get('pricing')
-        );
-        console.log(pricing);
+        this.pricing = JSON.parse(this.session.get('pricing'));
+        const passengers = JSON.parse(this.session.get('passengers'));
+        this.passengers = [
+          ...passengers.adults.map((p: IAdult[]) => ({ ...p, type: 'Adult' })),
+          ...passengers.children.map((p: IChildren[]) => ({
+            ...p,
+            type: 'Child',
+          })),
+          // ...passengers.infants.map((p: IInfant[]) => ({
+          //   ...p,
+          //   type: 'Infant',
+          // })),
+        ];
         const extras = JSON.parse(this.session.get('extras'));
         if (extras) {
           this.ssr = extras.ssr;
@@ -61,8 +78,30 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         } else {
           this.getSSR(flightFareKey, securityToken);
         }
-        console.log(this.seat);
-        console.log(this.ssr);
+        this.dialogConfig = {
+          0: {
+            component: ExtraSelectionSeatComponent,
+            width: '95vw',
+            height: '95vh',
+            maxWidth: '95vw',
+            data: {
+              pricing: this.pricing.data,
+              passengers: this.passengers,
+              seats: this.seat,
+            },
+          },
+          1: {
+            component: ExtraBaggageComponent,
+            width: '85vw',
+            maxWidth: '85vw',
+            data: this.pricing.data,
+          },
+          2: {
+            component: ExtraSpecialBaggageComponent,
+            width: '1000px',
+            height: '500px',
+          },
+        };
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -99,36 +138,14 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     this.route.navigateByUrl('payment');
   }
 
-  private dialogConfig: DialogConfig = {
-    0: {
-      component: ExtraSelectionSeatComponent,
-      width: '95vw',
-      height: '95vh',
-      maxWidth: '95vw',
-      data: '',
-    },
-    1: {
-      component: ExtraBaggageComponent,
-      width: '80vw',
-      height: '80vh',
-      maxWidth: '80vw',
-      data: '',
-    },
-    2: {
-      component: ExtraSpecialBaggageComponent,
-      width: '1000px',
-      height: '500px',
-      data: '',
-    },
-  };
-
   openDialog(id: number): void {
     const config = this.dialogConfig[id];
     if (config) {
       const { component, ...options } = config;
       const dialogRef = this.dialog.open(component, options);
       dialogRef.afterClosed().subscribe((resp) => {
-        this.setStatus(id, resp);
+        // this.setStatus(id, resp);
+        console.log(resp);
       });
     } else {
       this.popup.info('There are no details on this extra service.');

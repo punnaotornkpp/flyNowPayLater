@@ -33,8 +33,13 @@ export interface IAirlinePricing {
   arrivalTime: string;
   travelInfos: ITravelInfoPricing[];
   pricingDetails: IPricingDetail[];
-  bundleDetails: any[];
+  bundleDetails: IBundleDetails[];
   availableExtraServices: IAvailableExtraService[];
+}
+
+export interface IBundleDetails {
+  ssrCode: string;
+  description: string;
 }
 
 export interface ITravelInfoPricing {
@@ -130,8 +135,8 @@ export interface ISeatCharge {
 export interface ISeatMap {
   rowNumber: number;
   seats: string;
-  wingSeats?: string;
-  exitSeats?: string;
-  blockedSeats: any;
-  preBlockedSeats: any;
+  wingSeats: string | null;
+  exitSeats: string | null;
+  blockedSeats: string | null;
+  preBlockedSeats: string | null;
 }
