@@ -1,4 +1,4 @@
-import { IAirport } from '../app/model/airport.model';
+import { IAirport } from '../../app/model/airport.model';
 
 export const MOCK_AIRPORT: IAirport[] = [
   {

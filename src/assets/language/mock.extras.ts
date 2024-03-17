@@ -1,4 +1,4 @@
-import { IExtras } from '../app/model/extras.model';
+import { IExtras } from '../../app/model/extras.model';
 
 export const MOCK_EXTRAS: IExtras[] = [
   {

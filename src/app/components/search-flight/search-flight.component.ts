@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-flight',
@@ -7,6 +8,8 @@ import { FormControl } from '@angular/forms';
   styleUrl: './search-flight.component.scss',
 })
 export class SearchFlightComponent {
-  constructor() {}
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('en');
+  }
   colorControl = new FormControl();
 }

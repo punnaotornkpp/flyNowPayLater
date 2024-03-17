@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
-import { MOCK_EXTRAS } from '../../../assets/mock.extras';
+import { MOCK_EXTRAS } from '../../../assets/language/mock.extras';
 import { PopupService } from '../../service/popup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ExtraSelectionSeatComponent } from '../../shared/extra-selection-seat/extra-selection-seat.component';
