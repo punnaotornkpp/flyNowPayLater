@@ -1,0 +1,13 @@
+mat-card-title {
+    padding-left: 28px;
+}
+
+.information {
+position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 50%;
+    padding: 20px;
+    margin-bottom: 0;
+}

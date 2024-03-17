@@ -65,8 +65,14 @@ export class SelectScheduleComponent
     this.router.navigateByUrl('');
   }
 
-  redirectNext() {
+  confirmSchedule() {
     if (this.combineItem.length === this.sessionValue.data.length) {
+      if (
+        this.sessionValue.data.length === 1 &&
+        this.combineItem.length === 1
+      ) {
+        this.redirectNext();
+      }
       if (
         this.combineItem[1] &&
         this.combineItem[0].departureTime &&
@@ -74,19 +80,21 @@ export class SelectScheduleComponent
         new Date(this.combineItem[0].departureTime) <
           new Date(this.combineItem[1].departureTime)
       ) {
-        const display = JSON.parse(this.session.get('display'));
-        if (display) {
-          this.session.set('pricing', display);
-          this.router.navigateByUrl('passengers');
-        } else {
-          this.popup.failed(
-            'Unable to complete the schedule. Please try again.'
-          );
-          return;
-        }
+        this.redirectNext();
       }
     } else {
       this.popup.waring('You have not yet selected complete schedule flight.');
+    }
+  }
+
+  redirectNext() {
+    const display = JSON.parse(this.session.get('display'));
+    if (display) {
+      this.session.set('pricing', display);
+      this.router.navigateByUrl('passengers');
+    } else {
+      this.popup.failed('Unable to complete the schedule. Please try again.');
+      return;
     }
   }
 

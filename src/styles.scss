@@ -59,6 +59,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: var(--black);
 }
 
+.background-white {
+    background-color: white;
+}
+
 .justify-content-space-between {
     justify-content: space-between !important;
 }
@@ -90,6 +94,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .align-item-center {
     align-items: center !important;
+}
+
+.align-items-end {
+    align-items: end !important;
 }
 
 .center {
@@ -136,6 +144,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .bold {
   font-weight: 500 !important;
+}
+
+.thin {
+  font-weight: 250 !important;
 }
 
 .disabled {
