@@ -117,9 +117,15 @@ export interface ISeatDetail {
   destinationName: string;
   departureDate: string;
   flightNumber: string;
-  seatAssignments: any[];
+  seatAssignments: ISeatAssign[];
   seatCharges: ISeatCharge[];
   seatMaps: ISeatMap[];
+}
+
+export interface ISeatAssign {
+  rowNumber: number;
+  seat: string;
+  passengerType: string;
 }
 
 export interface ISeatCharge {

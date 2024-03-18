@@ -23,26 +23,40 @@
           <mat-card-content>
             <div class="row d-flex py-2">
               <button
-                *ngFor="
-                  let passenger of data.passengers;
-                  let indexPassenger = index
-                "
+                *ngIf="!show[indexAirline]"
                 class="p-2 border my-2 cursor"
-                [ngClass]="{
-                  'selected-passenger':
-                    selectedPassengerIndices[indexAirline] === indexPassenger
-                }"
-                (click)="
-                  selectPassenger(
-                    indexAirline,
-                    indexPassenger,
-                    passenger.firstName,
-                    airline
-                  )
-                "
+                (click)="openShow(indexAirline)"
               >
-                {{ passenger.firstName }} {{ passenger.lastName }}
+                <div>Show</div>
               </button>
+              <div *ngIf="show[indexAirline]" class="row d-flex">
+                <button
+                  *ngFor="
+                    let passenger of data.passengers;
+                    let indexPassenger = index
+                  "
+                  class="p-2 border my-2 cursor"
+                  [ngClass]="{
+                    'selected-passenger':
+                      selectedPassengerIndices[indexAirline] === indexPassenger
+                  }"
+                  (click)="
+                    selectPassenger(
+                      indexAirline,
+                      indexPassenger,
+                      passenger.firstName,
+                      airline
+                    )
+                  "
+                >
+                  <div>
+                    {{
+                      getSelectedSeat(indexPassenger, indexAirline) ||
+                        passenger.firstName + " " + passenger.lastName
+                    }}
+                  </div>
+                </button>
+              </div>
             </div>
           </mat-card-content>
         </mat-card>
@@ -114,14 +128,15 @@
           <div class="center py-3 background-nokair">
             Selecting seat for
             <span class="bold">{{ selectedValue.passengerName }}</span> for
-            {{ selectedValue.origin }} to {{ selectedValue.destination }}
+            <span class="bold">{{ selectedValue.origin }}</span> to
+            <span class="bold">{{ selectedValue.destination }}</span>
           </div>
           <div class="container seat-map-plane background-white py-2">
             <div class="plane-nose text-center">
               <img src="../../../assets/image/head-airplane.svg" alt="" />
             </div>
             <div class="container border-seat-map-plane">
-              <div class="row mb-2 text-center">
+              <div class="row mb-5 text-center">
                 <div class="col-1"></div>
                 <div class="col">A</div>
                 <div class="col">B</div>
@@ -134,7 +149,7 @@
               </div>
               <div *ngFor="let row of seatRows; let i = index">
                 <div class="row mb-2 align-items-center">
-                  <div class="col-1 text-end">{{ row.rowNumber }}</div>
+                  <div class="col-1 text-start">{{ row.rowNumber }}</div>
                   <div
                     class="col text-center"
                     *ngFor="let seat of row.seats.split('')"
@@ -142,17 +157,31 @@
                     <button
                       *ngIf="seat !== ' '"
                       mat-raised-button
-                      color="primary"
-                      [disabled]="!isSeatAvailable(row, seat)"
-                      (click)="selectSeat(row, seat, selectedValue.index)"
+                      class="full-width button-seat"
+                      [ngClass]="
+                        getButtonColor(
+                          row.rowNumber,
+                          seat,
+                          selectedValue.passengerIndex,
+                          selectedValue.airlineIndex
+                        )
+                      "
+                      [disabled]="!isSeatAvailable(row.rowNumber, seat)"
+                      (click)="
+                        selectSeat(
+                          getSeatCharge(row.rowNumber, seat),
+                          selectedValue.passengerIndex,
+                          selectedValue.airlineIndex
+                        )
+                      "
                     >
-                      {{ row.rowNumber }}{{ seat }}
+                      <!-- {{ row.rowNumber }}{{ seat }} -->
                     </button>
                   </div>
-                  <div class="col-1 text-start">{{ row.rowNumber }}</div>
+                  <div class="col-1 text-end">{{ row.rowNumber }}</div>
                 </div>
               </div>
-              <div class="row text-center">
+              <div class="row text-center mt-5">
                 <div class="col-1"></div>
                 <div class="col">A</div>
                 <div class="col">B</div>

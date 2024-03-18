@@ -4,6 +4,8 @@ import {
   IAirlinePricing,
   IResponseDetailPricing,
   ISeat,
+  ISeatAssign,
+  ISeatCharge,
   ISeatMap,
 } from '../../model/pricing-detail.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,8 +15,15 @@ import { SeatRow } from '../../model/extras.model';
 
 interface PassengerSeatSelection {
   passengerIndex: number;
-  seat: string | null;
-  row: number | null;
+  airlineIndex: number;
+  seat: ISeatCharge | null;
+  selected: boolean;
+}
+
+interface SeatSelection {
+  passengerIndex: number;
+  airlineIndex: number;
+  selectedSeat: string;
 }
 
 @Component({
@@ -31,10 +40,18 @@ export class ExtraSelectionSeatComponent
     passengerName: '',
     origin: '',
     destination: '',
-    index: 0,
+    passengerIndex: 0,
+    airlineIndex: 0,
   };
   seatRows: ISeatMap[] = [];
-  passengerSeatSelections: PassengerSeatSelection[] = [];
+  seatCharges: ISeatCharge[] = [];
+  seatAssign: ISeatAssign[] = [];
+  show: boolean[] = [];
+  currentShownIndex = 0;
+
+  passengerSeatSelections: Map<string, PassengerSeatSelection> = new Map();
+  selectedSeats: Map<string, SeatSelection> = new Map();
+  selectedSeat: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<ExtrasComponent>,
@@ -50,6 +67,24 @@ export class ExtraSelectionSeatComponent
 
   ngOnInit(): void {
     this.seatRows = this.data.seats.data[0].seatMaps;
+    this.seatCharges = this.data.seats.data[0].seatCharges;
+    this.seatAssign = this.data.seats.data[0].seatAssignments;
+
+    /// MOCK
+    // this.seatAssign = [
+    //   {
+    //     rowNumber: 1,
+    //     seat: 'C',
+    //     passengerType: 'Adult',
+    //   },
+    //   {
+    //     rowNumber: 2,
+    //     seat: 'B',
+    //     passengerType: 'Adult',
+    //   },
+    // ];
+    ///
+
     this.selectedPassengerIndices = this.data.pricing.airlines.map(() => 0);
     if (
       this.data.passengers.length > 0 &&
@@ -61,15 +96,12 @@ export class ExtraSelectionSeatComponent
         passengerName: firstPassenger.firstName,
         origin: firstAirline.travelInfos[0].originName,
         destination: firstAirline.travelInfos[0].destination,
-        index: 0,
+        passengerIndex: 0,
+        airlineIndex: 0,
       };
     }
-    this.data.passengers.forEach((passenger, index) => {
-      this.passengerSeatSelections.push({
-        passengerIndex: index,
-        seat: null,
-        row: null,
-      });
+    this.data.pricing.airlines.forEach((_, index) => {
+      this.show[index] = index === 0;
     });
   }
 
@@ -91,8 +123,107 @@ export class ExtraSelectionSeatComponent
       passengerName: passenger,
       origin: airline.travelInfos[0].originName,
       destination: airline.travelInfos[0].destination,
-      index: indexPassenger,
+      passengerIndex: indexPassenger,
+      airlineIndex: indexAirline,
     };
+    console.log(this.selectedValue);
+  }
+
+  isSeatAvailable(rowNumber: number, seat: string): boolean {
+    const isAssigned = this.seatAssign.some(
+      (sa) => sa.rowNumber === rowNumber && sa.seat === seat
+    );
+    if (isAssigned) {
+      return false;
+    }
+    return true;
+  }
+
+  isSeatSelected(
+    rowNumber: number,
+    seat: string,
+    passengerIndex: number,
+    airlineIndex: number
+  ): boolean {
+    const key = `${passengerIndex}-${airlineIndex}-${seat}-${rowNumber}`;
+    const selection = this.passengerSeatSelections.get(key);
+    return selection?.selected ?? false;
+  }
+
+  openShow(indexAirline: number): void {
+    this.show[indexAirline] = !this.show[indexAirline];
+    this.show.forEach((_, i) => {
+      if (i !== indexAirline) this.show[i] = false;
+    });
+  }
+
+  selectSeat(
+    seatCharge: ISeatCharge,
+    passengerIndex: number,
+    airlineIndex: number
+  ): void {
+    const key = `${passengerIndex}-${airlineIndex}`;
+    this.passengerSeatSelections.forEach((value, keyMap) => {
+      if (keyMap.startsWith(key)) {
+        this.passengerSeatSelections.delete(keyMap);
+      }
+    });
+    const newKey = `${key}-${seatCharge.seat}-${seatCharge.rowNumber}`;
+    this.passengerSeatSelections.set(newKey, {
+      passengerIndex,
+      airlineIndex,
+      seat: seatCharge,
+      // row: seatCharge.rowNumber,
+      selected: true,
+    });
+    const selectedSeat = `${seatCharge.rowNumber}${seatCharge.seat}`;
+    this.selectedSeats.set(key, { passengerIndex, airlineIndex, selectedSeat });
+    this.passengerSeatSelections = new Map(this.passengerSeatSelections);
+    this.selectedSeats = new Map(this.selectedSeats);
+  }
+
+  getSelectedSeat(
+    passengerIndex: number,
+    airlineIndex: number
+  ): string | undefined {
+    const key = `${passengerIndex}-${airlineIndex}`;
+    return this.selectedSeats.get(key)?.selectedSeat;
+  }
+
+  getSeatCharge(rowNumber: number, seat: string): any {
+    return this.seatCharges.find(
+      (sc) => sc.rowNumber === rowNumber && sc.seat === seat
+    );
+  }
+
+  getButtonColor(
+    rowNumber: number,
+    seat: string,
+    passengerIndex: number,
+    airlineIndex: number
+  ): string {
+    if (this.isSeatSelected(rowNumber, seat, passengerIndex, airlineIndex)) {
+      return 'button-color-selected';
+    }
+    const isAssigned = this.seatAssign.some(
+      (sa) => sa.rowNumber === rowNumber && sa.seat === seat
+    );
+    if (isAssigned) {
+      return 'button-color-unavailable';
+    }
+    const seatCharge = this.seatCharges.find(
+      (sc) => sc.rowNumber === rowNumber && sc.seat === seat
+    );
+    switch (seatCharge?.serviceCode) {
+      case 'S500':
+        return 'button-color-danger';
+      case 'S300':
+        return 'button-color-premium';
+      case 'S150':
+        return 'button-color-happy';
+      default:
+        return 'button-color-unavailable';
+    }
   }
 
   Cancel() {
@@ -100,16 +231,14 @@ export class ExtraSelectionSeatComponent
   }
 
   Confirm() {
-    this.dialogRef.close(this.passengerSeatSelections);
-  }
-
-  isSeatAvailable(row: SeatRow, seat: string): boolean {
-    return !row.blockedSeats?.includes(seat);
-  }
-
-  selectSeat(row: SeatRow, seat: string, passengerIndex: number): void {
-    this.passengerSeatSelections[passengerIndex].seat = seat;
-    this.passengerSeatSelections[passengerIndex].row = row.rowNumber;
-    console.log(this.passengerSeatSelections[passengerIndex]);
+    const simplifiedSelections = Array.from(
+      this.passengerSeatSelections.values()
+    ).map((selection) => ({
+      passengerIndex: selection.passengerIndex,
+      airlineIndex: selection.airlineIndex,
+      seat: selection.seat,
+      // row: selection.row,
+    }));
+    this.dialogRef.close(simplifiedSelections);
   }
 }
