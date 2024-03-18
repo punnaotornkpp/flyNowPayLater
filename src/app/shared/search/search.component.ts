@@ -16,6 +16,7 @@ import { JourneySearch } from '../../model/session.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SharedService } from '../../service/shared.service';
 import { DateTime } from '../../core/helper/date.helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search',
@@ -46,7 +47,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private airportService: AirportService,
     private session: SessionStorage,
     private popup: PopupService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private translate: TranslateService
   ) {
     super();
     this.bookingForm = this.fb.group({
@@ -89,6 +91,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }
       });
     });
+    this.translate.setDefaultLang('en');
   }
 
   ngOnInit(): void {
