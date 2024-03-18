@@ -23,6 +23,11 @@ mat-card-title , mat-card-subtitle {
     width: 100%;
 }
 
+.button-seat {
+    width: 65px;
+    height: 65px;
+}
+
 .select-passenger {
   background-color: white; 
   transition: background-color 0.3s; 
@@ -71,6 +76,37 @@ mat-card-title , mat-card-subtitle {
   background-color: var(--success);
 }
 
+.button-color-danger {
+  background-color: var(--danger); 
+  color: white;
+}
+
+.button-color-premium {
+  background-color: orange; 
+  color: white;
+}
+
+.button-color-happy {
+  background-color: var(--nokair); 
+  color: white;
+}
+
+.button-color-unavailable {
+  background-color: var(--black25); 
+  color: white;
+}
+
+.button-color-selected {
+  background-color: var(--success) !important;
+  color: white;
+}
+
+// .button-color-happy {
+//   background-color: var(--nokair); 
+//   color: white;
+// }
+
+
 .border-seat-map-plane {
   border-left: 5px solid #ccc;
   border-right: 5px solid #ccc;
@@ -86,5 +122,7 @@ mat-card-title , mat-card-subtitle {
     border-right: 5px solid #ccc;
     margin-bottom: 10px;
 }
+
+
 
 

@@ -73,39 +73,43 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         if (extras) {
           this.ssr = extras.ssr;
           this.seat = extras.seat;
+          this.setDialog();
           this.spinner = true;
           this.loading = true;
         } else {
           this.getSSR(flightFareKey, securityToken);
         }
-        this.dialogConfig = {
-          0: {
-            component: ExtraSelectionSeatComponent,
-            width: '95vw',
-            height: '95vh',
-            maxWidth: '95vw',
-            data: {
-              pricing: this.pricing.data,
-              passengers: this.passengers,
-              seats: this.seat,
-            },
-          },
-          1: {
-            component: ExtraBaggageComponent,
-            width: '85vw',
-            maxWidth: '85vw',
-            data: this.pricing.data,
-          },
-          2: {
-            component: ExtraSpecialBaggageComponent,
-            width: '1000px',
-            height: '500px',
-          },
-        };
       } catch (error) {
         this.route.navigateByUrl('');
       }
     }
+  }
+
+  setDialog() {
+    this.dialogConfig = {
+      0: {
+        component: ExtraSelectionSeatComponent,
+        width: '95vw',
+        height: '95vh',
+        maxWidth: '95vw',
+        data: {
+          pricing: this.pricing.data,
+          passengers: this.passengers,
+          seats: this.seat,
+        },
+      },
+      1: {
+        component: ExtraBaggageComponent,
+        width: '85vw',
+        maxWidth: '85vw',
+        data: this.pricing.data,
+      },
+      2: {
+        component: ExtraSpecialBaggageComponent,
+        width: '1000px',
+        height: '500px',
+      },
+    };
   }
 
   getSSR(flightFareKey: IPRICING, securityToken: string) {
@@ -124,6 +128,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       .subscribe((resp) => {
         this.seat = resp;
         this.session.set('extras', { ssr: this.ssr, seat: this.seat });
+        this.setDialog();
         this.spinner = true;
         this.loading = true;
       });
