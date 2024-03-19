@@ -16,6 +16,7 @@ import { JourneySearch } from '../../model/session.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SharedService } from '../../service/shared.service';
 import { DateTime } from '../../core/helper/date.helper';
+import { LanguageService } from '../../service/language.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -40,6 +41,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
   sessionData: any;
   journeysArray: FormArray;
   formSubmitted = false;
+  categories: { key: string; translatedName: string }[] = [];
 
   constructor(
     private route: Router,
@@ -48,6 +50,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     private session: SessionStorage,
     private popup: PopupService,
     private sharedService: SharedService,
+    private languageService: LanguageService,
     private translate: TranslateService
   ) {
     super();
@@ -91,45 +94,65 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }
       });
     });
-    this.translate.setDefaultLang('en');
+  }
+
+  updateTranslatedCategories() {
+    const categoryKeys = ['adult', 'child', 'infant'];
+    this.categories = categoryKeys.map((key) => ({
+      key,
+      translatedName: this.translate.instant(key),
+    }));
   }
 
   ngOnInit(): void {
-    const obs = this.airportService
-      .getAirport<IAirport[]>()
-      .subscribe((resp: IAirport[]) => {
-        this.airport = resp;
-        if (typeof window !== 'undefined' && window.sessionStorage) {
-          try {
-            this.sessionData = JSON.parse(this.session.get('history'));
-            this.selectedToggleValue = this.sessionData.form.typeRoute;
-            setControls(this.sessionData.form, this.bookingForm);
-            const firstJourneyData = this.sessionData.form.journeys[0];
-            const fieldsToUpdate = [
-              'returnDate',
-              'departureDate',
-              'originName',
-              'origin',
-              'destinationName',
-              'destination',
-            ];
-            setControlsArray(
-              this.journeysArray.at(0) as FormGroup,
-              fieldsToUpdate,
-              firstJourneyData
-            );
-            this.selections = {
-              adult: this.sessionData!.form!.adult,
-              child: this.sessionData!.form!.child,
-              infant: this.sessionData!.form!.infant,
-            };
-          } catch (error) {
-            this.route.navigateByUrl('');
+    const obs1 = this.languageService.getCurrentLanguage().subscribe(() => {
+      const obs = this.airportService
+        .getAirport()
+        .subscribe((resp: IAirport[]) => {
+          this.airport = resp;
+          if (typeof window !== 'undefined' && window.sessionStorage) {
+            try {
+              this.updateTranslatedCategories();
+              const sessionDataString = this.session.get('history');
+              if (sessionDataString) {
+                this.sessionData = JSON.parse(sessionDataString);
+                this.selectedToggleValue = this.sessionData?.form?.typeRoute;
+                if (this.sessionData?.form) {
+                  setControls(this.sessionData.form, this.bookingForm);
+                  const firstJourneyData = this.sessionData.form.journeys[0];
+                  if (firstJourneyData) {
+                    const fieldsToUpdate = [
+                      'returnDate',
+                      'departureDate',
+                      'originName',
+                      'origin',
+                      'destinationName',
+                      'destination',
+                    ];
+                    setControlsArray(
+                      this.journeysArray.at(0) as FormGroup,
+                      fieldsToUpdate,
+                      firstJourneyData
+                    );
+                  }
+                }
+                if (this.sessionData?.form) {
+                  this.selections = {
+                    adult: this.sessionData.form.adult,
+                    child: this.sessionData.form.child,
+                    infant: this.sessionData.form.infant,
+                  };
+                }
+              }
+            } catch (error) {
+              this.route.navigateByUrl('');
+            }
           }
-        }
-        this.initFilteredAirports();
-      });
-    this.AddSubscription(obs);
+          this.initFilteredAirports();
+        });
+      this.AddSubscription(obs);
+    });
+    this.AddSubscription(obs1);
   }
 
   initFilteredAirports(): void {
@@ -274,8 +297,21 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
     event.stopPropagation();
   }
 
-  get selectionDisplay(): string {
-    return `${this.selections.adult} adult, ${this.selections.child} child, ${this.selections.infant} infant`;
+  translateCategory(category: any): string {
+    const translations: Record<any, string> = {
+      adult: this.translate.instant('adult'),
+      child: this.translate.instant('child'),
+      infant: this.translate.instant('infant'),
+    };
+    return translations[category];
+  }
+
+  get selectionDisplay() {
+    return `${this.translateCategory('adult')} ${
+      this.selections.adult
+    }, ${this.translateCategory('child')} ${
+      this.selections.child
+    }, ${this.translateCategory('infant')} ${this.selections.infant}`;
   }
 
   isValidAdultCount(): boolean {

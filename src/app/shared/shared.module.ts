@@ -15,6 +15,7 @@ import { CoreModule } from '../core/core.module';
 import { TransformDateToTimePipe } from '../core/pipe/transform-date-to-time.pipe';
 import { ExtraBaggageComponent } from './extra-baggage/extra-baggage.component';
 import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-selection-seat.component';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -43,6 +44,7 @@ import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-select
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
+    TranslateModule,
   ],
 })
 export class SharedModule {}

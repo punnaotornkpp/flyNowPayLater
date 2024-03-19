@@ -4,5 +4,47 @@
   "condition-2": "Each issuer bank might provide different credit card point is condition for installment program.",
   "condition-3": "This fee is charged per passenger per flight.",
   "condition-4": "For Connecting Flight, this fee is charged per passenger per booking.",
-  "condition-5": "NokAir will randomly perform a credit/debit card physical verification at check-in counter, IF your online transaction was made from credit/debit card which was issued from Bank outside Thailand.Unless your credit/debit card was successfully pass process Verified by Visa or MasterCard Secure Code or J-Secure or One Time Password from your issued bank. Otherwise, Nok Air reserved the rights to deny boarding."
+  "condition-5": "NokAir will randomly perform a credit/debit card physical verification at check-in counter, IF your online transaction was made from credit/debit card which was issued from Bank outside Thailand.Unless your credit/debit card was successfully pass process Verified by Visa or MasterCard Secure Code or J-Secure or One Time Password from your issued bank. Otherwise, Nok Air reserved the rights to deny boarding.", 
+  "round-trip":"Round-Trip",
+  "one-way":"One-Way",
+  "currency":"Currency",
+  "form":"Form",
+  "to":"To",
+  "depart":"Depart",
+  "return":"Return",
+  "select-passenger":"Select Passengers",
+  "search":"Search",
+  "adult":"Adult",
+  "child":"Child",
+  "infant":"Infant",
+  "least-adult":"At least one adult must be selected.",
+  "exceed-infant":"The number of infants cannot exceed the number of adults.",
+  "to-header":"To",
+  "edit":"Edit",
+  "select":"Select",
+  "flight":"Flight",
+  "passenger":"Passenger",
+  "info":"Info",
+  "extra-service":"Extra Services",
+  "payment":"Payment",
+  "departure":"Departure",
+  "arrival":"Arrival",
+  "flight-info":"Flight Information",
+  "recommended":"Recommended"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
