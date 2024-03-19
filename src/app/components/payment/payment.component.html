@@ -3,7 +3,10 @@
     <div class="py-3">
       <app-step [page]="5"></app-step>
     </div>
-    <div class="py-3">
+    <div class="d-flex center">
+      <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+    </div>
+    <div class="py-3" *ngIf="spinner">
       <div>
         <div>
           <div class="py-4 d-flex">
@@ -56,16 +59,30 @@
             Select a payment to complete booking
             <div class="py-4">
               <mat-accordion>
-                <mat-expansion-panel hideToggle>
+                <mat-expansion-panel
+                  hideToggle
+                  class="my-2"
+                  (opened)="setPaymentMethod('V')"
+                  [class.highlight]="activePanel === 'V'"
+                >
                   <mat-expansion-panel-header>
-                    <mat-panel-title>CREDIT CARD INSTALLMENT</mat-panel-title>
+                    <mat-panel-title
+                      >CREDIT CARD INSTALLMENT VISA</mat-panel-title
+                    >
                   </mat-expansion-panel-header>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quod quo nobis cumque enim explicabo quia omnis perferendis
-                    quaerat expedita temporibus tempore est, culpa, voluptates
-                    asperiores ex quas nulla, blanditiis eligendi?
-                  </p>
+                  <p></p>
+                </mat-expansion-panel>
+                <mat-expansion-panel
+                  hideToggle
+                  (opened)="setPaymentMethod('M')"
+                  [class.highlight]="activePanel === 'M'"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title
+                      >CREDIT CARD INSTALLMENT MASTER CARD</mat-panel-title
+                    >
+                  </mat-expansion-panel-header>
+                  <p></p>
                 </mat-expansion-panel>
               </mat-accordion>
             </div>
@@ -88,7 +105,7 @@
             <u>Previous</u>
           </button>
         </div>
-        <div class="col text-align-end">
+        <div class="col text-align-end" *ngIf="loading">
           <button
             mat-raised-button
             (click)="redirectNext()"

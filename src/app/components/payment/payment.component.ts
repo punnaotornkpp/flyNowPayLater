@@ -14,6 +14,9 @@ import {
   IPassengers,
 } from '../../model/passenger.model';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
+import { PopupService } from '../../service/popup.service';
+import { response } from 'express';
+import { error } from 'console';
 
 @Component({
   selector: 'app-payment',
@@ -27,18 +30,17 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     passengerInfos: [{}],
   };
   passengers: IDispalyPassenger[] = [];
-  // form: FormGroup;
+  loading: boolean = false;
+  spinner: boolean = true;
+  activePanel: string = '';
 
   constructor(
     private route: Router,
     private session: SessionStorage,
     private booking: BookingService,
-    private fb: FormBuilder
+    private popup: PopupService
   ) {
     super();
-    // this.form = this.fb.group({
-    //   policy: ['', Validators.required],
-    // });
   }
 
   ngOnInit() {
@@ -63,6 +65,12 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
+  setPaymentMethod(method: string) {
+    this.form.paymentMethod = method;
+    this.activePanel = method;
+    this.loading = true;
+  }
+
   redirectPrevious() {
     this.route.navigateByUrl('extras');
   }
@@ -70,11 +78,26 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   redirectNext() {
     const securityToken =
       JSON.parse(this.session.get('schedule')).securityToken || '';
-    const obs = this.booking
-      .SubmitBooking(this.form, securityToken)
-      .subscribe((resp) => {
-        console.log(resp);
-      });
+    if (!this.form.paymentMethod) {
+      this.popup.info('Please select payment before submit');
+      return;
+    }
+    this.spinner = false;
+    this.loading = false;
+    const obs = this.booking.SubmitBooking(this.form, securityToken).subscribe({
+      next: (response) => {
+        this.popup.success('You have finished submit data booking.');
+        this.route.navigateByUrl('/payment/complate', {
+          state: { data: response },
+        });
+        this.loading = true;
+        this.spinner = true;
+      },
+      error: (error) => {
+        this.popup.waring('Sorry, something went wrong.');
+        console.log(error);
+      },
+    });
     this.AddSubscription(obs);
   }
 

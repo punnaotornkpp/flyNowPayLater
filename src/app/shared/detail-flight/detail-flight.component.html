@@ -8,9 +8,9 @@
       <mat-card
         class="p-3"
         [ngClass]="{
-          info: item.productCode === 'NF',
-          warning: item.productCode === 'NB',
-          danger: item.productCode === 'NE'
+          nokLite: item.productCode === 'NF',
+          nokXtra: item.productCode === 'NB',
+          nokMax: item.productCode === 'NE'
         }"
         ><div class="border-bottom-black pb-2">
           <div class="f-20" *ngIf="item.productCode === 'NF'">Nok Lite</div>

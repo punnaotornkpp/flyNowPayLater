@@ -118,27 +118,37 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   getSSR(flightFareKey: IPRICING, securityToken: string) {
-    const obs = this.booking
-      .getSSR(flightFareKey, securityToken)
-      .subscribe((resp) => {
+    const obs = this.booking.getSSR(flightFareKey, securityToken).subscribe({
+      next: (resp) => {
         this.ssr = resp.data;
         this.getSeats(flightFareKey, securityToken);
-      });
+      },
+      error: (error) => {
+        this.popup.waring('Sorry, something went wrong.');
+        console.log(error);
+      },
+    });
     this.AddSubscription(obs);
   }
 
   getSeats(flightFareKey: IPRICING, securityToken: string) {
     const obs = this.booking
       .getSeat(flightFareKey.flightFareKey[0], securityToken)
-      .subscribe((resp) => {
-        this.seat = resp;
-        this.session.set('extras', {
-          ssr: this.ssr,
-          seat: this.seat,
-        });
-        this.setDialog();
-        this.spinner = true;
-        this.loading = true;
+      .subscribe({
+        next: (resp) => {
+          this.seat = resp;
+          this.session.set('extras', {
+            ssr: this.ssr,
+            seat: this.seat,
+          });
+          this.setDialog();
+          this.spinner = true;
+          this.loading = true;
+        },
+        error: (error) => {
+          this.popup.waring('Sorry, something went wrong.');
+          console.log(error);
+        },
       });
     this.AddSubscription(obs);
   }

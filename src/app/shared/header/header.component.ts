@@ -45,8 +45,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     private location: Location,
     private router: Router,
     private session: SessionStorage,
-    private sharedService: SharedService,
-    private translate: TranslateService
+    private sharedService: SharedService
   ) {
     super();
     this.breakpointObserver
@@ -60,7 +59,6 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       .subscribe(() => {
         this.checkPath();
       });
-    this.translate.setDefaultLang('en');
   }
 
   ngOnInit(): void {
@@ -164,16 +162,5 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       });
     });
     this.taxDetailsByPaxType = Object.values(taxDetailsMap);
-  }
-
-  switchLanguage(language: string) {
-    this.router.navigateByUrl('');
-    this.session.set('language', language);
-    this.session.remove('history');
-    this.session.remove('display');
-    this.session.remove('flightFareKey');
-    this.session.remove('passengers');
-    this.session.remove('schedule');
-    this.translate.use(language);
   }
 }

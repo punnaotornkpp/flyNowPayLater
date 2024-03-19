@@ -139,14 +139,20 @@ export class SelectScheduleComponent
 
   getFlightFare() {
     const originalDates = this.checkDateRange();
-    const obs = this.booking.getFlightFare(this.form).subscribe((resp) => {
-      this.form.journeys.forEach((journey, index) => {
-        journey.departureDate = originalDates[index];
-        this.session.set('schedule', resp);
-        this.sessionValue = resp as IFlight;
-        this.securityToken = this.sessionValue.securityToken;
-        this.spinner = true;
-      });
+    const obs = this.booking.getFlightFare(this.form).subscribe({
+      next: (resp) => {
+        this.form.journeys.forEach((journey, index) => {
+          journey.departureDate = originalDates[index];
+          this.session.set('schedule', resp);
+          this.sessionValue = resp as IFlight;
+          this.securityToken = this.sessionValue.securityToken;
+          this.spinner = true;
+        });
+      },
+      error: (error) => {
+        this.popup.waring('Sorry, something went wrong.');
+        console.log(error);
+      },
     });
     this.AddSubscription(obs);
   }
@@ -201,11 +207,20 @@ export class SelectScheduleComponent
     };
     const obs = this.booking
       .getPricingDetail(pricing, this.securityToken)
-      .subscribe((resp: any) => {
-        this.session.set('display', resp);
-        this.session.set('flightFareKey', pricing);
-        this.loading = true;
-        this.sharedService.triggerHeaderRefresh();
+      .subscribe({
+        next: (resp) => {
+          this.popup.success('Flight schedule selected complete.');
+          this.session.set('display', resp);
+          this.session.set('flightFareKey', pricing);
+          this.loading = true;
+          this.sharedService.triggerHeaderRefresh();
+        },
+        error: (error) => {
+          this.popup.waring(
+            'Sorry, something went wrong. , Please select other available flights.'
+          );
+          console.log(error);
+        },
       });
     this.AddSubscription(obs);
   }

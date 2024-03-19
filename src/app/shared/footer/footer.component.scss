@@ -1,5 +1,4 @@
 .footer {
-    opacity: 0.8;   
     color: white;
     padding: 10px;
     text-align: center;
@@ -7,5 +6,17 @@
     bottom: 0;
     width: 100%;
     font-size: 12px;
+}
+
+
+
+a {
+  color: black;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline; 
+  }
 }
 

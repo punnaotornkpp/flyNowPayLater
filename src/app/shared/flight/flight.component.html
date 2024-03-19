@@ -51,7 +51,7 @@
             <button
               mat-raised-button
               (click)="selectDetail(i, item.fares[0]); $event.stopPropagation()"
-              class="price-button"
+              class="price-button nokLite"
             >
               {{ item.fares[0].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>
@@ -59,9 +59,8 @@
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
             <button
               mat-raised-button
-              color="accent"
               (click)="selectDetail(i, item.fares[1]); $event.stopPropagation()"
-              class="price-button"
+              class="price-button nokXtra"
             >
               {{ item.fares[1].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>
@@ -69,9 +68,8 @@
           <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
             <button
               mat-raised-button
-              color="warn"
               (click)="selectDetail(i, item.fares[2]); $event.stopPropagation()"
-              class="price-button"
+              class="price-button nokMax"
             >
               {{ item.fares[2].fareAmount | decimalFloat | number : "1.2-2" }}
             </button>

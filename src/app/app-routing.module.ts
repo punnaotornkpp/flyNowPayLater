@@ -5,6 +5,7 @@ import { SelectScheduleComponent } from './components/select-schedule/select-sch
 import { PassengersComponent } from './components/passengers/passengers.component';
 import { ExtrasComponent } from './components/extras/extras.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { ComplateComponent } from './shared/status/complate/complate.component';
 
 const routes: Routes = [
   { path: '', component: SearchFlightComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'passengers', component: PassengersComponent },
   { path: 'extras', component: ExtrasComponent },
   { path: 'payment', component: PaymentComponent },
+  { path: 'payment/complate', component: ComplateComponent },
   { path: '**', redirectTo: '' },
 ];
 

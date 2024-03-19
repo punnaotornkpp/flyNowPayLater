@@ -12,9 +12,10 @@ import { DialogDetailFlightComponent } from './dialog-detail-flight/dialog-detai
 import { DetailFlightComponent } from './detail-flight/detail-flight.component';
 import { PopupComponent } from './popup/popup.component';
 import { CoreModule } from '../core/core.module';
-import { TransformDateToTimePipe } from '../core/pipe/transform-date-to-time.pipe';
 import { ExtraBaggageComponent } from './extra-baggage/extra-baggage.component';
 import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-selection-seat.component';
+import { ComplateComponent } from './status/complate/complate.component';
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -28,6 +29,7 @@ import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-select
     PopupComponent,
     ExtraBaggageComponent,
     ExtraSelectionSeatComponent,
+    ComplateComponent,
   ],
   exports: [
     HeaderComponent,

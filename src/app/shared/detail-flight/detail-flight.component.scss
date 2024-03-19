@@ -5,15 +5,15 @@
 
 
 
-.background-detail-flight mat-card.danger {
+.background-detail-flight mat-card.nokMax {
   background-color: var(--danger50);
 }
 
-.background-detail-flight mat-card.warning {
+.background-detail-flight mat-card.nokXtra {
   background-color: var(--nokair50);
 }
 
-.background-detail-flight mat-card.info {
+.background-detail-flight mat-card.nokLite {
   background-color: var(--info50);
 }
 

@@ -10,39 +10,6 @@
             alt="Nok Air Logo"
         /></a>
       </div>
-      <button mat-button (click)="switchLanguage('th')">ไทย</button>
-      <button mat-button (click)="switchLanguage('en')">English</button>
-
-      <!-- <div
-        class="col col-lg-1 language-selector d-flex text-align-end align-self-center"
-      >
-        <div>
-          <mat-menu #langMenu="matMenu">
-            <div class="language center">
-              <img src="../../../assets/image/th.svg" alt="TH" />
-            </div>
-            <div class="language center">
-              <img src="../../../assets/image/gb.svg" alt="EN" />
-            </div>
-          </mat-menu>
-        </div>
-        <div
-          *ngIf="isSmallScreen"
-          mat-icon-button
-          [matMenuTriggerFor]="langMenu"
-          class="cursor"
-        >
-          <mat-icon>menu</mat-icon>
-        </div>
-        <mat-select *ngIf="!isSmallScreen">
-          <mat-option value="TH" class="language">
-            <img src="../../../assets/image/th.svg" alt="TH" />
-          </mat-option>
-          <mat-option value="EN" class="language">
-            <img src="../../../assets/image/gb.svg" alt="EN" />
-          </mat-option>
-        </mat-select>
-      </div> -->
     </div>
   </mat-toolbar>
   <mat-accordion *ngIf="!index">

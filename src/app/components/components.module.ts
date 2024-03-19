@@ -12,7 +12,6 @@ import { ExtrasComponent } from './extras/extras.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,6 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     CoreModule,
     ReactiveFormsModule,
-    TranslateModule,
   ],
 })
 export class ComponentsModule {}
