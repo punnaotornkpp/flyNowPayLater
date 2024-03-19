@@ -7,7 +7,7 @@ export const MOCK_EXTRAS: IExtras[] = [
     content:
       'Make your smiles wider throughout your journey and happier than ever. That will allow you to choose the right seat in your favorite zone in suitable price',
     status: false,
-    button: 'Close',
+    button: 'Select',
     detail: {
       title: 'Details',
       link: 'https://content.nokair.com/en/Booking/How-to-Select-Seat.aspx?aliaspath=%2fBooking%2fHow-to-Select-Seat',

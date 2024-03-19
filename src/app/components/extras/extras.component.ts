@@ -5,7 +5,10 @@ import { SessionStorage } from '../../core/helper/session.helper';
 import { MOCK_EXTRAS } from '../../../assets/language/mock.extras';
 import { PopupService } from '../../service/popup.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ExtraSelectionSeatComponent } from '../../shared/extra-selection-seat/extra-selection-seat.component';
+import {
+  ExtraSelectionSeatComponent,
+  PassengerSeatSelection,
+} from '../../shared/extra-selection-seat/extra-selection-seat.component';
 import { ExtraBaggageComponent } from '../../shared/extra-baggage/extra-baggage.component';
 import { ExtraSpecialBaggageComponent } from '../../shared/extra-special-baggage/extra-special-baggage.component';
 import { DialogConfig } from '../../model/extras.model';
@@ -14,6 +17,7 @@ import {
   IResponsePricing,
   ISSR,
   ISeat,
+  ISeatCharge,
 } from '../../model/pricing-detail.model';
 import { BookingService } from '../../service/booking.service';
 import {
@@ -51,6 +55,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
+        this.session.set('selectedExtras', '');
         const securityToken =
           JSON.parse(this.session.get('schedule')).securityToken || '';
         const flightFareKey: IPRICING = JSON.parse(
@@ -127,7 +132,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       .getSeat(flightFareKey.flightFareKey[0], securityToken)
       .subscribe((resp) => {
         this.seat = resp;
-        this.session.set('extras', { ssr: this.ssr, seat: this.seat });
+        this.session.set('extras', {
+          ssr: this.ssr,
+          seat: this.seat,
+        });
         this.setDialog();
         this.spinner = true;
         this.loading = true;
@@ -148,18 +156,29 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     if (config) {
       const { component, ...options } = config;
       const dialogRef = this.dialog.open(component, options);
-      dialogRef.afterClosed().subscribe((resp) => {
-        // this.setStatus(id, resp);
-        console.log(resp);
-      });
+      dialogRef
+        .afterClosed()
+        .subscribe(
+          (resp: { status: boolean; response: PassengerSeatSelection[] }) => {
+            this.setStatus(id, resp);
+            this.session.set('selectedExtras', resp);
+          }
+        );
     } else {
       this.popup.info('There are no details on this extra service.');
     }
   }
 
-  setStatus(id: number, resp: string) {
-    this.items[id].status = true;
-    this.items[id].content = resp;
+  setStatus(
+    id: number,
+    resp: { status: boolean; response: PassengerSeatSelection[] }
+  ) {
+    this.items[id].status = resp.status;
+    // resp.response.forEach((resp: any) => {
+    //   this.items[id].content += `${this.items[id].content ? '\n' : ''}${
+    //     resp.seat.rowNumber
+    //   }${resp.seat.seat}   ${resp.seat.description}`;
+    // });
     this.items[id].detail.title = '';
   }
 }

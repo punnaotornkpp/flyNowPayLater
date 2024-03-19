@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
-import { MOCK_AIRPORT } from '../../assets/language/airport-en';
+import { MOCK_AIRPORT } from '../../assets/language/airport';
 
 @Injectable({
   providedIn: 'root',

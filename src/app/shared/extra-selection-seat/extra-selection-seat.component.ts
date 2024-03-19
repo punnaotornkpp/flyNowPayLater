@@ -12,8 +12,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IDispalyPassenger } from '../../model/passenger.model';
 import { ExtrasComponent } from '../../components/extras/extras.component';
 import { SeatRow } from '../../model/extras.model';
+import { SessionStorage } from '../../core/helper/session.helper';
 
-interface PassengerSeatSelection {
+export interface PassengerSeatSelection {
   passengerIndex: number;
   airlineIndex: number;
   seat: ISeatCharge | null;
@@ -55,6 +56,7 @@ export class ExtraSelectionSeatComponent
 
   constructor(
     public dialogRef: MatDialogRef<ExtrasComponent>,
+    private session: SessionStorage,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       pricing: IResponseDetailPricing;
@@ -66,6 +68,11 @@ export class ExtraSelectionSeatComponent
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const selectedExtras = this.session.get('selectedExtras');
+      console.log(selectedExtras);
+    }
+
     this.seatRows = this.data.seats.data[0].seatMaps;
     this.seatCharges = this.data.seats.data[0].seatCharges;
     this.seatAssign = this.data.seats.data[0].seatAssignments;
@@ -227,7 +234,7 @@ export class ExtraSelectionSeatComponent
   }
 
   Cancel() {
-    this.dialogRef.close();
+    this.dialogRef.close({ status: false, response: '' });
   }
 
   Confirm() {
@@ -239,6 +246,6 @@ export class ExtraSelectionSeatComponent
       seat: selection.seat,
       // row: selection.row,
     }));
-    this.dialogRef.close(simplifiedSelections);
+    this.dialogRef.close({ status: true, response: simplifiedSelections });
   }
 }
