@@ -13,6 +13,7 @@
 a {
   color: black;
   text-decoration: none;
+  font-weight: 400; 
 
   &:hover,
   &:focus {
@@ -20,3 +21,16 @@ a {
   }
 }
 
+
+
+.invert-colors {
+  filter: invert(100%);
+}
+
+.f-300 {
+  font-weight: 300;
+}
+
+.border-right-black {
+  border-right: 1px solid black;
+}

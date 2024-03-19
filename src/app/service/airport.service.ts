@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment.prod';
 import { MOCK_AIRPORT } from '../../assets/language/airport';
-import { BookingLink } from '../shared/footer/footer.component';
+import { IFooter } from '../shared/footer/footer.component';
+import { Footer } from '../../assets/language/content';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AirportService {
-  private jsonUrl = 'assets/footer.json';
+  private jsonUrl = '../../assets/language/content.json';
   constructor(private http: HttpService) {}
 
   getAirport<T>(): Observable<T> {
@@ -17,7 +17,12 @@ export class AirportService {
     return of(airport as T);
   }
 
-  getBookingLinks(): Observable<{ bookingLinks: BookingLink[] }> {
-    return this.http.get<{ bookingLinks: BookingLink[] }>(this.jsonUrl);
+  getFooter<T>(): Observable<T> {
+    const footer = Footer;
+    return of(footer as T);
   }
+
+  // getBookingLinks(): Observable<IFooter> {
+  //   return this.http.get<IFooter>(this.jsonUrl);
+  // }
 }
