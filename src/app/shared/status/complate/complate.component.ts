@@ -8,17 +8,12 @@ import { Navigation, Router } from '@angular/router';
 })
 export class ComplateComponent implements OnInit {
   data: any;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
-    const currentNavigation: Navigation | null =
-      this.router.getCurrentNavigation();
-    if (currentNavigation) {
-      const state = currentNavigation.extras.state;
-      if (state && 'data' in state) {
-        this.data = state['data'];
-        console.log(this.data);
-      }
-    }
+    const currentNavigation = this.router.getCurrentNavigation();
+    this.data = currentNavigation?.extras.state?.['data'];
+    console.log(this.data);
   }
 }

@@ -52,7 +52,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     super();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         this.session.set('selectedExtras', '');
@@ -82,7 +82,13 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           this.spinner = true;
           this.loading = true;
         } else {
-          this.getSSR(flightFareKey, securityToken);
+          await Promise.all([
+            this.getSSR(flightFareKey, securityToken),
+            this.getSeats(flightFareKey, securityToken),
+          ]);
+          this.setDialog();
+          this.spinner = true;
+          this.loading = true;
         }
       } catch (error) {
         this.route.navigateByUrl('');
@@ -117,40 +123,44 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     };
   }
 
-  getSSR(flightFareKey: IPRICING, securityToken: string) {
-    const obs = this.booking.getSSR(flightFareKey, securityToken).subscribe({
-      next: (resp) => {
-        this.ssr = resp.data;
-        this.getSeats(flightFareKey, securityToken);
-      },
-      error: (error) => {
-        this.popup.waring('Sorry, something went wrong.');
-        console.log(error);
-      },
-    });
-    this.AddSubscription(obs);
-  }
-
-  getSeats(flightFareKey: IPRICING, securityToken: string) {
-    const obs = this.booking
-      .getSeat(flightFareKey.flightFareKey[0], securityToken)
-      .subscribe({
+  async getSSR(flightFareKey: IPRICING, securityToken: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const obs = this.booking.getSSR(flightFareKey, securityToken).subscribe({
         next: (resp) => {
-          this.seat = resp;
-          this.session.set('extras', {
-            ssr: this.ssr,
-            seat: this.seat,
-          });
-          this.setDialog();
-          this.spinner = true;
-          this.loading = true;
+          this.ssr = resp.data;
+          resolve(resp.data);
         },
         error: (error) => {
           this.popup.waring('Sorry, something went wrong.');
           console.log(error);
+          reject(error);
         },
       });
-    this.AddSubscription(obs);
+      this.AddSubscription(obs);
+    });
+  }
+
+  async getSeats(flightFareKey: IPRICING, securityToken: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const obs = this.booking
+        .getSeat(flightFareKey.flightFareKey[0], securityToken)
+        .subscribe({
+          next: (resp) => {
+            this.seat = resp;
+            this.session.set('extras', {
+              ssr: this.ssr,
+              seat: this.seat,
+            });
+            resolve(resp);
+          },
+          error: (error) => {
+            this.popup.waring('Sorry, something went wrong.');
+            console.log(error);
+            reject(error);
+          },
+        });
+      this.AddSubscription(obs);
+    });
   }
 
   redirectPrevious() {

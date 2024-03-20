@@ -87,7 +87,10 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   checkPath(): void {
-    this.index = this.location.path() === '' || this.location.path() === '/';
+    this.index =
+      this.location.path() === '' ||
+      this.location.path() === '/' ||
+      this.location.path() === '/payment/complate';
   }
 
   openSearch() {
