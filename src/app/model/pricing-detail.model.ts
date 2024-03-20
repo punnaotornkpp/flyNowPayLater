@@ -65,7 +65,7 @@ export interface ITaxesAndFee {
   taxCode: string;
   taxName: string;
   amount: string;
-  isSSR: boolean;
+  isSSR?: boolean;
 }
 
 export interface TaxDetails {

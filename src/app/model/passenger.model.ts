@@ -17,6 +17,7 @@ export interface IDispalyPassenger {
   newsletter?: string;
   type: string;
   associateInfantToAdult?: string;
+  selectedBaggage: { [flightNumber: string]: string };
 }
 
 export interface IPassengerInfo {

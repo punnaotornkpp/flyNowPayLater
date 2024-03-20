@@ -30,6 +30,7 @@ export class SelectScheduleComponent
   combineItem: IFlightFareKey[] = [];
   securityToken = '';
   loading: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private session: SessionStorage,
@@ -205,6 +206,7 @@ export class SelectScheduleComponent
       flightFareKey: this.combineItem,
       includeExtraServices: false,
     };
+    this.isLoading = true;
     const obs = this.booking
       .getPricingDetail(pricing, this.securityToken)
       .subscribe({
@@ -213,12 +215,15 @@ export class SelectScheduleComponent
           this.session.set('display', resp);
           this.session.set('flightFareKey', pricing);
           this.loading = true;
+          this.isLoading = false;
           this.sharedService.triggerHeaderRefresh();
         },
         error: (error) => {
+          this.isLoading = false;
           this.popup.waring(
             'Sorry, something went wrong. , Please select other available flights.'
           );
+          this.router.navigateByUrl('');
           console.log(error);
         },
       });

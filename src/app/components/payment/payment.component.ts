@@ -1,22 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { DateTime } from '../../core/helper/date.helper';
 import { BookingService } from '../../service/booking.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   IAdult,
   IChildren,
   IDispalyPassenger,
   IInfant,
   IPassengerInfo,
-  IPassengers,
 } from '../../model/passenger.model';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
 import { PopupService } from '../../service/popup.service';
-import { response } from 'express';
-import { error } from 'console';
 
 @Component({
   selector: 'app-payment',
@@ -87,11 +83,14 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     const obs = this.booking.SubmitBooking(this.form, securityToken).subscribe({
       next: (response) => {
         this.popup.success('You have finished submit data booking.');
-        this.route.navigateByUrl('/payment/complate', {
-          state: { data: response },
-        });
         this.loading = true;
         this.spinner = true;
+        const navigationExtras: NavigationExtras = {
+          state: {
+            data: response,
+          },
+        };
+        this.route.navigateByUrl('/payment/complate', navigationExtras);
       },
       error: (error) => {
         this.popup.waring('Sorry, something went wrong.');

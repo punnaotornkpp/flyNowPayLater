@@ -1,5 +1,5 @@
 <div class="container container-max-width">
-  <div class="py-4 my-2 text-spacing">
+  <div class="py-4 my-2 text-spacing" *ngIf="response && response.data">
     <div class="center">
       <div><mat-icon class="f-50 color-success">task_alt</mat-icon></div>
       <div class="bold f-32">
@@ -7,61 +7,166 @@
       </div>
       <div class="f-18">
         A confirmation email has been sent to
-        <a href="" class="f-black">supot.sukvaree-gmail.com.</a>
+        <a
+          [href]="
+            'mailto:{{ response.data.airlines[0].passengerDetails[0].email }}'
+          "
+          class="f-black"
+          >{{ response.data.airlines[0].passengerDetails[0].email || "" }}</a
+        >
       </div>
     </div>
     <mat-card class="py-4 my-4 center background-nokair">
       <div class="f-18">Booking reference:</div>
-      <div class="f-black f-32 bold">X5410W / 59920630</div>
+      <div class="f-black f-32 bold">
+        {{ response.data.confirmationNumber || "" }} /
+        {{ response.data.bookingNumber || "" }}
+      </div>
     </mat-card>
     <div class="d-flex py-4">
-      <div class="align-self-center">
+      <div class="align-self-center px-3">
         <img class="image" src="../../../assets/image/airplane.png" alt="" />
       </div>
       <div class="f-32 bold">Flight</div>
     </div>
-    <mat-card class="mb-4">
-      <mat-card-header>
-        <mat-card-title>Flight Details</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item>Date: Saturday 30 March 2024</mat-list-item>
-          <mat-list-item>From Don Mueang (Bangkok) To Chiang Mai</mat-list-item>
-          <mat-list-item>05:30 - 06:40</mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="mb-4">
-      <mat-card-header>
-        <mat-card-title>Passengers</mat-card-title>
-      </mat-card-header>
-      <mat-card-content> MR SUPOT SUKVAREE (Adult) </mat-card-content>
-    </mat-card>
-    <mat-card class="mb-4">
-      <mat-card-header>
-        <mat-card-title>Cost Breakdown</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div>Airfare Depart (NOK LITE): THB 793.46</div>
-        <div>Extra Services: THB 0.00</div>
-        <div>Taxes: THB 283.94</div>
-        <div><strong>Total: THB 1,077.40</strong></div>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="mb-4">
-      <mat-card-header>
-        <mat-card-title>Payments</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div>Credit card number: 4********1</div>
-        <div>Date: Thursday 14 March 2024 14:08</div>
-        <div>Total: THB 1,077.40</div>
-      </mat-card-content>
-    </mat-card>
+    <div class="px-3">
+      <mat-card
+        class="p-3 mb-4 background-nokair25"
+        *ngFor="let item of response.data.airlines"
+      >
+        <mat-card-content>
+          <mat-list>
+            <div class="row col">
+              <div class="col-10">
+                <div class="bold f-18">
+                  {{ item.originName }}({{ item.origin }}) To
+                  {{ item.destinationName }}({{ item.destination }})
+                </div>
+                <div class="f-16">
+                  {{ item.departureTime | date : "EEEE d MMMM y" || "" }}
+                </div>
+                <div class="f-16">
+                  <div class="row col">
+                    <div class="col-2 d-flex align-items-center">
+                      <span class="bold">
+                        {{ item.departureTime | transformDateToTime }}</span
+                      >
+                      <mat-icon class="f-24 gray px-2">east</mat-icon>
+                      <span class="bold">
+                        {{ item.arrivalTime | transformDateToTime }}
+                      </span>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-4 d-flex align-items-center">
+                      <span class="px-3">
+                        <mat-icon class="f-24 d-flex align-items-center"
+                          >flight</mat-icon
+                        ></span
+                      >
+                      {{ item.travelInfos[0].duration || "" }} |
+                      {{ item.travelInfos[0].flightNumber || "" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div
+                  *ngFor="
+                    let item of item.passengerDetails[0].pricingDetails
+                      .taxesAndFees
+                  "
+                >
+                  <div class="bold f-18">{{ showSSR(item) }}</div>
+                </div>
+              </div>
+            </div>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="mb-4">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-50 f-nokair">person</mat-icon>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Passengers</div>
+          </div>
+        </div>
+        <div class="px-3">
+          <mat-card
+            class="p-3 mt-2 background-nokair25"
+            *ngFor="
+              let item of response.data.airlines[0].passengerDetails;
+              let i = index
+            "
+          >
+            <div class="row bold py-1 f-18">
+              <div class="col-sm-5 col-12">{{ item.passengerType }}</div>
+              <div class="col-sm-2 col-12">Date of birth</div>
+              <div class="col-sm-5 col-12" *ngIf="i === 0">E-mail</div>
+            </div>
+            <div class="row py-1 f-18">
+              <div class="col-sm-5 col-12">
+                {{ item.title }} {{ item.firstName }} {{ item.lastName }}
+              </div>
+              <div class="col-sm-2 col-12">
+                {{ setTimeZone(item.dateOfBirth) }}
+              </div>
+              <div class="col-sm-3 col-12" *ngIf="i === 0">
+                {{ item.email || "" }}
+              </div>
+              <div class="col-sm-2 col-12" *ngIf="i === 0">
+                {{ item.mobilePhone || "" }}
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div class="mb-4">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-50 f-nokair">work</mat-icon>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Extra Services</div>
+          </div>
+        </div>
+        <div class="px-3">
+          <mat-card class="p-3 mt-2 background-nokair25"
+            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam ex,
+            rerum est mollitia obcaecati sed rem numquam. Voluptatem, quisquam
+            id.</mat-card
+          >
+        </div>
+      </div>
+    </div>
+    <div class="mb-4">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-50 f-nokair"
+              >airline_seat_recline_normal</mat-icon
+            >
+          </div>
+          <div>
+            <div class="bold f-24 py-2">Seats</div>
+          </div>
+        </div>
+        <div class="px-3">
+          <mat-card class="p-3 mt-2 background-nokair25"
+            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam ex,
+            rerum est mollitia obcaecati sed rem numquam. Voluptatem, quisquam
+            id.</mat-card
+          >
+        </div>
+      </div>
+    </div>
     <div class="text-center my-4">
-      <button mat-raised-button color="primary">Print Receipt</button>
-      <button mat-raised-button color="accent">Manage Booking</button>
+      <button mat-raised-button color="accent">Go back to website</button>
     </div>
   </div>
 </div>

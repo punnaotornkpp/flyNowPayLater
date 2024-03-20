@@ -3,6 +3,7 @@
     <div class="py-1">
       <app-step [page]="2"></app-step>
     </div>
+
     <div class="pb-3">
       <div *ngFor="let journey of this.form?.journeys; let i = index">
         <div class="pt-1 pb-4 d-flex">
@@ -33,6 +34,9 @@
         ></app-schedule>
         <div class="d-flex center">
           <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+        </div>
+        <div *ngIf="isLoading" class="overlay">
+          <mat-spinner color="accent"></mat-spinner>
         </div>
       </div>
     </div>

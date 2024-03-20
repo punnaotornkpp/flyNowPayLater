@@ -13,6 +13,7 @@ import { ExtraBaggageComponent } from '../../shared/extra-baggage/extra-baggage.
 import { ExtraSpecialBaggageComponent } from '../../shared/extra-special-baggage/extra-special-baggage.component';
 import { DialogConfig } from '../../model/extras.model';
 import {
+  IAvailableExtraService,
   IPRICING,
   IResponsePricing,
   ISSR,
@@ -41,6 +42,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   pricing!: IResponsePricing;
   passengers: IDispalyPassenger[] = [];
   dialogConfig!: DialogConfig;
+  ssrBaggage: IAvailableExtraService[] = [];
 
   constructor(
     private route: Router,
@@ -78,6 +80,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         if (extras) {
           this.ssr = extras.ssr;
           this.seat = extras.seat;
+          console.log(this.ssr);
           this.setDialog();
           this.spinner = true;
           this.loading = true;
@@ -86,9 +89,13 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
             this.getSSR(flightFareKey, securityToken),
             this.getSeats(flightFareKey, securityToken),
           ]);
-          this.setDialog();
+          this.session.set('extras', {
+            ssr: this.ssr,
+            seat: this.seat,
+          });
           this.spinner = true;
           this.loading = true;
+          this.setDialog();
         }
       } catch (error) {
         this.route.navigateByUrl('');
@@ -112,8 +119,13 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       1: {
         component: ExtraBaggageComponent,
         width: '85vw',
+        height: '95vh',
         maxWidth: '85vw',
-        data: this.pricing.data,
+        data: {
+          pricing: this.pricing.data,
+          passengers: this.passengers,
+          ssr: this.ssr,
+        },
       },
       2: {
         component: ExtraSpecialBaggageComponent,
@@ -147,10 +159,6 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         .subscribe({
           next: (resp) => {
             this.seat = resp;
-            this.session.set('extras', {
-              ssr: this.ssr,
-              seat: this.seat,
-            });
             resolve(resp);
           },
           error: (error) => {
@@ -194,11 +202,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     resp: { status: boolean; response: PassengerSeatSelection[] }
   ) {
     this.items[id].status = resp.status;
-    // resp.response.forEach((resp: any) => {
-    //   this.items[id].content += `${this.items[id].content ? '\n' : ''}${
-    //     resp.seat.rowNumber
-    //   }${resp.seat.seat}   ${resp.seat.description}`;
-    // });
+    this.items[id].content = JSON.stringify(resp.response);
     this.items[id].detail.title = '';
   }
 }
