@@ -89,29 +89,43 @@ export class ExtraBaggageComponent
   }
 
   onSsrSelection(
-    ssrCode: string,
+    ssrCode: string | null,
     flightNumber: string,
     passengerIndex: number,
     airlineIndex: number
   ) {
-    console.log(ssrCode);
     if (ssrCode === null) {
+      this.ssrSelections = this.ssrSelections.filter(
+        (selection) =>
+          !(
+            selection.passengerIndex === passengerIndex &&
+            selection.airlineIndex === airlineIndex
+          )
+      );
+      return;
     }
-    const selectedSsr = this.data.ssr.find(
-      (ssr: { ssrCode: string }) => ssr.ssrCode === ssrCode
-    );
+    const selectedSsr = this.data.ssr.find((ssr) => ssr.ssrCode === ssrCode);
     if (selectedSsr) {
-      this.ssrSelections.push({
-        passengerName:
-          this.data.passengers[passengerIndex].firstName +
-          ' ' +
-          this.data.passengers[passengerIndex].lastName,
+      const newSelection: SsrSelection = {
+        passengerName: `${this.data.passengers[passengerIndex].firstName} ${this.data.passengers[passengerIndex].lastName}`,
         ssrCode: ssrCode,
         flightNumber: flightNumber,
         passengerIndex: passengerIndex,
         airlineIndex: airlineIndex,
         amount: parseFloat(selectedSsr.amount),
-      });
+      };
+
+      const existingIndex = this.ssrSelections.findIndex(
+        (selection) =>
+          selection.passengerIndex === passengerIndex &&
+          selection.airlineIndex === airlineIndex
+      );
+
+      if (existingIndex >= 0) {
+        this.ssrSelections[existingIndex] = newSelection;
+      } else {
+        this.ssrSelections.push(newSelection);
+      }
     }
   }
 
