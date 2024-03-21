@@ -9,6 +9,7 @@ export interface IExtras {
   title: string;
   content: string;
   status: boolean;
+  type: number;
   button: string;
   detail: IExtrasDetail;
   img: string;

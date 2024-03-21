@@ -42,6 +42,9 @@ export class ExtraBaggageComponent
   ssrSelections: SsrSelection[] = [];
   filteredSsrOptions: SsrOption[] = [];
   initialValue: SsrOption[] = [];
+  selectedOptions: {
+    [passengerIndex: number]: { [flightNumber: string]: string };
+  } = {};
 
   constructor(
     public dialogRef: MatDialogRef<ExtrasComponent>,
@@ -56,14 +59,37 @@ export class ExtraBaggageComponent
   }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.prepareFilteredSsrOptions();
+    this.data.pricing.airlines.forEach((airline) => {
+      const flightNumber = airline.travelInfos[0].flightNumber;
+      this.data.passengers.forEach((_, passengerIndex) => {
+        this.setDefaultSelectionForPassenger(flightNumber, passengerIndex);
+      });
+    });
+  }
+
+  setDefaultSelectionForPassenger(
+    flightNumber: string,
+    passengerIndex: number
+  ) {
+    const initOptions = this.getSsrOptionsForFlightInit(flightNumber);
+    if (!this.selectedOptions[passengerIndex]) {
+      this.selectedOptions[passengerIndex] = {};
+    }
+    if (initOptions.length > 0) {
+      this.selectedOptions[passengerIndex][flightNumber] =
+        initOptions[0].ssrCode;
+    }
   }
 
   getSsrOptionsForFlight(flightNumber: string): SsrOption[] {
     return this.filteredSsrOptions.filter(
       (ssr) => ssr.flightNumber === flightNumber
     );
+  }
+
+  getSsrOptionsForFlightInit(flightNumber: string): SsrOption[] {
+    return this.initialValue.filter((ssr) => ssr.flightNumber === flightNumber);
   }
 
   prepareFilteredSsrOptions() {
@@ -84,6 +110,13 @@ export class ExtraBaggageComponent
           ...ssr,
           flightNumber,
         }));
+      const flightSsrOptionInit = airline.bundleDetails
+        .filter((ssr) => ssrInitialCodes.includes(ssr.ssrCode))
+        .map((ssr) => ({
+          ...ssr,
+          flightNumber,
+        }));
+      this.initialValue.push(...flightSsrOptionInit);
       this.filteredSsrOptions.push(...flightSsrOptions);
     });
   }
@@ -95,6 +128,16 @@ export class ExtraBaggageComponent
     airlineIndex: number
   ) {
     if (ssrCode === null) {
+      this.ssrSelections = this.ssrSelections.filter(
+        (selection) =>
+          !(
+            selection.passengerIndex === passengerIndex &&
+            selection.airlineIndex === airlineIndex
+          )
+      );
+      return;
+    }
+    if (ssrCode === 'BB15' || ssrCode === 'BB25') {
       this.ssrSelections = this.ssrSelections.filter(
         (selection) =>
           !(

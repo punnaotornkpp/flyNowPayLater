@@ -17,8 +17,9 @@ import { SessionStorage } from '../../core/helper/session.helper';
 export interface PassengerSeatSelection {
   passengerIndex: number;
   airlineIndex: number;
+  flightNumber: string;
   seat: ISeatCharge | null;
-  selected: boolean;
+  selected?: boolean;
 }
 
 interface SeatSelection {
@@ -43,6 +44,7 @@ export class ExtraSelectionSeatComponent
     destination: '',
     passengerIndex: 0,
     airlineIndex: 0,
+    flightNumber: '',
   };
   seatRows: ISeatMap[] = [];
   seatCharges: ISeatCharge[] = [];
@@ -105,6 +107,7 @@ export class ExtraSelectionSeatComponent
         destination: firstAirline.travelInfos[0].destination,
         passengerIndex: 0,
         airlineIndex: 0,
+        flightNumber: firstAirline.travelInfos[0].flightNumber,
       };
     }
     this.data.pricing.airlines.forEach((_, index) => {
@@ -132,6 +135,7 @@ export class ExtraSelectionSeatComponent
       destination: airline.travelInfos[0].destination,
       passengerIndex: indexPassenger,
       airlineIndex: indexAirline,
+      flightNumber: airline.travelInfos[0].flightNumber,
     };
     console.log(this.selectedValue);
   }
@@ -167,7 +171,8 @@ export class ExtraSelectionSeatComponent
   selectSeat(
     seatCharge: ISeatCharge,
     passengerIndex: number,
-    airlineIndex: number
+    airlineIndex: number,
+    flightNumber: string
   ): void {
     const key = `${passengerIndex}-${airlineIndex}`;
     this.passengerSeatSelections.forEach((value, keyMap) => {
@@ -182,6 +187,7 @@ export class ExtraSelectionSeatComponent
       seat: seatCharge,
       // row: seatCharge.rowNumber,
       selected: true,
+      flightNumber,
     });
     const selectedSeat = `${seatCharge.rowNumber}${seatCharge.seat}`;
     this.selectedSeats.set(key, { passengerIndex, airlineIndex, selectedSeat });
@@ -243,9 +249,14 @@ export class ExtraSelectionSeatComponent
     ).map((selection) => ({
       passengerIndex: selection.passengerIndex,
       airlineIndex: selection.airlineIndex,
+      flightNumber: selection.flightNumber,
       seat: selection.seat,
       // row: selection.row,
     }));
-    this.dialogRef.close({ status: true, response: simplifiedSelections });
+    this.dialogRef.close({
+      status: true,
+      response: simplifiedSelections,
+      type: 0,
+    });
   }
 }

@@ -43,18 +43,18 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
         const passengers = JSON.parse(this.session.get('passengers'));
-        this.passengers = [
-          ...passengers.adults.map((p: IAdult[]) => ({ ...p, type: 'Adult' })),
-          ...passengers.children.map((p: IChildren[]) => ({
-            ...p,
-            type: 'Child',
-          })),
-          ...passengers.infants.map((p: IInfant[]) => ({
-            ...p,
-            type: 'Infant',
-          })),
-        ];
-        this.preparePassengerInfos();
+        // this.passengers = [
+        //   ...passengers.adults.map((p: IAdult[]) => ({ ...p, type: 'Adult' })),
+        //   ...passengers.children.map((p: IChildren[]) => ({
+        //     ...p,
+        //     type: 'Child',
+        //   })),
+        //   ...passengers.infants.map((p: IInfant[]) => ({
+        //     ...p,
+        //     type: 'Infant',
+        //   })),
+        // ];
+        // this.preparePassengerInfos();
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -100,64 +100,64 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
     this.AddSubscription(obs);
   }
 
-  preparePassengerInfos() {
-    const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
-    let paxNumber = 1;
-    this.form.passengerInfos = this.passengers.map((passenger) => {
-      const age = this.calculateAge(passenger.birthdayDate);
-      const passengerInfo: IPassengerInfo = {
-        paxNumber: paxNumber++,
-        title: passenger.title,
-        firstName: passenger.firstName,
-        lastName: passenger.lastName,
-        middleName: '',
-        age: age,
-        dateOfBirth: DateTime.setTimeZone(passenger.birthdayDate),
-        passengerType: passenger.type,
-        mobilePhone: passenger.mobilePhone || '',
-        // email: passenger.email || '',
-        gender: this.getGender(passenger.title),
-        flightFareKey: flightFareKey.flightFareKey.map(
-          (fk: IFlightFareKey) => ({
-            fareKey: fk.fareKey,
-            journeyKey: fk.journeyKey,
-            extraService: [],
-            selectedSeat: [],
-          })
-        ),
-      };
-      if (passenger.email !== '') {
-        passengerInfo.email = passenger.email;
-      }
-      return passengerInfo;
-    });
-  }
+  // preparePassengerInfos() {
+  //   const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
+  //   let paxNumber = 1;
+  //   this.form.passengerInfos = this.passengers.map((passenger) => {
+  //     const age = this.calculateAge(passenger.birthdayDate);
+  //     const passengerInfo: IPassengerInfo = {
+  //       paxNumber: paxNumber++,
+  //       title: passenger.title,
+  //       firstName: passenger.firstName,
+  //       lastName: passenger.lastName,
+  //       middleName: '',
+  //       age: age,
+  //       dateOfBirth: DateTime.setTimeZone(passenger.birthdayDate),
+  //       passengerType: passenger.type,
+  //       mobilePhone: passenger.mobilePhone || '',
+  //       // email: passenger.email || '',
+  //       gender: this.getGender(passenger.title),
+  //       flightFareKey: flightFareKey.flightFareKey.map(
+  //         (fk: IFlightFareKey) => ({
+  //           fareKey: fk.fareKey,
+  //           journeyKey: fk.journeyKey,
+  //           extraService: [],
+  //           selectedSeat: [],
+  //         })
+  //       ),
+  //     };
+  //     if (passenger.email !== '') {
+  //       passengerInfo.email = passenger.email;
+  //     }
+  //     return passengerInfo;
+  //   });
+  // }
 
-  getGender(title: string) {
-    if (
-      title === 'Mr' ||
-      title === 'Monk' ||
-      title === 'Mstr' ||
-      title === 'Boy'
-    ) {
-      return 'Male';
-    } else if (title === 'Mrs' || title === 'Miss' || title === 'Girl') {
-      return 'Female';
-    } else {
-      return 'Unknow';
-    }
-  }
+  // getGender(title: string) {
+  //   if (
+  //     title === 'Mr' ||
+  //     title === 'Monk' ||
+  //     title === 'Mstr' ||
+  //     title === 'Boy'
+  //   ) {
+  //     return 'Male';
+  //   } else if (title === 'Mrs' || title === 'Miss' || title === 'Girl') {
+  //     return 'Female';
+  //   } else {
+  //     return 'Unknow';
+  //   }
+  // }
 
-  calculateAge(dob: Date) {
-    const birthday = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthday.getFullYear();
-    const m = today.getMonth() - birthday.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
-      age--;
-    }
-    return age;
-  }
+  // calculateAge(dob: Date) {
+  //   const birthday = new Date(dob);
+  //   const today = new Date();
+  //   let age = today.getFullYear() - birthday.getFullYear();
+  //   const m = today.getMonth() - birthday.getMonth();
+  //   if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+  //     age--;
+  //   }
+  //   return age;
+  // }
 
   setTimeZone(date: Date) {
     return DateTime.setTimeZone(date);

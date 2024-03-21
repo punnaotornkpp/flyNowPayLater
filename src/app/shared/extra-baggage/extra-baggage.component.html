@@ -55,8 +55,19 @@
                       i
                     )
                   "
+                  [value]="selectedOptions[passengerIndex]?.[item.travelInfos[0].flightNumber]"
                 >
                   <mat-option [value]="null">No Selection</mat-option>
+                  <mat-option
+                    *ngFor="
+                      let ssr of getSsrOptionsForFlightInit(
+                        item.travelInfos[0].flightNumber
+                      )
+                    "
+                    [value]="ssr.ssrCode"
+                  >
+                    {{ ssr.description }}
+                  </mat-option>
                   <mat-option
                     *ngFor="
                       let ssr of getSsrOptionsForFlight(

@@ -7,6 +7,7 @@ export const MOCK_EXTRAS: IExtras[] = [
     content:
       'Make your smiles wider throughout your journey and happier than ever. That will allow you to choose the right seat in your favorite zone in suitable price',
     status: false,
+    type: 0,
     button: 'Select',
     detail: {
       title: 'Details',
@@ -20,6 +21,7 @@ export const MOCK_EXTRAS: IExtras[] = [
     content:
       'Confident throughout your trip with our pre-purchased baggage allowance service where you can choose the weight you desire. No matter how much baggage or souvenirs you have, you wont have to worry about excess baggage',
     status: false,
+    type: 1,
     button: 'Edit',
     detail: {
       title: 'Details',

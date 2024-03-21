@@ -14,6 +14,7 @@ import { ExtraSpecialBaggageComponent } from '../../shared/extra-special-baggage
 import { DialogConfig } from '../../model/extras.model';
 import {
   IAvailableExtraService,
+  IFlightFareKey,
   IPRICING,
   IResponsePricing,
   ISSR,
@@ -26,7 +27,9 @@ import {
   IChildren,
   IDispalyPassenger,
   IInfant,
+  IPassengerInfo,
 } from '../../model/passenger.model';
+import { DateTime } from '../../core/helper/date.helper';
 
 @Component({
   selector: 'app-extras',
@@ -43,6 +46,11 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   passengers: IDispalyPassenger[] = [];
   dialogConfig!: DialogConfig;
   ssrBaggage: IAvailableExtraService[] = [];
+  form = {
+    actionType: 'summary',
+    paymentMethod: '',
+    passengerInfos: [{}],
+  };
 
   constructor(
     private route: Router,
@@ -80,8 +88,8 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         if (extras) {
           this.ssr = extras.ssr;
           this.seat = extras.seat;
-          console.log(this.ssr);
           this.setDialog();
+          this.preparePassengerInfos();
           this.spinner = true;
           this.loading = true;
         } else {
@@ -96,6 +104,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           this.spinner = true;
           this.loading = true;
           this.setDialog();
+          this.preparePassengerInfos(); /////
         }
       } catch (error) {
         this.route.navigateByUrl('');
@@ -184,12 +193,22 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     if (config) {
       const { component, ...options } = config;
       const dialogRef = this.dialog.open(component, options);
+
       dialogRef
         .afterClosed()
         .subscribe(
-          (resp: { status: boolean; response: PassengerSeatSelection[] }) => {
-            this.setStatus(id, resp);
-            this.session.set('selectedExtras', resp);
+          (
+            resp: { status: boolean; response: []; type: number } | undefined
+          ) => {
+            const defaultResp = resp || {
+              status: false,
+              response: [],
+              type: 99,
+            };
+            console.log(resp);
+
+            this.setStatus(id, defaultResp);
+            this.session.set('selectedExtras', defaultResp);
           }
         );
     } else {
@@ -197,12 +216,110 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
-  setStatus(
-    id: number,
-    resp: { status: boolean; response: PassengerSeatSelection[] }
-  ) {
+  setStatus(id: number, resp: { status: boolean; response: []; type: number }) {
     this.items[id].status = resp.status;
-    this.items[id].content = JSON.stringify(resp.response);
+    if (this.items[id].type === resp.type) {
+      this.items[id].content = `${this.showSeat(resp.response)}`;
+    } else {
+      this.items[id].content = JSON.stringify(resp.response);
+    }
     this.items[id].detail.title = '';
+  }
+
+  showSeat(response: PassengerSeatSelection[]): string {
+    const airlineGroups = response.reduce(
+      (
+        acc: { [key: number]: PassengerSeatSelection[] },
+        curr: PassengerSeatSelection
+      ) => {
+        (acc[curr.airlineIndex] = acc[curr.airlineIndex] || []).push(curr);
+        return acc;
+      },
+      {}
+    );
+    let result = '';
+    for (const airlineIndex in airlineGroups) {
+      const flights = airlineGroups[airlineIndex];
+      const flightNumbers = flights
+        .map((f) => f.flightNumber)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      flightNumbers.forEach((flightNumber, index) => {
+        const flightSeats = flights.filter(
+          (f) => f.flightNumber === flightNumber
+        );
+        const seatsDetail = flightSeats
+          .map((f) => (f.seat ? `${f.seat.rowNumber}${f.seat.seat}` : 'N/A'))
+          .join(', ');
+
+        result += `${flightSeats.length} x Seat: ${seatsDetail} (${flightNumber})`;
+        if (index < flightNumbers.length - 1) result += '; ';
+      });
+      if (parseInt(airlineIndex) < Object.keys(airlineGroups).length - 1)
+        result += '; ';
+    }
+    return result;
+  }
+
+  preparePassengerInfos() {
+    const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
+    console.log(flightFareKey);
+    let paxNumber = 1;
+    this.form.passengerInfos = this.passengers.map((passenger) => {
+      const age = this.calculateAge(passenger.birthdayDate);
+      const passengerInfo: IPassengerInfo = {
+        paxNumber: paxNumber++,
+        title: passenger.title,
+        firstName: passenger.firstName,
+        lastName: passenger.lastName,
+        middleName: '',
+        age: age,
+        dateOfBirth: DateTime.setTimeZone(passenger.birthdayDate),
+        passengerType: passenger.type,
+        mobilePhone: passenger.mobilePhone || '',
+        // email: passenger.email || '',
+        gender: this.getGender(passenger.title),
+        flightFareKey: flightFareKey.flightFareKey.map(
+          (fk: IFlightFareKey) => ({
+            fareKey: fk.fareKey,
+            journeyKey: fk.journeyKey,
+            departureTime: fk.departureTime,
+            extraService: [],
+            selectedSeat: [],
+          })
+        ),
+      };
+      if (passenger.email !== '') {
+        passengerInfo.email = passenger.email;
+      }
+      return passengerInfo;
+    });
+    console.log(this.form);
+  }
+
+  getGender(title: string) {
+    if (
+      title === 'Mr' ||
+      title === 'Monk' ||
+      title === 'Mstr' ||
+      title === 'Boy'
+    ) {
+      return 'Male';
+    } else if (title === 'Mrs' || title === 'Miss' || title === 'Girl') {
+      return 'Female';
+    } else {
+      return 'Unknow';
+    }
+  }
+
+  calculateAge(dob: Date) {
+    const birthday = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthday.getFullYear();
+    const m = today.getMonth() - birthday.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+      age--;
+    }
+    return age;
   }
 }

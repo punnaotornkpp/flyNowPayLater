@@ -183,7 +183,7 @@ export class SelectScheduleComponent
       this.combineItem.length = index + 1;
     }
     this.combineItem[index] = item[0];
-    this.combineItem[index].departureTime = new Date(item[1]);
+    this.combineItem[index].departureTime = item[1];
     if (this.combineItem[0] == null) {
       this.popup.info('Please choose your depart trip first.');
       this.loading = false;
@@ -193,8 +193,7 @@ export class SelectScheduleComponent
       this.combineItem[1] &&
       this.combineItem[0].departureTime &&
       this.combineItem[1].departureTime &&
-      new Date(this.combineItem[0].departureTime) >=
-        new Date(this.combineItem[1].departureTime)
+      this.combineItem[0].departureTime >= this.combineItem[1].departureTime
     ) {
       this.popup.waring(
         'The departure date cannot be greater than the return date.'

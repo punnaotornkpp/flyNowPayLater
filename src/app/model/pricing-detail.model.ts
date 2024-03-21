@@ -8,7 +8,7 @@ export interface IFlightFareKey {
   journeyKey: string;
   extraService?: any[];
   selectedSeat?: any[];
-  departureTime?: Date;
+  departureTime?: string;
 }
 
 export interface IResponsePricing {
