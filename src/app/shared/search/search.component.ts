@@ -224,6 +224,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         this.session.set('display', '');
         this.session.set('flightFareKey', '');
         this.session.set('passengers', '');
+        this.session.set('extraPricing', '');
+        this.session.set('formSubmit', '');
         this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();

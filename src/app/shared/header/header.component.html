@@ -79,7 +79,7 @@
                 *ngIf="this.sessionValue && this.display"
               >
                 {{ this.sessionValue.currency || "" }}
-                {{ display.totalAmount | number : "1.2-2" || 0 }}
+                {{ totalAmount(display.totalAmount) | number : "1.2-2" || 0 }}
               </span>
               <span
                 class="bold f-24 d-flex"
@@ -230,6 +230,52 @@
                 >
                 <span class="col text-align-end">{{
                   detail.VAT | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between bold"
+                *ngIf="this.totalExtra.bg05 != 0"
+              >
+                <span class="col f-14">Total BG05</span>
+                <span class="col text-align-end">{{
+                  this.totalExtra.bg05 | currency : "THB"
+                }}</span>
+              </div>
+
+              <div
+                class="row col-12 justify-content-between bold"
+                *ngIf="this.totalExtra.bg15 != 0"
+              >
+                <span class="col f-14">Total BG15</span>
+                <span class="col text-align-end">{{
+                  this.totalExtra.bg15 | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between bold"
+                *ngIf="this.totalExtra.S500 != 0"
+              >
+                <span class="col f-14">Total S500</span>
+                <span class="col text-align-end">{{
+                  this.totalExtra.S500 | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between bold"
+                *ngIf="this.totalExtra.S300 != 0"
+              >
+                <span class="col f-14">Total S300</span>
+                <span class="col text-align-end">{{
+                  this.totalExtra.S300 | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between bold"
+                *ngIf="this.totalExtra.S150 != 0"
+              >
+                <span class="col f-14">Total S150</span>
+                <span class="col text-align-end">{{
+                  this.totalExtra.S150 | currency : "THB"
                 }}</span>
               </div>
             </span>

@@ -42,19 +42,7 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const passengers = JSON.parse(this.session.get('passengers'));
-        // this.passengers = [
-        //   ...passengers.adults.map((p: IAdult[]) => ({ ...p, type: 'Adult' })),
-        //   ...passengers.children.map((p: IChildren[]) => ({
-        //     ...p,
-        //     type: 'Child',
-        //   })),
-        //   ...passengers.infants.map((p: IInfant[]) => ({
-        //     ...p,
-        //     type: 'Infant',
-        //   })),
-        // ];
-        // this.preparePassengerInfos();
+        this.form = JSON.parse(this.session.get('formSubmit'));
       } catch (error) {
         this.route.navigateByUrl('');
       }
@@ -62,9 +50,9 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   setPaymentMethod(method: string) {
-    this.form.paymentMethod = method;
-    this.activePanel = method;
     this.loading = true;
+    this.activePanel = method;
+    this.form.paymentMethod = method;
   }
 
   redirectPrevious() {
@@ -72,6 +60,7 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   redirectNext() {
+    this.form.actionType = 'create';
     const securityToken =
       JSON.parse(this.session.get('schedule')).securityToken || '';
     if (!this.form.paymentMethod) {
@@ -93,71 +82,14 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
         this.route.navigateByUrl('/payment/complate', navigationExtras);
       },
       error: (error) => {
+        this.loading = true;
+        this.spinner = true;
         this.popup.waring('Sorry, something went wrong.');
         console.log(error);
       },
     });
     this.AddSubscription(obs);
   }
-
-  // preparePassengerInfos() {
-  //   const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
-  //   let paxNumber = 1;
-  //   this.form.passengerInfos = this.passengers.map((passenger) => {
-  //     const age = this.calculateAge(passenger.birthdayDate);
-  //     const passengerInfo: IPassengerInfo = {
-  //       paxNumber: paxNumber++,
-  //       title: passenger.title,
-  //       firstName: passenger.firstName,
-  //       lastName: passenger.lastName,
-  //       middleName: '',
-  //       age: age,
-  //       dateOfBirth: DateTime.setTimeZone(passenger.birthdayDate),
-  //       passengerType: passenger.type,
-  //       mobilePhone: passenger.mobilePhone || '',
-  //       // email: passenger.email || '',
-  //       gender: this.getGender(passenger.title),
-  //       flightFareKey: flightFareKey.flightFareKey.map(
-  //         (fk: IFlightFareKey) => ({
-  //           fareKey: fk.fareKey,
-  //           journeyKey: fk.journeyKey,
-  //           extraService: [],
-  //           selectedSeat: [],
-  //         })
-  //       ),
-  //     };
-  //     if (passenger.email !== '') {
-  //       passengerInfo.email = passenger.email;
-  //     }
-  //     return passengerInfo;
-  //   });
-  // }
-
-  // getGender(title: string) {
-  //   if (
-  //     title === 'Mr' ||
-  //     title === 'Monk' ||
-  //     title === 'Mstr' ||
-  //     title === 'Boy'
-  //   ) {
-  //     return 'Male';
-  //   } else if (title === 'Mrs' || title === 'Miss' || title === 'Girl') {
-  //     return 'Female';
-  //   } else {
-  //     return 'Unknow';
-  //   }
-  // }
-
-  // calculateAge(dob: Date) {
-  //   const birthday = new Date(dob);
-  //   const today = new Date();
-  //   let age = today.getFullYear() - birthday.getFullYear();
-  //   const m = today.getMonth() - birthday.getMonth();
-  //   if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
-  //     age--;
-  //   }
-  //   return age;
-  // }
 
   setTimeZone(date: Date) {
     return DateTime.setTimeZone(date);

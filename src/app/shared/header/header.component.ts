@@ -21,6 +21,7 @@ import {
   TaxDetails,
 } from '../../model/pricing-detail.model';
 import { TranslateService } from '@ngx-translate/core';
+import { IResponseSubmit } from '../../model/submit.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -38,6 +39,14 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   totalAirportTax: number = 0;
   totalVAT: number = 0;
   taxDetailsByPaxType: TaxDetails[] = [];
+  extraPricing!: IResponseSubmit;
+  totalExtra = {
+    bg05: 0,
+    bg15: 0,
+    S500: 0,
+    S300: 0,
+    S150: 0,
+  };
 
   constructor(
     private dialog: MatDialog,
@@ -74,16 +83,29 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
         const item = this.session.get('history');
         const display = this.session.get('display') || '';
         const flightFareKey = this.session.get('flightFareKey') || '';
+        const extraPricing = this.session.get('extraPricing') || '';
         this.flightFareKey = JSON.parse(flightFareKey);
         this.display = JSON.parse(display).data;
+        this.extraPricing = JSON.parse(extraPricing);
         if (this.display) {
-          this.calculateTaxesAndDetails();
+          if (this.extraPricing) {
+            this.calculateTaxesAndDetailsSummary();
+          } else {
+            this.calculateTaxesAndDetails();
+          }
         }
         this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');
       }
     }
+  }
+
+  totalAmount(totalAmount: string) {
+    if (this.extraPricing) {
+      return this.extraPricing.data.totalAmount;
+    }
+    return totalAmount;
   }
 
   checkPath(): void {
@@ -141,11 +163,66 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     return totalFareAmount;
   }
 
+  calculateTaxesAndDetailsSummary(): void {
+    this.totalAirportTax = 0;
+    this.totalVAT = 0;
+    this.totalExtra = {
+      bg05: 0,
+      bg15: 0,
+      S500: 0,
+      S300: 0,
+      S150: 0,
+    };
+    let taxDetailsMap: { [key: string]: TaxDetails } = {};
+    let extraPricing = this.extraPricing.data;
+    extraPricing.airlines.sort((a, b) => {
+      return (
+        new Date(a.departureTime).getTime() -
+        new Date(b.departureTime).getTime()
+      );
+    });
+    extraPricing.airlines.forEach((flight) => {
+      flight.passengerDetails.forEach((passengerDetail) => {
+        const pricingDetail = passengerDetail.pricingDetails;
+        const paxType = passengerDetail.passengerType;
+        if (!taxDetailsMap[paxType]) {
+          taxDetailsMap[paxType] = { paxType, count: 0, AT: 0, VAT: 0 };
+        }
+        taxDetailsMap[paxType].count += 1;
+        pricingDetail.taxesAndFees.forEach((tax) => {
+          if (tax.taxCode === 'AT') {
+            this.totalAirportTax += parseFloat(tax.amount);
+            taxDetailsMap[paxType].AT += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'VAT') {
+            this.totalVAT += parseFloat(tax.amount);
+            taxDetailsMap[paxType].VAT += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'BG05') {
+            this.totalExtra.bg05 += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'BG15') {
+            this.totalExtra.bg15 += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'S500') {
+            this.totalExtra.S500 += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'S300') {
+            this.totalExtra.S300 += parseFloat(tax.amount);
+          } else if (tax.taxCode === 'S150') {
+            this.totalExtra.S150 += parseFloat(tax.amount);
+          }
+        });
+      });
+    });
+    this.taxDetailsByPaxType = Object.values(taxDetailsMap);
+  }
+
   calculateTaxesAndDetails(): void {
     this.totalAirportTax = 0;
     this.totalVAT = 0;
     let taxDetailsMap: { [key: string]: TaxDetails } = {};
-
+    this.display.airlines.sort((a, b) => {
+      return (
+        new Date(a.departureTime).getTime() -
+        new Date(b.departureTime).getTime()
+      );
+    });
     this.display.airlines.forEach((flight) => {
       flight.pricingDetails.forEach((pricingDetail) => {
         const paxType = pricingDetail.paxTypeCode;

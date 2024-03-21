@@ -182,6 +182,7 @@ export class SelectScheduleComponent
     if (index >= this.combineItem.length) {
       this.combineItem.length = index + 1;
     }
+    console.log(item[1]);
     this.combineItem[index] = item[0];
     this.combineItem[index].departureTime = item[1];
     if (this.combineItem[0] == null) {
@@ -211,10 +212,10 @@ export class SelectScheduleComponent
       .subscribe({
         next: (resp) => {
           this.popup.success('Flight schedule selected complete.');
-          this.session.set('display', resp);
-          this.session.set('flightFareKey', pricing);
           this.loading = true;
           this.isLoading = false;
+          this.session.set('display', resp);
+          this.session.set('flightFareKey', pricing);
           this.sharedService.triggerHeaderRefresh();
         },
         error: (error) => {

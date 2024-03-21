@@ -3,8 +3,11 @@
     <div class="py-3">
       <app-step [page]="5"></app-step>
     </div>
-    <div class="d-flex center mb-4">
-      <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+    <div class="spinner-container" *ngIf="!spinner" class="overlay">
+      <mat-spinner color="accent"></mat-spinner>
+      <mat-icon class="spinner-icon" color="accent"
+        >connecting_airports</mat-icon
+      >
     </div>
     <div *ngIf="spinner">
       <div>
@@ -66,9 +69,7 @@
                   [class.highlight]="activePanel === 'V'"
                 >
                   <mat-expansion-panel-header>
-                    <mat-panel-title
-                      >CREDIT CARD INSTALLMENT VISA</mat-panel-title
-                    >
+                    <mat-panel-title>VISA</mat-panel-title>
                   </mat-expansion-panel-header>
                   <p></p>
                 </mat-expansion-panel>
@@ -78,9 +79,7 @@
                   [class.highlight]="activePanel === 'M'"
                 >
                   <mat-expansion-panel-header>
-                    <mat-panel-title
-                      >CREDIT CARD INSTALLMENT MASTER CARD</mat-panel-title
-                    >
+                    <mat-panel-title>MASTER CARD</mat-panel-title>
                   </mat-expansion-panel-header>
                   <p></p>
                 </mat-expansion-panel>

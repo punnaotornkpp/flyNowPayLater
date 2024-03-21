@@ -32,11 +32,17 @@
           (onSelect)="selectFlightFare($event, i)"
           *ngIf="spinner"
         ></app-schedule>
-        <div class="d-flex center">
-          <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
-        </div>
-        <div *ngIf="isLoading" class="overlay">
+        <div class="d-flex center spinner-container" *ngIf="!spinner">
           <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
+        </div>
+        <div class="spinner-container" *ngIf="isLoading" class="overlay">
+          <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
         </div>
       </div>
     </div>

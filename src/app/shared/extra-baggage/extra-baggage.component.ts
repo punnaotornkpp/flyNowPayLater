@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IDispalyPassenger } from '../../model/passenger.model';
 import { ExtrasComponent } from '../../components/extras/extras.component';
 
-interface SsrSelection {
+export interface SsrSelection {
   passengerName: string;
   ssrCode: string;
   flightNumber: string;
@@ -214,7 +214,11 @@ export class ExtraBaggageComponent
   }
 
   Confirm() {
-    this.dialogRef.close({ status: false, response: this.ssrSelections });
+    this.dialogRef.close({
+      status: false,
+      response: this.ssrSelections,
+      type: 1,
+    });
   }
 
   getSumAmountByAirline(airlineIndex: number): number {

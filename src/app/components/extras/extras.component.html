@@ -16,8 +16,14 @@
         </div>
       </div>
       <div class="d-flex center">
-        <mat-spinner color="accent" *ngIf="!spinner"></mat-spinner>
+        <div class="spinner-container" *ngIf="!spinner">
+          <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
+        </div>
       </div>
+
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3" *ngIf="spinner">
         <div class="col py-2" *ngFor="let item of items">
           <mat-card>
@@ -79,5 +85,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="!loading" ngClass="overlay">
+    <mat-spinner color="accent"></mat-spinner>
+    <mat-icon class="spinner-icon" color="accent">connecting_airports</mat-icon>
   </div>
 </div>

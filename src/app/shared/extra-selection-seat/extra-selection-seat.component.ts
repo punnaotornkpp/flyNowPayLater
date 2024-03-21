@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import {
   IAirlinePricing,
-  IResponseDetailPricing,
   ISeat,
   ISeatAssign,
   ISeatCharge,
@@ -13,8 +12,10 @@ import { IDispalyPassenger } from '../../model/passenger.model';
 import { ExtrasComponent } from '../../components/extras/extras.component';
 import { SeatRow } from '../../model/extras.model';
 import { SessionStorage } from '../../core/helper/session.helper';
+import { IData, IResponseAirline } from '../../model/submit.model';
 
 export interface PassengerSeatSelection {
+  passengerName: string;
   passengerIndex: number;
   airlineIndex: number;
   flightNumber: string;
@@ -61,7 +62,7 @@ export class ExtraSelectionSeatComponent
     private session: SessionStorage,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      pricing: IResponseDetailPricing;
+      pricing: IData;
       passengers: IDispalyPassenger[];
       seats: ISeat;
     }
@@ -126,7 +127,7 @@ export class ExtraSelectionSeatComponent
     indexAirline: number,
     indexPassenger: number,
     passenger: string,
-    airline: IAirlinePricing
+    airline: IResponseAirline
   ): void {
     this.selectedPassengerIndices[indexAirline] = indexPassenger;
     this.selectedValue = {
@@ -172,7 +173,8 @@ export class ExtraSelectionSeatComponent
     seatCharge: ISeatCharge,
     passengerIndex: number,
     airlineIndex: number,
-    flightNumber: string
+    flightNumber: string,
+    passengerName: string
   ): void {
     const key = `${passengerIndex}-${airlineIndex}`;
     this.passengerSeatSelections.forEach((value, keyMap) => {
@@ -188,6 +190,7 @@ export class ExtraSelectionSeatComponent
       // row: seatCharge.rowNumber,
       selected: true,
       flightNumber,
+      passengerName,
     });
     const selectedSeat = `${seatCharge.rowNumber}${seatCharge.seat}`;
     this.selectedSeats.set(key, { passengerIndex, airlineIndex, selectedSeat });
@@ -251,6 +254,7 @@ export class ExtraSelectionSeatComponent
       airlineIndex: selection.airlineIndex,
       flightNumber: selection.flightNumber,
       seat: selection.seat,
+      passengerName: selection.passengerName,
       // row: selection.row,
     }));
     this.dialogRef.close({

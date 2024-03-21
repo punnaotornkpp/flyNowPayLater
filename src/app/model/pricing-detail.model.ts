@@ -1,3 +1,5 @@
+import { IResponseTravelInfo } from './submit.model';
+
 export interface IPRICING {
   flightFareKey: IFlightFareKey[];
   includeExtraServices: boolean;
@@ -31,7 +33,7 @@ export interface IAirlinePricing {
   destination: string;
   departureTime: string;
   arrivalTime: string;
-  travelInfos: ITravelInfoPricing[];
+  travelInfos: IResponseTravelInfo[];
   pricingDetails: IPricingDetail[];
   bundleDetails: IBundleDetails[];
   availableExtraServices: IAvailableExtraService[];
@@ -40,17 +42,6 @@ export interface IAirlinePricing {
 export interface IBundleDetails {
   ssrCode: string;
   description: string;
-}
-
-export interface ITravelInfoPricing {
-  origin: string;
-  destination: string;
-  departureTime: string;
-  arrivalTime: string;
-  flightNumber: string;
-  duration: string;
-  originName: string;
-  destinationName: string;
 }
 
 export interface IPricingDetail {
