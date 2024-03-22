@@ -100,10 +100,11 @@
                         <mat-label>Mobile Phone</mat-label>
                         <input
                           matInput
-                          formControlName="mobilePhone"
                           NumberInputDirective
+                          formControlName="mobilePhone"
                           required
-                          maxlength="10"
+                          [maxlength]="10"
+                          [minlength]="10"
                         />
                       </mat-form-field>
                     </div>

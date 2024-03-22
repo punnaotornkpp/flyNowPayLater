@@ -10,6 +10,7 @@ import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
 import {
   IFlightFareKey,
+  IPRICING,
   IResponseDetailPricing,
 } from '../../model/pricing-detail.model';
 
@@ -31,6 +32,7 @@ export class SelectScheduleComponent
   securityToken = '';
   loading: boolean = false;
   isLoading: boolean = false;
+  selectedFlight: IFlightFareKey[] = [];
 
   constructor(
     private session: SessionStorage,
@@ -47,6 +49,13 @@ export class SelectScheduleComponent
       try {
         const history = this.session.get('history');
         const schedule = this.session.get('schedule') || '';
+        const selectedFlight = JSON.parse(
+          this.session.get('flightFareKey')
+        ) as IPRICING;
+        if (selectedFlight) {
+          this.selectedFlight = selectedFlight.flightFareKey;
+          this.combineItem = this.selectedFlight;
+        }
         this.form = JSON.parse(history).form as FlightSearchForm;
         if (schedule) {
           const data = JSON.parse(schedule);
@@ -213,6 +222,10 @@ export class SelectScheduleComponent
           this.popup.success('Flight schedule selected complete.');
           this.loading = true;
           this.isLoading = false;
+          this.session.set('extraContent', '');
+          this.session.set('extraPricing', '');
+          this.session.set('extras', '');
+          this.session.set('formSubmit', '');
           this.session.set('display', resp);
           this.session.set('flightFareKey', pricing);
           this.sharedService.triggerHeaderRefresh();

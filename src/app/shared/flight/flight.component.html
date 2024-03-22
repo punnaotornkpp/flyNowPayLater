@@ -79,6 +79,7 @@
     </div>
     <div *ngIf="selectedItem === i">
       <app-detail-flight
+        [isSelected]="isSelected"
         [item]="selectedDate"
         [check]="false"
         [currentIndex]="this.currentIndex"

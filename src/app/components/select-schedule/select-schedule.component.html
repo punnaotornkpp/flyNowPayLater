@@ -25,6 +25,7 @@
           </div>
         </div>
         <app-schedule
+          [isSelectedFlight]="selectedFlight"
           [value]="sessionValue.data[i].journey"
           [currentIndex]="i"
           (onNextClick)="handleNewSchedule(i, 0)"

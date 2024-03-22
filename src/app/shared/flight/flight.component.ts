@@ -5,6 +5,7 @@ import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-deta
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { IFare, ISchedule } from '../../model/flight-schedule';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
+import { SessionStorage } from '../../core/helper/session.helper';
 
 @Component({
   selector: 'app-flight',
@@ -14,14 +15,18 @@ import { IFlightFareKey } from '../../model/pricing-detail.model';
 export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: ISchedule[];
   @Input() currentIndex: number = 0;
+  @Input() isSelectedFlight: IFlightFareKey[] = [];
   @Output() onSelect = new EventEmitter<[IFlightFareKey, number]>();
+
   selectedItem: number = 99;
   selectedDate!: IFare;
   isSmallScreen: boolean = false;
+  isSelected: boolean = false;
 
   constructor(
     private dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private session: SessionStorage
   ) {
     super();
     this.breakpointObserver
@@ -30,7 +35,26 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
         this.isSmallScreen = result.matches;
       });
   }
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    if (this.isSelectedFlight && this.value) {
+      this.value.forEach((schedule, index) => {
+        this.isSelectedFlight.forEach(
+          (selected: { journeyKey: string; fareKey: string }) => {
+            if (schedule.journeyKey === selected.journeyKey) {
+              const fareIndex = schedule.fares.findIndex(
+                (fare) => fare.fareKey === selected.fareKey
+              );
+              if (fareIndex !== -1) {
+                this.selectDetail(index, schedule.fares[fareIndex]);
+                this.isSelected = true;
+              }
+            }
+          }
+        );
+      });
+    }
+  }
 
   openDetailFlight(data: ISchedule) {
     this.dialog.open(DialogDetailFlightComponent, { data: data });
@@ -39,6 +63,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   selectDetail(index: number, fare: IFare): void {
     this.selectedItem = index;
     this.selectedDate = fare;
+    this.isSelected = false;
   }
 
   selectFlightFare(item: IFare) {

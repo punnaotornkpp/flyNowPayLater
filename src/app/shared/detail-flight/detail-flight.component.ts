@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
 } from '@angular/core';
 import { IFare } from '../../model/flight-schedule';
@@ -18,21 +19,24 @@ import { IFlightFareKey } from '../../model/pricing-detail.model';
 })
 export class DetailFlightComponent
   extends SubscriptionDestroyer
-  implements OnChanges
+  implements OnChanges, OnInit
 {
   @Input() item!: IFare;
   @Input() check: boolean = false;
   @Input() currentIndex: number = 0;
+  @Input() isSelected: boolean = false;
   @Output() onSelect = new EventEmitter<IFare>();
 
-  internalCheck = false;
+  internalCheck: boolean = false;
 
   constructor() {
     super();
   }
 
+  ngOnInit(): void {}
+
   ngOnChanges(): void {
-    this.internalCheck = false;
+    this.internalCheck = this.isSelected;
   }
 
   selectFlight(isChecked: boolean) {

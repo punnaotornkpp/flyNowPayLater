@@ -14,6 +14,7 @@ import { IFlightFareKey } from '../../model/pricing-detail.model';
 export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: IJourney[];
   @Input() currentIndex: number = 0;
+  @Input() isSelectedFlight: IFlightFareKey[] = [];
   @Output() onNextClick = new EventEmitter<any>();
   @Output() onBackClick = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<[IFlightFareKey, string]>();

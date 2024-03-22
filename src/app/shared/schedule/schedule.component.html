@@ -25,6 +25,7 @@
           </ng-template>
           <div class="py-5 px-2">
             <app-flight
+              [isSelectedFlight]="isSelectedFlight"
               [value]="item.schedules"
               [currentIndex]="this.currentIndex"
               (onSelect)="selectFlightFare($event, item.schedules)"
