@@ -86,7 +86,7 @@ export class PassengersComponent
     if (isFirstAdult) {
       Object.assign(groupConfig, {
         mobilePhone: ['', Validators.required],
-        email: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
         newsletter: [''],
       });
     }
