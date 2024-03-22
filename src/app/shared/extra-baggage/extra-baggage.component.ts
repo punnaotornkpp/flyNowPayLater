@@ -210,6 +210,13 @@ export class ExtraBaggageComponent
     }
   }
 
+  checkInfant(passengers: IDispalyPassenger[]) {
+    const filteredPassengers = passengers.filter(
+      (passenger) => passenger.type !== 'Infant'
+    );
+    return filteredPassengers;
+  }
+
   getTitle(index: number) {
     if (index === 0) {
       return 'Depart';

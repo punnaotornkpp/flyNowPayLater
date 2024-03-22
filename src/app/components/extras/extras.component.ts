@@ -98,6 +98,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
             ...p,
             type: 'Child',
           })),
+          ...passengers.infants.map((p: IInfant[]) => ({
+            ...p,
+            type: 'Infant',
+          })),
         ];
         const extras = JSON.parse(this.session.get('extras'));
         if (extras) {

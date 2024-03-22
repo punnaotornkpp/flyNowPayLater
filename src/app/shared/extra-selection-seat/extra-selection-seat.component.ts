@@ -240,6 +240,13 @@ export class ExtraSelectionSeatComponent
     );
   }
 
+  checkInfant(passengers: IDispalyPassenger[]) {
+    const filteredPassengers = passengers.filter(
+      (passenger) => passenger.type !== 'Infant'
+    );
+    return filteredPassengers;
+  }
+
   getButtonColor(
     rowNumber: number,
     seat: string,

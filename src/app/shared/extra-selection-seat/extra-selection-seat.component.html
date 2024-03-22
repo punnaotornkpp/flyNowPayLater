@@ -32,7 +32,7 @@
               <div *ngIf="show[indexAirline]" class="row d-flex">
                 <button
                   *ngFor="
-                    let passenger of data.passengers;
+                    let passenger of checkInfant(data.passengers);
                     let indexPassenger = index
                   "
                   class="p-2 border my-2 cursor"

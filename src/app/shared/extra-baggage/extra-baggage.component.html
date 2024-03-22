@@ -34,7 +34,7 @@
           <div
             class="row col py-1"
             *ngFor="
-              let passenger of this.data.passengers;
+              let passenger of checkInfant(this.data.passengers);
               let passengerIndex = index
             "
           >
