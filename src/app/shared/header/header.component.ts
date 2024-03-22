@@ -40,13 +40,19 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   totalVAT: number = 0;
   taxDetailsByPaxType: TaxDetails[] = [];
   extraPricing!: IResponseSubmit;
-  totalExtra = {
-    bg05: 0,
-    bg15: 0,
-    S500: 0,
-    S300: 0,
-    S150: 0,
-  };
+  check!: IResponseSubmit; ////
+  totalExtra = [
+    { amount: 0, taxName: '', taxCode: 'BG05' },
+    { amount: 0, taxName: '', taxCode: 'BG10' },
+    { amount: 0, taxName: '', taxCode: 'BG15' },
+    { amount: 0, taxName: '', taxCode: 'BG20' },
+    { amount: 0, taxName: '', taxCode: 'BG25' },
+    { amount: 0, taxName: '', taxCode: 'BG30' },
+    { amount: 0, taxName: '', taxCode: 'BG40' },
+    { amount: 0, taxName: '', taxCode: 'S500' },
+    { amount: 0, taxName: '', taxCode: 'S300' },
+    { amount: 0, taxName: '', taxCode: 'S150' },
+  ];
 
   constructor(
     private dialog: MatDialog,
@@ -84,13 +90,28 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
         const display = this.session.get('display') || '';
         const flightFareKey = this.session.get('flightFareKey') || '';
         const extraPricing = this.session.get('extraPricing') || '';
+        this.extraPricing = JSON.parse(extraPricing);
         this.flightFareKey = JSON.parse(flightFareKey);
         this.display = JSON.parse(display).data;
-        this.extraPricing = JSON.parse(extraPricing);
         if (this.display) {
+          this.totalAirportTax = 0;
+          this.totalVAT = 0;
+          this.totalExtra = [
+            { amount: 0, taxName: '', taxCode: 'BG05' },
+            { amount: 0, taxName: '', taxCode: 'BG10' },
+            { amount: 0, taxName: '', taxCode: 'BG15' },
+            { amount: 0, taxName: '', taxCode: 'BG20' },
+            { amount: 0, taxName: '', taxCode: 'BG25' },
+            { amount: 0, taxName: '', taxCode: 'BG30' },
+            { amount: 0, taxName: '', taxCode: 'BG40' },
+            { amount: 0, taxName: '', taxCode: 'S500' },
+            { amount: 0, taxName: '', taxCode: 'S300' },
+            { amount: 0, taxName: '', taxCode: 'S150' },
+          ];
           if (this.extraPricing) {
             this.calculateTaxesAndDetailsSummary();
           } else {
+            this.totalAmount(this.display.totalAmount);
             this.calculateTaxesAndDetails();
           }
         }
@@ -164,15 +185,6 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   calculateTaxesAndDetailsSummary(): void {
-    this.totalAirportTax = 0;
-    this.totalVAT = 0;
-    this.totalExtra = {
-      bg05: 0,
-      bg15: 0,
-      S500: 0,
-      S300: 0,
-      S150: 0,
-    };
     let taxDetailsMap: { [key: string]: TaxDetails } = {};
     let extraPricing = this.extraPricing.data;
     extraPricing.airlines.sort((a, b) => {
@@ -196,17 +208,13 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
           } else if (tax.taxCode === 'VAT') {
             this.totalVAT += parseFloat(tax.amount);
             taxDetailsMap[paxType].VAT += parseFloat(tax.amount);
-          } else if (tax.taxCode === 'BG05') {
-            this.totalExtra.bg05 += parseFloat(tax.amount);
-          } else if (tax.taxCode === 'BG15') {
-            this.totalExtra.bg15 += parseFloat(tax.amount);
-          } else if (tax.taxCode === 'S500') {
-            this.totalExtra.S500 += parseFloat(tax.amount);
-          } else if (tax.taxCode === 'S300') {
-            this.totalExtra.S300 += parseFloat(tax.amount);
-          } else if (tax.taxCode === 'S150') {
-            this.totalExtra.S150 += parseFloat(tax.amount);
           }
+          this.totalExtra.forEach((taxItem) => {
+            if (tax.taxCode === taxItem.taxCode) {
+              taxItem.amount += parseFloat(tax.amount);
+              taxItem.taxName = tax.taxName;
+            }
+          });
         });
       });
     });
@@ -214,8 +222,6 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   calculateTaxesAndDetails(): void {
-    this.totalAirportTax = 0;
-    this.totalVAT = 0;
     let taxDetailsMap: { [key: string]: TaxDetails } = {};
     this.display.airlines.sort((a, b) => {
       return (

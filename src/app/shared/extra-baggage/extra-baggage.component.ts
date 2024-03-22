@@ -42,6 +42,7 @@ export class ExtraBaggageComponent
   ssrSelections: SsrSelection[] = [];
   filteredSsrOptions: SsrOption[] = [];
   initialValue: SsrOption[] = [];
+  status: boolean = false;
   selectedOptions: {
     [passengerIndex: number]: { [flightNumber: string]: string };
   } = {};
@@ -53,6 +54,7 @@ export class ExtraBaggageComponent
       pricing: IResponseDetailPricing;
       passengers: IDispalyPassenger[];
       ssr: IAvailableExtraService[];
+      selected: SsrSelection[];
     }
   ) {
     super();
@@ -60,6 +62,35 @@ export class ExtraBaggageComponent
 
   ngOnInit(): void {
     this.prepareFilteredSsrOptions();
+    if (this.data.selected && this.data.selected.length > 0) {
+      this.ssrSelections = this.data.selected;
+      this.applySelectedOptions();
+      this.status = true;
+    } else {
+      this.applyDefaultOptions();
+    }
+  }
+
+  applySelectedOptions(): void {
+    this.data.passengers.forEach((passenger, passengerIndex) => {
+      this.data.pricing.airlines.forEach((airline) => {
+        const flightNumber = airline.travelInfos[0].flightNumber;
+        const selectedOption = this.data.selected.find(
+          (option) =>
+            option.passengerIndex === passengerIndex &&
+            option.flightNumber === flightNumber
+        );
+        if (selectedOption) {
+          const { ssrCode } = selectedOption;
+          this.updateSelectedOption(passengerIndex, flightNumber, ssrCode);
+        } else {
+          this.setDefaultSelectionForPassenger(flightNumber, passengerIndex);
+        }
+      });
+    });
+  }
+
+  applyDefaultOptions(): void {
     this.data.pricing.airlines.forEach((airline) => {
       const flightNumber = airline.travelInfos[0].flightNumber;
       this.data.passengers.forEach((_, passengerIndex) => {
@@ -71,15 +102,23 @@ export class ExtraBaggageComponent
   setDefaultSelectionForPassenger(
     flightNumber: string,
     passengerIndex: number
-  ) {
+  ): void {
     const initOptions = this.getSsrOptionsForFlightInit(flightNumber);
+    if (initOptions.length > 0) {
+      const ssrCode = initOptions[0].ssrCode;
+      this.updateSelectedOption(passengerIndex, flightNumber, ssrCode);
+    }
+  }
+
+  updateSelectedOption(
+    passengerIndex: number,
+    flightNumber: string,
+    ssrCode: string
+  ): void {
     if (!this.selectedOptions[passengerIndex]) {
       this.selectedOptions[passengerIndex] = {};
     }
-    if (initOptions.length > 0) {
-      this.selectedOptions[passengerIndex][flightNumber] =
-        initOptions[0].ssrCode;
-    }
+    this.selectedOptions[passengerIndex][flightNumber] = ssrCode;
   }
 
   getSsrOptionsForFlight(flightNumber: string): SsrOption[] {
@@ -92,10 +131,18 @@ export class ExtraBaggageComponent
     return this.initialValue.filter((ssr) => ssr.flightNumber === flightNumber);
   }
 
+  getSelectedOption(
+    passengerIndex: number,
+    flightNumber: string
+  ): string | null {
+    return this.selectedOptions[passengerIndex]?.[flightNumber] || null;
+  }
+
   prepareFilteredSsrOptions() {
     const ssrCodes = ['BG05', 'BG10', 'BG15', 'BG20', 'BG25', 'BG30', 'BG40'];
     const ssrInitialCodes = ['BB25', 'BB15'];
     this.filteredSsrOptions = [];
+    this.initialValue = [];
     this.data.pricing.airlines.forEach((airline) => {
       const flightNumber = airline.travelInfos[0].flightNumber;
       const flightSsrOptions = this.data.ssr
@@ -127,17 +174,7 @@ export class ExtraBaggageComponent
     passengerIndex: number,
     airlineIndex: number
   ) {
-    if (ssrCode === null) {
-      this.ssrSelections = this.ssrSelections.filter(
-        (selection) =>
-          !(
-            selection.passengerIndex === passengerIndex &&
-            selection.airlineIndex === airlineIndex
-          )
-      );
-      return;
-    }
-    if (ssrCode === 'BB15' || ssrCode === 'BB25') {
+    if (!ssrCode || ssrCode === 'BB15' || ssrCode === 'BB25') {
       this.ssrSelections = this.ssrSelections.filter(
         (selection) =>
           !(
@@ -149,23 +186,24 @@ export class ExtraBaggageComponent
     }
     const selectedSsr = this.data.ssr.find((ssr) => ssr.ssrCode === ssrCode);
     if (selectedSsr) {
-      const newSelection: SsrSelection = {
-        passengerName: `${this.data.passengers[passengerIndex].firstName} ${this.data.passengers[passengerIndex].lastName}`,
-        ssrCode: ssrCode,
-        flightNumber: flightNumber,
-        passengerIndex: passengerIndex,
-        airlineIndex: airlineIndex,
-        amount: parseFloat(selectedSsr.amount),
-      };
-
-      const existingIndex = this.ssrSelections.findIndex(
+      const passenger = this.data.passengers[passengerIndex];
+      const passengerName = `${passenger.firstName} ${passenger.lastName}`;
+      const amount = parseFloat(selectedSsr.amount);
+      const existingSelection = this.ssrSelections.find(
         (selection) =>
           selection.passengerIndex === passengerIndex &&
           selection.airlineIndex === airlineIndex
       );
-
-      if (existingIndex >= 0) {
-        this.ssrSelections[existingIndex] = newSelection;
+      const newSelection: SsrSelection = {
+        passengerName,
+        ssrCode,
+        flightNumber,
+        passengerIndex,
+        airlineIndex,
+        amount,
+      };
+      if (existingSelection) {
+        Object.assign(existingSelection, newSelection);
       } else {
         this.ssrSelections.push(newSelection);
       }
@@ -210,12 +248,16 @@ export class ExtraBaggageComponent
   }
 
   Cancel() {
-    this.dialogRef.close({ status: false, response: '' });
+    this.dialogRef.close({ status: this.status, response: this.ssrSelections });
   }
 
   Confirm() {
+    let status = false;
+    if (this.ssrSelections && this.ssrSelections.length > 0) {
+      status = true;
+    }
     this.dialogRef.close({
-      status: false,
+      status: status,
       response: this.ssrSelections,
       type: 1,
     });

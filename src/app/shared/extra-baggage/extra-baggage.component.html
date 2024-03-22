@@ -55,7 +55,12 @@
                       i
                     )
                   "
-                  [value]="selectedOptions[passengerIndex]?.[item.travelInfos[0].flightNumber]"
+                  [value]="
+                    getSelectedOption(
+                      passengerIndex,
+                      item.travelInfos[0].flightNumber
+                    )
+                  "
                 >
                   <mat-option [value]="null">No Selection</mat-option>
                   <mat-option

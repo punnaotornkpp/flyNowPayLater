@@ -5,10 +5,10 @@ export const MOCK_AIRPORT: IAirport[] = [
     name: 'Don Mueang (Bangkok)',
     code: 'DMK',
   },
-  {
-    name: 'Suvarnabhumi (Bangkok)',
-    code: 'BKK',
-  },
+  // {
+  //   name: 'Suvarnabhumi (Bangkok)',
+  //   code: 'BKK',
+  // },
   {
     name: 'Buri Ram',
     code: 'BFV',

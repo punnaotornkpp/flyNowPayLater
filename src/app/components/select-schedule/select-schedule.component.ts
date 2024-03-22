@@ -182,7 +182,6 @@ export class SelectScheduleComponent
     if (index >= this.combineItem.length) {
       this.combineItem.length = index + 1;
     }
-    console.log(item[1]);
     this.combineItem[index] = item[0];
     this.combineItem[index].departureTime = item[1];
     if (this.combineItem[0] == null) {

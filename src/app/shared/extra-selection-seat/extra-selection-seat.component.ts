@@ -65,36 +65,19 @@ export class ExtraSelectionSeatComponent
       pricing: IData;
       passengers: IDispalyPassenger[];
       seats: ISeat;
+      default: PassengerSeatSelection[];
     }
   ) {
     super();
   }
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined' && window.sessionStorage) {
-      const selectedExtras = this.session.get('selectedExtras');
-      console.log(selectedExtras);
+    if (this.data.default && this.data.default.length > 0) {
+      this.processDefaultSelections(this.data.default);
     }
-
     this.seatRows = this.data.seats.data[0].seatMaps;
     this.seatCharges = this.data.seats.data[0].seatCharges;
     this.seatAssign = this.data.seats.data[0].seatAssignments;
-
-    /// MOCK
-    // this.seatAssign = [
-    //   {
-    //     rowNumber: 1,
-    //     seat: 'C',
-    //     passengerType: 'Adult',
-    //   },
-    //   {
-    //     rowNumber: 2,
-    //     seat: 'B',
-    //     passengerType: 'Adult',
-    //   },
-    // ];
-    ///
-
     this.selectedPassengerIndices = this.data.pricing.airlines.map(() => 0);
     if (
       this.data.passengers.length > 0 &&
@@ -114,6 +97,37 @@ export class ExtraSelectionSeatComponent
     this.data.pricing.airlines.forEach((_, index) => {
       this.show[index] = index === 0;
     });
+  }
+
+  processDefaultSelections(defaultSelections: PassengerSeatSelection[]): void {
+    defaultSelections.forEach((selection) => {
+      const {
+        passengerIndex,
+        airlineIndex,
+        seat,
+        flightNumber,
+        passengerName,
+      } = selection;
+      if (seat) {
+        const key = `${passengerIndex}-${airlineIndex}`;
+        const seatKey = `${key}-${seat.seat}-${seat.rowNumber}`;
+        this.passengerSeatSelections.set(seatKey, {
+          passengerIndex,
+          airlineIndex,
+          seat,
+          selected: true,
+          flightNumber,
+          passengerName,
+        });
+        this.selectedSeats.set(key, {
+          passengerIndex,
+          airlineIndex,
+          selectedSeat: `${seat.rowNumber}${seat.seat}`,
+        });
+      }
+    });
+    this.passengerSeatSelections = new Map(this.passengerSeatSelections);
+    this.selectedSeats = new Map(this.selectedSeats);
   }
 
   getTitle(index: number) {
@@ -138,7 +152,29 @@ export class ExtraSelectionSeatComponent
       airlineIndex: indexAirline,
       flightNumber: airline.travelInfos[0].flightNumber,
     };
-    console.log(this.selectedValue);
+  }
+
+  openShow(indexAirline: number): void {
+    this.show[indexAirline] = !this.show[indexAirline];
+    this.show.forEach((_, i) => {
+      if (i !== indexAirline) this.show[i] = false;
+    });
+    if (this.show[indexAirline]) {
+      const firstPassenger = this.data.passengers[0];
+      const airline = this.data.pricing.airlines.find(
+        (_, i) => i === indexAirline
+      );
+      if (airline) {
+        this.selectedValue = {
+          passengerName: firstPassenger.firstName,
+          origin: airline.travelInfos[0].originName,
+          destination: airline.travelInfos[0].destination,
+          passengerIndex: 0,
+          airlineIndex: indexAirline,
+          flightNumber: airline.travelInfos[0].flightNumber,
+        };
+      }
+    }
   }
 
   isSeatAvailable(rowNumber: number, seat: string): boolean {
@@ -162,13 +198,6 @@ export class ExtraSelectionSeatComponent
     return selection?.selected ?? false;
   }
 
-  openShow(indexAirline: number): void {
-    this.show[indexAirline] = !this.show[indexAirline];
-    this.show.forEach((_, i) => {
-      if (i !== indexAirline) this.show[i] = false;
-    });
-  }
-
   selectSeat(
     seatCharge: ISeatCharge,
     passengerIndex: number,
@@ -187,7 +216,6 @@ export class ExtraSelectionSeatComponent
       passengerIndex,
       airlineIndex,
       seat: seatCharge,
-      // row: seatCharge.rowNumber,
       selected: true,
       flightNumber,
       passengerName,
@@ -255,10 +283,13 @@ export class ExtraSelectionSeatComponent
       flightNumber: selection.flightNumber,
       seat: selection.seat,
       passengerName: selection.passengerName,
-      // row: selection.row,
     }));
+    let status = false;
+    if (simplifiedSelections && simplifiedSelections.length > 0) {
+      status = true;
+    }
     this.dialogRef.close({
-      status: true,
+      status: status,
       response: simplifiedSelections,
       type: 0,
     });

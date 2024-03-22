@@ -46,6 +46,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   seat!: ISeat;
   spinner: boolean = false;
   loading: boolean = false;
+  wait: boolean = true;
   pricing!: IResponsePricing;
   passengers: IDispalyPassenger[] = [];
   dialogConfig!: DialogConfig;
@@ -56,6 +57,9 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     passengerInfos: [{}],
   };
   securityToken: string = '';
+  defaultSeat!: PassengerSeatSelection[];
+  defaultBaggage!: SsrSelection[];
+  summaryAmount: number = 0;
 
   constructor(
     private route: Router,
@@ -71,14 +75,22 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   async ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        this.session.set('selectedExtras', '');
+        this.sharedService.triggerHeaderRefresh();
         const securityToken =
           JSON.parse(this.session.get('schedule')).securityToken || '';
+        const extraContent = JSON.parse(this.session.get('extraContent'));
+        if (extraContent) {
+          this.items = extraContent.items;
+          this.defaultSeat = extraContent.seat;
+          this.defaultBaggage = extraContent.baggage;
+        }
         this.securityToken = securityToken;
         const flightFareKey: IPRICING = JSON.parse(
           this.session.get('flightFareKey')
         );
         this.pricing = JSON.parse(this.session.get('pricing'));
+
+        this.summaryAmount = Number(this.pricing.data.totalAmount);
         const passengers = JSON.parse(this.session.get('passengers'));
         this.passengers = [
           ...passengers.adults.map((p: IAdult[]) => ({ ...p, type: 'Adult' })),
@@ -86,10 +98,6 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
             ...p,
             type: 'Child',
           })),
-          // ...passengers.infants.map((p: IInfant[]) => ({
-          //   ...p,
-          //   type: 'Infant',
-          // })),
         ];
         const extras = JSON.parse(this.session.get('extras'));
         if (extras) {
@@ -132,6 +140,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           pricing: this.pricing.data,
           passengers: this.passengers,
           seats: this.seat,
+          default: this.defaultSeat,
         },
       },
       1: {
@@ -143,6 +152,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           pricing: this.pricing.data,
           passengers: this.passengers,
           ssr: this.ssr,
+          selected: this.defaultBaggage,
         },
       },
       2: {
@@ -194,6 +204,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   redirectNext() {
+    if (this.summaryAmount < 3000) {
+      this.popup.waring('The installment payment must exceed 3000');
+      return;
+    }
     this.route.navigateByUrl('payment');
   }
 
@@ -202,22 +216,20 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     if (config) {
       const { component, ...options } = config;
       const dialogRef = this.dialog.open(component, options);
-
       dialogRef
         .afterClosed()
         .subscribe(
           (
             resp: { status: boolean; response: []; type: number } | undefined
           ) => {
-            const defaultResp = resp || {
-              status: false,
-              response: [],
-              type: 99,
-            };
-            console.log(resp);
-
-            this.setStatus(id, defaultResp);
-            this.session.set('selectedExtras', defaultResp);
+            if (resp) {
+              this.setStatus(id, resp);
+              this.session.set('extraContent', {
+                items: this.items,
+                seat: this.defaultSeat,
+                baggage: this.defaultBaggage,
+              });
+            }
           }
         );
     } else {
@@ -227,19 +239,26 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
 
   setStatus(id: number, resp: { status: boolean; response: []; type: number }) {
     this.items[id].status = resp.status;
-    if (0 === resp.type) {
-      this.items[id].content = `${this.showSeat(resp.response)}`;
-      this.updateSeat(resp.response);
-    } else if (1 === resp.type) {
-      this.updateBaggage(resp.response);
+    if (resp.status) {
+      if (0 === resp.type) {
+        this.items[id].content = `${this.showSeat(resp.response)}`;
+        this.updateSeat(resp.response);
+      } else if (1 === resp.type) {
+        this.items[id].content = `${this.showBaggage(resp.response)}`;
+        this.updateBaggage(resp.response);
+      } else {
+        this.items[id].content = this.items[id].content;
+      }
+      this.items[id].detail.title = '';
     } else {
-      this.items[id].content = JSON.stringify(resp.response);
     }
-    this.items[id].detail.title = '';
   }
 
   updateSeat(resp: PassengerSeatSelection[]) {
-    console.log(resp);
+    this.defaultSeat = resp;
+    if (this.defaultSeat && this.defaultSeat.length > 0) {
+      this.setDialog();
+    }
     resp.forEach((extra) => {
       this.form.passengerInfos.forEach((passenger: any) => {
         if (passenger.firstName === extra.passengerName) {
@@ -248,11 +267,24 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
               if (!flight.selectedSeat) {
                 flight.selectedSeat = [];
               }
-              flight.selectedSeat.push({
-                flightNumber: extra.flightNumber,
-                rowNumber: extra.seat?.rowNumber,
-                seatSelected: extra.seat?.seat,
-              });
+              const existingEntryIndex = flight.selectedSeat.findIndex(
+                (es: any) => es.flightNumber === extra.flightNumber
+              );
+              if (existingEntryIndex !== -1) {
+                flight.selectedSeat[existingEntryIndex] = {
+                  flightNumber: extra.flightNumber,
+                  rowNumber: extra.seat?.rowNumber,
+                  seatSelected: extra.seat?.seat,
+                };
+              } else {
+                flight.selectedSeat = [
+                  {
+                    flightNumber: extra.flightNumber,
+                    rowNumber: extra.seat?.rowNumber,
+                    seatSelected: extra.seat?.seat,
+                  },
+                ];
+              }
             }
           });
         }
@@ -262,6 +294,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   updateBaggage(resp: SsrSelection[]) {
+    this.defaultBaggage = resp;
+    if (this.defaultBaggage && this.defaultBaggage.length > 0) {
+      this.setDialog();
+    }
     resp.forEach((extra) => {
       this.form.passengerInfos.forEach((passenger: any) => {
         if (
@@ -273,10 +309,17 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
               if (!flight.extraService) {
                 flight.extraService = [];
               }
-              flight.extraService.push({
-                flightNumber: extra.flightNumber,
-                ssrCode: extra.ssrCode,
-              });
+              const existingEntryIndex = flight.extraService.findIndex(
+                (es: any) => es.flightNumber === extra.flightNumber
+              );
+              if (existingEntryIndex !== -1) {
+                flight.extraService[existingEntryIndex].ssrCode = extra.ssrCode;
+              } else {
+                flight.extraService.push({
+                  flightNumber: extra.flightNumber,
+                  ssrCode: extra.ssrCode,
+                });
+              }
             }
           });
         }
@@ -285,44 +328,8 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     this.updateSummary();
   }
 
-  showSeat(response: PassengerSeatSelection[]): string {
-    const airlineGroups = response.reduce(
-      (
-        acc: { [key: number]: PassengerSeatSelection[] },
-        curr: PassengerSeatSelection
-      ) => {
-        (acc[curr.airlineIndex] = acc[curr.airlineIndex] || []).push(curr);
-        return acc;
-      },
-      {}
-    );
-    let result = '';
-    for (const airlineIndex in airlineGroups) {
-      const flights = airlineGroups[airlineIndex];
-      const flightNumbers = flights
-        .map((f) => f.flightNumber)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-      flightNumbers.forEach((flightNumber, index) => {
-        const flightSeats = flights.filter(
-          (f) => f.flightNumber === flightNumber
-        );
-        const seatsDetail = flightSeats
-          .map((f) => (f.seat ? `${f.seat.rowNumber}${f.seat.seat}` : 'N/A'))
-          .join(', ');
-
-        result += `${flightSeats.length} x Seat: ${seatsDetail} (${flightNumber})`;
-        if (index < flightNumbers.length - 1) result += '; ';
-      });
-      if (parseInt(airlineIndex) < Object.keys(airlineGroups).length - 1)
-        result += '; ';
-    }
-    return result;
-  }
-
   preparePassengerInfos() {
     const flightFareKey = JSON.parse(this.session.get('flightFareKey'));
-    console.log(flightFareKey);
     let paxNumber = 1;
     this.form.passengerInfos = this.passengers.map((passenger) => {
       const age = this.calculateAge(passenger.birthdayDate);
@@ -336,7 +343,6 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         dateOfBirth: DateTime.setTimeZone(passenger.birthdayDate),
         passengerType: passenger.type,
         mobilePhone: passenger.mobilePhone || '',
-        // email: passenger.email || '',
         gender: this.getGender(passenger.title),
         flightFareKey: flightFareKey.flightFareKey.map(
           (fk: IFlightFareKey) => ({
@@ -382,22 +388,40 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   updateSummary() {
-    this.loading = false;
-
+    this.wait = false;
     const obs = this.booking
       .SubmitBooking(this.form, this.securityToken)
       .subscribe({
         next: (resp) => {
-          this.loading = true;
+          this.summaryAmount = Number(resp.data!.totalAmount);
+          this.wait = true;
           this.session.set('formSubmit', this.form);
+          this.session.remove('extraPricing');
           this.session.set('extraPricing', resp);
           this.sharedService.triggerHeaderRefresh();
         },
         error: (error) => {
+          this.wait = true;
           this.popup.waring('Sorry, something went wrong.');
           console.log(error);
         },
       });
     this.AddSubscription(obs);
+  }
+
+  showBaggage(response: SsrSelection[]) {
+    let content = '';
+    response.forEach((resp) => {
+      content += `${resp.passengerName} select ${resp.ssrCode} in ${resp.flightNumber},\n\n`;
+    });
+    return content.trim();
+  }
+
+  showSeat(response: PassengerSeatSelection[]): string {
+    let content = '';
+    response.forEach((resp) => {
+      content += `${resp.passengerName} Seat: ${resp.seat?.rowNumber}${resp.seat?.seat} (${resp.flightNumber}),\n\n`;
+    });
+    return content.trim();
   }
 }
