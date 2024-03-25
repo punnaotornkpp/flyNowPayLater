@@ -56,6 +56,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
       child: [0],
       infant: [0],
       languageCode: ['th', Validators.required],
+      promoCode: [''],
       journeys: this.fb.array([
         this.fb.group({
           title: ['Depart'],
@@ -68,7 +69,6 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }),
       ]),
     });
-    // promoCode: [''],
 
     this.journeysArray = this.bookingForm.get('journeys') as FormArray;
     this.journeysArray.valueChanges.subscribe((changes) => {
@@ -229,6 +229,7 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         this.session.set('extraPricing', '');
         this.session.set('pricing', '');
         this.session.set('extras', '');
+        this.session.set('securityToken', '');
         this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();

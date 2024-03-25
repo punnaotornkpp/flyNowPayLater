@@ -26,37 +26,37 @@ export class FooterComponent implements OnInit {
   footer!: IFooter;
   isHovering = [
     {
-      img: '../../../assets/image/facebook-logo.webp',
+      img: 'assets/image/facebook-logo.webp',
       url: 'https://www.facebook.com/nokairlines',
       status: false,
     },
     {
-      img: '../../../assets/image/twitter-logo.webp',
+      img: 'assets/image/twitter-logo.webp',
       url: 'https://twitter.com/nokairlines',
       status: false,
     },
     {
-      img: '../../../assets/image/youtube-logo.webp',
+      img: 'assets/image/youtube-logo.webp',
       url: 'https://www.youtube.com/user/NokairlinesTV/featured?&ab_channel=NokAirlines',
       status: false,
     },
     {
-      img: '../../../assets/image/line-logo.webp',
+      img: 'assets/image/line-logo.webp',
       url: 'https://line.me/R/ti/p/@nokair?from=page&openQrModal=true&searchId=nokair',
       status: false,
     },
   ];
   download = [
     {
-      img: '../../../assets/image/googleplay.webp',
+      img: 'assets/image/googleplay.webp',
       url: 'https://play.google.com/store/apps/details?id=com.NokAir.app&hl=en',
     },
     {
-      img: '../../../assets/image/appstore.webp',
+      img: 'assets/image/appstore.webp',
       url: 'https://apps.apple.com/us/app/nok-airlines/id1597911105',
     },
     {
-      img: '../../../assets/image/appgalleryhuawei.webp',
+      img: 'assets/image/appgalleryhuawei.webp',
       url: 'https://appgallery.huawei.com/app/C105119185?channelId=web&detailType=0',
     },
   ];

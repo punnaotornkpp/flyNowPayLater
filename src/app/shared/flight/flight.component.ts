@@ -25,8 +25,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver,
-    private session: SessionStorage
+    private breakpointObserver: BreakpointObserver
   ) {
     super();
     this.breakpointObserver
@@ -36,22 +35,51 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
       });
   }
 
+  /// ใช้
+
+  // ngOnInit(): void {
+  //   if (this.isSelectedFlight && this.value) {
+  //     this.value.forEach((schedule, index) => {
+  //       this.isSelectedFlight.forEach(
+  //         (selected: { journeyKey: string; fareKey: string }) => {
+  //           if (schedule.journeyKey === selected.journeyKey) {
+  //             const fareIndex = schedule.fares.findIndex(
+  //               (fare) => fare.fareKey === selected.fareKey
+  //             );
+  //             if (fareIndex !== -1) {
+  //               this.selectDetail(index, schedule.fares[fareIndex]);
+  //               this.isSelected = true;
+  //             }
+  //           }
+  //         }
+  //       );
+  //     });
+  //   }
+  // }
+
+  /// เทส ใช้ journeyKey เพื่อเช็คเพิ่ม
   ngOnInit(): void {
+    // console.log(this.isSelectedFlight);
+    // console.log(this.value);
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
-        this.isSelectedFlight.forEach(
-          (selected: { journeyKey: string; fareKey: string }) => {
-            if (schedule.journeyKey === selected.journeyKey) {
-              const fareIndex = schedule.fares.findIndex(
-                (fare) => fare.fareKey === selected.fareKey
-              );
-              if (fareIndex !== -1) {
-                this.selectDetail(index, schedule.fares[fareIndex]);
-                this.isSelected = true;
-              }
+        this.isSelectedFlight.forEach((selected) => {
+          if (schedule.journeyKey === selected.journeyKey) {
+            console.log(schedule.journeyKey);
+            console.log(selected.journeyKey);
+            console.log(schedule);
+            const fareIndex = schedule.fares.findIndex(
+              (fare) => fare.fareKey === selected.fareKey
+            );
+            console.log(schedule.fares[fareIndex]);
+            console.log(selected.fareKey);
+            console.log(index);
+            if (fareIndex !== -1) {
+              this.selectDetail(index, schedule.fares[fareIndex]);
+              this.isSelected = true;
             }
           }
-        );
+        });
       });
     }
   }

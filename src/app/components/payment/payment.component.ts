@@ -61,15 +61,14 @@ export class PaymentComponent extends SubscriptionDestroyer implements OnInit {
 
   redirectNext() {
     this.form.actionType = 'create';
-    const securityToken =
-      JSON.parse(this.session.get('schedule')).securityToken || '';
+    const securityToken = JSON.parse(this.session.get('securityToken')) || '';
     if (!this.form.paymentMethod) {
       this.popup.info('Please select payment before submit');
       return;
     }
     this.spinner = false;
     this.loading = false;
-    const obs = this.booking.SubmitBooking(this.form, securityToken).subscribe({
+    const obs = this.booking.submitBooking(this.form, securityToken).subscribe({
       next: (response) => {
         this.popup.success('You have finished submit data booking.');
         this.loading = true;

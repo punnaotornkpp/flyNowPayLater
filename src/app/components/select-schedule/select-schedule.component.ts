@@ -8,11 +8,7 @@ import { IFare, IFlight, IJourney } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
-import {
-  IFlightFareKey,
-  IPRICING,
-  IResponseDetailPricing,
-} from '../../model/pricing-detail.model';
+import { IFlightFareKey, IPRICING } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-select-schedule',
@@ -29,10 +25,10 @@ export class SelectScheduleComponent
   status: boolean = false;
   defaultDate = '';
   combineItem: IFlightFareKey[] = [];
-  securityToken = '';
   loading: boolean = false;
   isLoading: boolean = false;
   selectedFlight: IFlightFareKey[] = [];
+  securityToken: string = '';
 
   constructor(
     private session: SessionStorage,
@@ -55,6 +51,7 @@ export class SelectScheduleComponent
         if (selectedFlight) {
           this.selectedFlight = selectedFlight.flightFareKey;
           this.combineItem = this.selectedFlight;
+          this.loading = true;
         }
         this.form = JSON.parse(history).form as FlightSearchForm;
         if (schedule) {
@@ -63,7 +60,7 @@ export class SelectScheduleComponent
           this.spinner = true;
           return;
         } else {
-          this.getFlightFare();
+          this.getToken();
         }
       } catch (error) {
         this.router.navigateByUrl('');
@@ -147,23 +144,39 @@ export class SelectScheduleComponent
     this.getFlightFare();
   }
 
-  getFlightFare() {
-    const originalDates = this.checkDateRange();
-    const obs = this.booking.getFlightFare(this.form).subscribe({
-      next: (resp) => {
-        this.form.journeys.forEach((journey, index) => {
-          journey.departureDate = originalDates[index];
-          this.session.set('schedule', resp);
-          this.sessionValue = resp as IFlight;
-          this.securityToken = this.sessionValue.securityToken;
-          this.spinner = true;
-        });
+  getToken() {
+    const obs = this.booking.getToken().subscribe({
+      next: (resp: any) => {
+        this.securityToken = resp.securityToken;
+        this.session.set('securityToken', this.securityToken);
+        this.getFlightFare();
       },
       error: (error) => {
         this.popup.waring('Sorry, something went wrong.');
         console.log(error);
       },
     });
+    this.AddSubscription(obs);
+  }
+
+  getFlightFare() {
+    const originalDates = this.checkDateRange();
+    const obs = this.booking
+      .getFlightFare(this.form, this.securityToken)
+      .subscribe({
+        next: (resp) => {
+          this.form.journeys.forEach((journey, index) => {
+            journey.departureDate = originalDates[index];
+            this.session.set('schedule', resp);
+            this.sessionValue = resp as IFlight;
+            this.spinner = true;
+          });
+        },
+        error: (error) => {
+          this.popup.waring('Sorry, something went wrong.');
+          console.log(error);
+        },
+      });
     this.AddSubscription(obs);
   }
 

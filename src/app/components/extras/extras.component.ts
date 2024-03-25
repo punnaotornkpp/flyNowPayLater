@@ -77,7 +77,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       try {
         this.sharedService.triggerHeaderRefresh();
         const securityToken =
-          JSON.parse(this.session.get('schedule')).securityToken || '';
+          JSON.parse(this.session.get('securityToken')) || '';
         const extraContent = JSON.parse(this.session.get('extraContent'));
         if (extraContent) {
           this.items = extraContent.items;
@@ -85,6 +85,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           this.defaultBaggage = extraContent.baggage;
         }
         this.securityToken = securityToken;
+        console.log(this.securityToken);
         const flightFareKey: IPRICING = JSON.parse(
           this.session.get('flightFareKey')
         );
@@ -114,8 +115,8 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           this.loading = true;
         } else {
           await Promise.all([
-            this.getSSR(flightFareKey, securityToken),
-            this.getSeats(flightFareKey, securityToken),
+            this.getSSR(flightFareKey, this.securityToken),
+            this.getSeats(flightFareKey, this.securityToken),
           ]);
           this.session.set('extras', {
             ssr: this.ssr,
@@ -394,7 +395,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   updateSummary() {
     this.wait = false;
     const obs = this.booking
-      .SubmitBooking(this.form, this.securityToken)
+      .submitBooking(this.form, this.securityToken)
       .subscribe({
         next: (resp) => {
           this.summaryAmount = Number(resp.data!.totalAmount);

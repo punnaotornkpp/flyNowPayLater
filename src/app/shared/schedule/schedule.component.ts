@@ -32,28 +32,29 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
 
   ngOnInit(): void {
     this.findDefaultIndex();
-    if (this.value.length < 7) {
-      this.empty = true;
-    }
+    this.empty = this.value.length < 7;
   }
 
   onTabChange(event: MatTabChangeEvent, value: IJourney[]): void {
-    if (event.index === 0) {
-      this.onBackClick.emit((resp: boolean) => {
-        this.empty = resp;
-        this.findDefaultIndex();
-      });
-      return;
-    } else if (event.index === this.totalIndex - 1) {
-      this.onNextClick.emit();
-      return;
-    }
-    if (typeof window !== 'undefined' && window.sessionStorage) {
-      const sessionvalue = JSON.parse(this.session.get('history'));
-      sessionvalue.form.journeys[this.currentIndex].departureDate =
-        value[event.index - 1].departureDate;
-      this.session.set('history', { form: sessionvalue.form });
-      this.sharedService.triggerHeaderRefresh();
+    switch (event.index) {
+      case 0:
+        this.onBackClick.emit((resp: boolean) => {
+          this.empty = resp;
+          this.findDefaultIndex();
+        });
+        break;
+      case this.totalIndex - 1:
+        this.onNextClick.emit();
+        break;
+      default:
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+          const sessionvalue = JSON.parse(this.session.get('history'));
+          sessionvalue.form.journeys[this.currentIndex].departureDate =
+            value[event.index - 1].departureDate;
+          this.session.set('history', { form: sessionvalue.form });
+          this.sharedService.triggerHeaderRefresh();
+        }
+        break;
     }
   }
 
@@ -71,6 +72,12 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
 
   selectFlightFare(key: [IFlightFareKey, number], schedule: ISchedule[]) {
     const item = schedule[key[1]];
+    console.log(key[0], item.departureDate);
     this.onSelect.emit([key[0], item.departureDate]);
   }
+
+  // selectFlightFare(key: [IFlightFareKey, number], schedule: ISchedule[]): void {
+  //   const item = schedule[key[1]];
+  //   this.onSelect.emit({ fareKey: key[0], departureDate: item.departureDate });
+  // }
 }
