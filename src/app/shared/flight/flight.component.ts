@@ -5,7 +5,6 @@ import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-deta
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { IFare, ISchedule } from '../../model/flight-schedule';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
-import { SessionStorage } from '../../core/helper/session.helper';
 
 @Component({
   selector: 'app-flight',
@@ -37,52 +36,52 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
 
   /// ใช้
 
-  // ngOnInit(): void {
-  //   if (this.isSelectedFlight && this.value) {
-  //     this.value.forEach((schedule, index) => {
-  //       this.isSelectedFlight.forEach(
-  //         (selected: { journeyKey: string; fareKey: string }) => {
-  //           if (schedule.journeyKey === selected.journeyKey) {
-  //             const fareIndex = schedule.fares.findIndex(
-  //               (fare) => fare.fareKey === selected.fareKey
-  //             );
-  //             if (fareIndex !== -1) {
-  //               this.selectDetail(index, schedule.fares[fareIndex]);
-  //               this.isSelected = true;
-  //             }
-  //           }
-  //         }
-  //       );
-  //     });
-  //   }
-  // }
-
-  /// เทส ใช้ journeyKey เพื่อเช็คเพิ่ม
   ngOnInit(): void {
-    // console.log(this.isSelectedFlight);
-    // console.log(this.value);
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
-        this.isSelectedFlight.forEach((selected) => {
-          if (schedule.journeyKey === selected.journeyKey) {
-            console.log(schedule.journeyKey);
-            console.log(selected.journeyKey);
-            console.log(schedule);
-            const fareIndex = schedule.fares.findIndex(
-              (fare) => fare.fareKey === selected.fareKey
-            );
-            console.log(schedule.fares[fareIndex]);
-            console.log(selected.fareKey);
-            console.log(index);
-            if (fareIndex !== -1) {
-              this.selectDetail(index, schedule.fares[fareIndex]);
-              this.isSelected = true;
+        this.isSelectedFlight.forEach(
+          (selected: { journeyKey: string; fareKey: string }) => {
+            if (schedule.journeyKey === selected.journeyKey) {
+              const fareIndex = schedule.fares.findIndex(
+                (fare) => fare.fareKey === selected.fareKey
+              );
+              if (fareIndex !== -1) {
+                this.selectDetail(index, schedule.fares[fareIndex]);
+                this.isSelected = true;
+              }
             }
           }
-        });
+        );
       });
     }
   }
+
+  /// เทส ใช้ journeyKey เพื่อเช็คเพิ่ม
+  // ngOnInit(): void {
+  //   // console.log(this.isSelectedFlight);
+  //   // console.log(this.value);
+  //   if (this.isSelectedFlight && this.value) {
+  //     this.value.forEach((schedule, index) => {
+  //       this.isSelectedFlight.forEach((selected) => {
+  //         if (schedule.journeyKey === selected.journeyKey) {
+  //           console.log(schedule.journeyKey);
+  //           console.log(selected.journeyKey);
+  //           console.log(schedule);
+  //           const fareIndex = schedule.fares.findIndex(
+  //             (fare) => fare.fareKey === selected.fareKey
+  //           );
+  //           console.log(schedule.fares[fareIndex]);
+  //           console.log(selected.fareKey);
+  //           console.log(index);
+  //           if (fareIndex !== -1) {
+  //             this.selectDetail(index, schedule.fares[fareIndex]);
+  //             this.isSelected = true;
+  //           }
+  //         }
+  //       });
+  //     });
+  //   }
+  // }
 
   openDetailFlight(data: ISchedule) {
     this.dialog.open(DialogDetailFlightComponent, { data: data });
@@ -95,10 +94,14 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   selectFlightFare(item: IFare) {
+    console.log(this.value);
+    console.log(item.fareKey);
+    console.log(this.currentIndex);
     let setItem: IFlightFareKey = {
       fareKey: item.fareKey,
       journeyKey: this.value[this.currentIndex].journeyKey,
     };
+    console.log(setItem);
     this.onSelect.emit([setItem, this.selectedItem]);
   }
 }

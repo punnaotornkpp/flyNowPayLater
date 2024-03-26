@@ -62,7 +62,7 @@ export class BookingService {
 
   submitBooking(body: any, securityToken: string): Observable<any> {
     const headers = this.getHeaders(securityToken);
-    return this.http.post(`${this.apiUrl}/submit-hold-booking`, body, {
+    return this.http.post(`${this.apiUrl}/create-hold-pnr`, body, {
       headers,
     });
   }

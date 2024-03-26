@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { Router } from '@angular/router';
-import { FlightSearchForm, JourneySearch } from '../../model/session.model';
+import { FlightSearchForm } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
-import { IFare, IFlight, IJourney } from '../../model/flight-schedule';
+import { IFlight } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
@@ -248,7 +248,7 @@ export class SelectScheduleComponent
           this.popup.waring(
             'Sorry, something went wrong. , Please select other available flights.'
           );
-          this.router.navigateByUrl('');
+          // this.router.navigateByUrl('');
           console.log(error);
         },
       });

@@ -4,14 +4,7 @@ import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.h
 import { SessionStorage } from '../../core/helper/session.helper';
 import { DateTime } from '../../core/helper/date.helper';
 import { BookingService } from '../../service/booking.service';
-import {
-  IAdult,
-  IChildren,
-  IDispalyPassenger,
-  IInfant,
-  IPassengerInfo,
-} from '../../model/passenger.model';
-import { IFlightFareKey } from '../../model/pricing-detail.model';
+import { IDispalyPassenger } from '../../model/passenger.model';
 import { PopupService } from '../../service/popup.service';
 
 @Component({

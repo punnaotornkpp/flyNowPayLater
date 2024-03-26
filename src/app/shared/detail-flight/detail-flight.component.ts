@@ -8,9 +8,6 @@ import {
 } from '@angular/core';
 import { IFare } from '../../model/flight-schedule';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
-import { SessionStorage } from '../../core/helper/session.helper';
-import { SharedService } from '../../service/shared.service';
-import { IFlightFareKey } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-detail-flight',

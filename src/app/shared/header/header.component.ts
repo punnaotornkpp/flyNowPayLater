@@ -9,18 +9,12 @@ import { FlightSearchForm } from '../../model/session.model';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SharedService } from '../../service/shared.service';
-import { IFare } from '../../model/flight-schedule';
 import {
-  IAirlinePricing,
-  IFlightFareKey,
   IPRICING,
   IPricingDetail,
   IResponseDetailPricing,
-  IResponsePricing,
-  ITaxesAndFee,
   TaxDetails,
 } from '../../model/pricing-detail.model';
-import { TranslateService } from '@ngx-translate/core';
 import { IResponseSubmit } from '../../model/submit.model';
 @Component({
   selector: 'app-header',

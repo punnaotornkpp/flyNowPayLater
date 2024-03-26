@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import {
-  IAirlinePricing,
   IAvailableExtraService,
   IBundleDetails,
   IResponseDetailPricing,
@@ -255,7 +254,7 @@ export class ExtraBaggageComponent
   }
 
   Cancel() {
-    this.dialogRef.close({ status: this.status, response: this.ssrSelections });
+    this.dialogRef.close({ status: this.status, response: '', type: 1 });
   }
 
   Confirm() {

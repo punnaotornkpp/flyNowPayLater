@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
-import { IFare, IJourney, ISchedule } from '../../model/flight-schedule';
+import { IJourney, ISchedule } from '../../model/flight-schedule';
 import { SharedService } from '../../service/shared.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { IFlightFareKey } from '../../model/pricing-detail.model';

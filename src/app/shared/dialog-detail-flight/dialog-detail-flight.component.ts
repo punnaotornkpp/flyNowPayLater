@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IJourney, ISchedule } from '../../model/flight-schedule';
+import { ISchedule } from '../../model/flight-schedule';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 
 @Component({
