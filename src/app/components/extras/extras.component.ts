@@ -368,13 +368,13 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
 
   getGender(title: string) {
     if (
-      title === 'Mr' ||
-      title === 'Monk' ||
-      title === 'Mstr' ||
-      title === 'Boy'
+      title === 'MR' ||
+      title === 'MONK' ||
+      title === 'MSTR' ||
+      title === 'BOY'
     ) {
       return 'Male';
-    } else if (title === 'Mrs' || title === 'Miss' || title === 'Girl') {
+    } else if (title === 'MRS' || title === 'MISS' || title === 'GIRL') {
       return 'Female';
     } else {
       return 'Unknow';

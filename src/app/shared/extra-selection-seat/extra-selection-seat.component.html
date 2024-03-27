@@ -180,7 +180,7 @@
                       <!-- {{ row.rowNumber }}{{ seat }} -->
                     </button>
                   </div>
-                  <div class="col-1 text-end">{{ row.rowNumber }}</div>
+                  <!-- <div class="col-1 text-end">{{ row.rowNumber }}</div> -->
                 </div>
               </div>
               <div class="row text-center mt-5">
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div class="col-12 row d-flex justify-content-end py-3">
-          <div class="col-2 text-align-end">
+          <div class="col-6 col-sm-4 col-lg-2 text-align-end">
             <button
               mat-raised-button
               (click)="Cancel()"
@@ -209,7 +209,7 @@
               <span>Cancel</span>
             </button>
           </div>
-          <div class="col-2 text-align-end">
+          <div class="col-6 col-sm-4 col-lg-2 text-align-end">
             <button
               mat-raised-button
               (click)="Confirm()"

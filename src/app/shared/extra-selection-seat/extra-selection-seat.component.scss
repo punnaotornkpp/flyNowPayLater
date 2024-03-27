@@ -37,6 +37,18 @@ mat-card-title , mat-card-subtitle {
     height: 65px;
 }
 
+@media (max-width: 767px) { 
+  .button-seat {
+      width: 30px !important;
+      height: 30px !important;
+  }
+
+  .border-seat-map-plane {
+    border-left: 2px solid #ccc !important;
+    border-right: 2px solid #ccc !important;
+  }
+}
+
 .select-passenger {
   background-color: white; 
   transition: background-color 0.3s; 
@@ -131,6 +143,7 @@ mat-card-title , mat-card-subtitle {
     border-right: 5px solid #ccc;
     margin-bottom: 10px;
 }
+
 
 
 
