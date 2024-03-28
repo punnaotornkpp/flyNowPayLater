@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from './http.service';
 import { Observable } from 'rxjs';
-import { IAirport } from '../model/airport.model';
 import { environment } from '../../environments/environment';
 import { FlightSearchForm } from '../model/session.model';
 import { IPRICING } from '../model/pricing-detail.model';
@@ -11,68 +9,60 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class BookingService {
-  header = new HttpHeaders();
-  client_id = '388023c5e52a4b179464a80c0eb6dcfb';
-  client_secret = 'F2F0930159684A76aCeeB37Dba8E4a2D';
-  constructor(private http: HttpService, private httpc: HttpClient) {}
+  private apiUrl = environment.book;
+  private clientId = environment.clientId;
+  private clientSecret = environment.clientSecret;
 
-  getFlightFare<T>(body: FlightSearchForm): Observable<T> {
+  constructor(private http: HttpClient) {}
+
+  private getHeaders(securityToken: string): HttpHeaders {
+    return new HttpHeaders()
+      .append('Security-Token', securityToken)
+      .append('Content-Type', 'application/json')
+      .append('client_id', this.clientId)
+      .append('client_secret', this.clientSecret);
+  }
+
+  getToken(): Observable<any> {
+    const headers = new HttpHeaders()
+      .append('client_id', this.clientId)
+      .append('client_secret', this.clientSecret);
+    return this.http.get(`${this.apiUrl}/token`, {
+      headers,
+    });
+  }
+
+  getFlightFare(
+    body: FlightSearchForm,
+    securityToken: string
+  ): Observable<any> {
+    const headers = this.getHeaders(securityToken);
     return this.http.post(
-      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/available-flight-fare-date-range`,
-      body
+      `${this.apiUrl}/available-flight-fare-date-range`,
+      body,
+      { headers }
     );
   }
 
   getPricingDetail(body: IPRICING, securityToken: string): Observable<any> {
-    let headers = new HttpHeaders()
-      .append('Security-Token', securityToken)
-      .append('Content-Type', 'application/json')
-      .append('client_id', this.client_id)
-      .append('client_secret', this.client_secret);
-
-    return this.httpc.post(
-      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/pricing-details`,
-      body,
-      { headers }
-    );
+    const headers = this.getHeaders(securityToken);
+    return this.http.post(`${this.apiUrl}/pricing-details`, body, { headers });
   }
 
   getSSR(body: any, securityToken: string): Observable<any> {
-    let headers = new HttpHeaders()
-      .append('Security-Token', securityToken)
-      .append('Content-Type', 'application/json')
-      .append('client_id', this.client_id)
-      .append('client_secret', this.client_secret);
-    return this.httpc.post(
-      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/ssr`,
-      body,
-      { headers }
-    );
+    const headers = this.getHeaders(securityToken);
+    return this.http.post(`${this.apiUrl}/ssr`, body, { headers });
   }
 
   getSeat(body: any, securityToken: string): Observable<any> {
-    let headers = new HttpHeaders()
-      .append('Security-Token', securityToken)
-      .append('Content-Type', 'application/json')
-      .append('client_id', this.client_id)
-      .append('client_secret', this.client_secret);
-    return this.httpc.post(
-      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/seat-map`,
-      body,
-      { headers }
-    );
+    const headers = this.getHeaders(securityToken);
+    return this.http.post(`${this.apiUrl}/seat-map`, body, { headers });
   }
 
-  SubmitBooking(body: any, securityToken: string): Observable<any> {
-    let headers = new HttpHeaders()
-      .append('Security-Token', securityToken)
-      .append('Content-Type', 'application/json')
-      .append('client_id', this.client_id)
-      .append('client_secret', this.client_secret);
-    return this.httpc.post(
-      `https://nok-booking-exp-api-oo7c6f.0bujfs.sgp-s1.cloudhub.io/v1/submit-hold-booking`,
-      body,
-      { headers }
-    );
+  submitBooking(body: any, securityToken: string): Observable<any> {
+    const headers = this.getHeaders(securityToken);
+    return this.http.post(`${this.apiUrl}/create-hold-pnr`, body, {
+      headers,
+    });
   }
 }

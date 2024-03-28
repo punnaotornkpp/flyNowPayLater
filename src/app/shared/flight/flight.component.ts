@@ -5,7 +5,6 @@ import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-deta
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { IFare, ISchedule } from '../../model/flight-schedule';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
-import { SessionStorage } from '../../core/helper/session.helper';
 
 @Component({
   selector: 'app-flight',
@@ -25,8 +24,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver,
-    private session: SessionStorage
+    private breakpointObserver: BreakpointObserver
   ) {
     super();
     this.breakpointObserver
@@ -37,6 +35,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.currentIndex);
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
         this.isSelectedFlight.forEach(
@@ -69,8 +68,9 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   selectFlightFare(item: IFare) {
     let setItem: IFlightFareKey = {
       fareKey: item.fareKey,
-      journeyKey: this.value[this.currentIndex].journeyKey,
+      journeyKey: this.value[this.selectedItem].journeyKey,
     };
+    console.log(setItem);
     this.onSelect.emit([setItem, this.selectedItem]);
   }
 }

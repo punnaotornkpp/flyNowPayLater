@@ -17,8 +17,10 @@
               <mat-icon class="f-32 f-nokair">person</mat-icon>
             </div>
             <div>
-              <div class="bold f-24 py-2">Passenger (s)</div>
-              <div class="bold">Passenger detail</div>
+              <div class="bold f-24 py-2">
+                {{ "passenger" | translate }} (s)
+              </div>
+              <div class="bold">{{ "passenger-detail" | translate }}</div>
             </div>
           </div>
           <div class="px-3">
@@ -28,8 +30,10 @@
             >
               <div class="row bold py-1">
                 <div class="col-sm-5 col-12">{{ item.type }}</div>
-                <div class="col-sm-2 col-12">Date of birth</div>
-                <div class="col-sm-5 col-12" *ngIf="i === 0">E-mail</div>
+                <div class="col-sm-2 col-12">{{ "date" | translate }}</div>
+                <div class="col-sm-5 col-12" *ngIf="i === 0">
+                  {{ "email" | translate }}
+                </div>
                 <div class="col-sm-5 col-12" *ngIf="item.type === 'Infant'">
                   {{ item.associateInfantToAdult || "" }}
                 </div>
@@ -54,12 +58,14 @@
               <mat-icon class="f-32 f-nokair">credit_card</mat-icon>
             </div>
             <div>
-              <div class="bold f-24 py-2">Payment</div>
-              <div class="bold">Select payment method</div>
+              <div class="bold f-24 py-2">
+                {{ "payment-submit" | translate }}
+              </div>
+              <div class="bold">{{ "select-payment" | translate }}</div>
             </div>
           </div>
           <div class="pb-5 px-3">
-            Select a payment to complete booking
+            {{ "select-payment-detail" | translate }}
             <div class="py-4">
               <mat-accordion>
                 <mat-expansion-panel
@@ -90,13 +96,9 @@
       </div>
       <section class="px-3">
         <div class="f-16 bold f-nokair">
-          Terms & Conditions | Privacy Policy
+          {{ "term-submit" | translate }}
         </div>
-        <mat-checkbox
-          >I certify that I have read, understand and accept the Nok Air’s terms
-          and conditions and privacy policy. Nok Air reserves the rights to
-          cancel booking and refund payment.</mat-checkbox
-        >
+        <mat-checkbox>{{ "check" | translate }}</mat-checkbox>
       </section>
       <div class="col-12 d-flex justify-content-space-between py-2">
         <div class="col text-align-start">

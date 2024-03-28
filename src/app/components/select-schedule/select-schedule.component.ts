@@ -2,17 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { Router } from '@angular/router';
-import { FlightSearchForm, JourneySearch } from '../../model/session.model';
+import { FlightSearchForm } from '../../model/session.model';
 import { BookingService } from '../../service/booking.service';
-import { IFare, IFlight, IJourney } from '../../model/flight-schedule';
+import { IFlight } from '../../model/flight-schedule';
 import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
-import {
-  IFlightFareKey,
-  IPRICING,
-  IResponseDetailPricing,
-} from '../../model/pricing-detail.model';
+import { IFlightFareKey, IPRICING } from '../../model/pricing-detail.model';
 
 @Component({
   selector: 'app-select-schedule',
@@ -29,10 +25,10 @@ export class SelectScheduleComponent
   status: boolean = false;
   defaultDate = '';
   combineItem: IFlightFareKey[] = [];
-  securityToken = '';
   loading: boolean = false;
   isLoading: boolean = false;
   selectedFlight: IFlightFareKey[] = [];
+  securityToken: string = '';
 
   constructor(
     private session: SessionStorage,
@@ -49,21 +45,25 @@ export class SelectScheduleComponent
       try {
         const history = this.session.get('history');
         const schedule = this.session.get('schedule') || '';
+        const securityToken = this.session.get('securityToken');
+
         const selectedFlight = JSON.parse(
           this.session.get('flightFareKey')
         ) as IPRICING;
         if (selectedFlight) {
           this.selectedFlight = selectedFlight.flightFareKey;
           this.combineItem = this.selectedFlight;
+          this.loading = true;
         }
         this.form = JSON.parse(history).form as FlightSearchForm;
         if (schedule) {
           const data = JSON.parse(schedule);
+          this.securityToken = JSON.parse(securityToken);
           this.sessionValue = data as IFlight;
           this.spinner = true;
           return;
         } else {
-          this.getFlightFare();
+          this.getToken();
         }
       } catch (error) {
         this.router.navigateByUrl('');
@@ -147,23 +147,39 @@ export class SelectScheduleComponent
     this.getFlightFare();
   }
 
-  getFlightFare() {
-    const originalDates = this.checkDateRange();
-    const obs = this.booking.getFlightFare(this.form).subscribe({
-      next: (resp) => {
-        this.form.journeys.forEach((journey, index) => {
-          journey.departureDate = originalDates[index];
-          this.session.set('schedule', resp);
-          this.sessionValue = resp as IFlight;
-          this.securityToken = this.sessionValue.securityToken;
-          this.spinner = true;
-        });
+  getToken() {
+    const obs = this.booking.getToken().subscribe({
+      next: (resp: any) => {
+        this.securityToken = resp.securityToken;
+        this.session.set('securityToken', this.securityToken);
+        this.getFlightFare();
       },
       error: (error) => {
         this.popup.waring('Sorry, something went wrong.');
         console.log(error);
       },
     });
+    this.AddSubscription(obs);
+  }
+
+  getFlightFare() {
+    const originalDates = this.checkDateRange();
+    const obs = this.booking
+      .getFlightFare(this.form, this.securityToken)
+      .subscribe({
+        next: (resp) => {
+          this.form.journeys.forEach((journey, index) => {
+            journey.departureDate = originalDates[index];
+            this.session.set('schedule', resp);
+            this.sessionValue = resp as IFlight;
+            this.spinner = true;
+          });
+        },
+        error: (error) => {
+          this.popup.waring('Sorry, something went wrong.');
+          console.log(error);
+        },
+      });
     this.AddSubscription(obs);
   }
 
@@ -235,7 +251,7 @@ export class SelectScheduleComponent
           this.popup.waring(
             'Sorry, something went wrong. , Please select other available flights.'
           );
-          this.router.navigateByUrl('');
+          // this.router.navigateByUrl('');
           console.log(error);
         },
       });

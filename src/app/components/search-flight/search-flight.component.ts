@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-search-flight',
@@ -8,5 +7,4 @@ import { FormControl } from '@angular/forms';
 })
 export class SearchFlightComponent {
   constructor() {}
-  colorControl = new FormControl();
 }

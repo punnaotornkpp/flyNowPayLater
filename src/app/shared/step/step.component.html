@@ -7,7 +7,7 @@
       (click)="redirect(1)"
     >
       <div class="step-center">
-        {{ !this.isSmallScreen ? "Search" : "1" }}
+        {{ !this.isSmallScreen ? ("search" | translate) : "1" }}
       </div>
     </button>
     <button
@@ -17,7 +17,7 @@
       (click)="redirect(2)"
     >
       <div class="step-center">
-        {{ !this.isSmallScreen ? "Select Flight" : "2" }}
+        {{ !this.isSmallScreen ? ("select-flight" | translate) : "2" }}
       </div>
     </button>
     <button
@@ -27,7 +27,7 @@
       (click)="redirect(3)"
     >
       <div class="step-center">
-        {{ !this.isSmallScreen ? "Passenger Info" : "3" }}
+        {{ !this.isSmallScreen ? ("passenger-info" | translate) : "3" }}
       </div>
     </button>
     <button
@@ -37,7 +37,7 @@
       (click)="redirect(4)"
     >
       <div class="step-center">
-        {{ !this.isSmallScreen ? "Extra Services" : "4" }}
+        {{ !isSmallScreen ? ("extra-service" | translate) : "4" }}
       </div>
     </button>
     <button
@@ -47,7 +47,7 @@
       (click)="redirect(5)"
     >
       <div class="step-center">
-        {{ !this.isSmallScreen ? "Payment" : "5" }}
+        {{ !this.isSmallScreen ? ("payment" | translate) : "5" }}
       </div>
     </button>
   </div>

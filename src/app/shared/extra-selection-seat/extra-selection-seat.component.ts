@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import {
-  IAirlinePricing,
   ISeat,
   ISeatAssign,
   ISeatCharge,
@@ -10,7 +9,6 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IDispalyPassenger } from '../../model/passenger.model';
 import { ExtrasComponent } from '../../components/extras/extras.component';
-import { SeatRow } from '../../model/extras.model';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { IData, IResponseAirline } from '../../model/submit.model';
 
@@ -52,7 +50,6 @@ export class ExtraSelectionSeatComponent
   seatAssign: ISeatAssign[] = [];
   show: boolean[] = [];
   currentShownIndex = 0;
-
   passengerSeatSelections: Map<string, PassengerSeatSelection> = new Map();
   selectedSeats: Map<string, SeatSelection> = new Map();
   selectedSeat: string = '';
@@ -278,7 +275,7 @@ export class ExtraSelectionSeatComponent
   }
 
   Cancel() {
-    this.dialogRef.close({ status: false, response: '' });
+    this.dialogRef.close({ status: false, response: [], type: 0 });
   }
 
   Confirm() {

@@ -1,18 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import { Router } from '@angular/router';
 import { SessionStorage } from '../../core/helper/session.helper';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FlightSearchForm } from '../../model/session.model';
 import { PopupService } from '../../service/popup.service';
 import { ageValidator } from '../../core/helper/ageValidate.helper';
-import { setControl, setControls } from '../../core/helper/form.helper';
+import { setControl } from '../../core/helper/form.helper';
 
 @Component({
   selector: 'app-passengers',

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { IResponseSubmit } from '../../../model/submit.model';
 import { SessionStorage } from '../../../core/helper/session.helper';
 import { ITaxesAndFee } from '../../../model/pricing-detail.model';

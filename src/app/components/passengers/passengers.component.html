@@ -17,8 +17,8 @@
             <mat-icon class="f-32 f-nokair">group_add</mat-icon>
           </div>
           <div>
-            <div class="bold f-24 py-2">Passengers</div>
-            <div class="bold">Enter passenger details</div>
+            <div class="bold f-24 py-2">{{ "passenger-info" | translate }}</div>
+            <div class="bold">{{ "passenger-content" | translate }}</div>
           </div>
         </div>
       </div>
@@ -39,8 +39,10 @@
                   <mat-panel-title class="f-20 bold text-dark">
                     <mat-icon class="f-32 px-2">account_circle</mat-icon>
                     <div class="text-responsive">
-                      Passenger {{ i + 1 }}
-                      <span *ngIf="i === 0">(Primary passenger)</span>
+                      {{ "passenger" | translate }} {{ i + 1 }}
+                      <span *ngIf="i === 0"
+                        >({{ "primary-passenger" | translate }})</span
+                      >
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -48,30 +50,30 @@
                   <div class="row col-12 pt-2">
                     <div class="col-12 col-md-6 col-lg-2 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>Title</mat-label>
+                        <mat-label> {{ "title" | translate }}</mat-label>
                         <mat-select formControlName="title" required>
-                          <mat-option value="Mr">Mr</mat-option>
-                          <mat-option value="Mrs">Mrs</mat-option>
-                          <mat-option value="Miss">Miss</mat-option>
-                          <mat-option value="Monk">Monk</mat-option>
+                          <mat-option value="MR">Mr</mat-option>
+                          <mat-option value="MRS">Mrs</mat-option>
+                          <mat-option value="MISS">Miss</mat-option>
+                          <mat-option value="MONK">Monk</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-md-6 col-lg-5 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>First name & Middle name</mat-label>
+                        <mat-label> {{ "first-name" | translate }}</mat-label>
                         <input matInput formControlName="firstName" required />
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-md-6 col-lg-5 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>Last name</mat-label>
+                        <mat-label> {{ "last-name" | translate }}</mat-label>
                         <input matInput formControlName="lastName" required />
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>Date of birth</mat-label>
+                        <mat-label> {{ "date" | translate }}</mat-label>
                         <input
                           matInput
                           formControlName="birthdayDate"
@@ -92,12 +94,12 @@
                     </div>
                   </div>
                   <div *ngIf="i === 0" class="py-3 f-24">
-                    Contact Information
+                    {{ "contact-info" | translate }}
                   </div>
                   <div *ngIf="i === 0" class="row col-12">
                     <div class="col-12 col-md-6 col-lg-6 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>Mobile Phone</mat-label>
+                        <mat-label> {{ "phone" | translate }}</mat-label>
                         <input
                           matInput
                           NumberInputDirective
@@ -110,16 +112,14 @@
                     </div>
                     <div *ngIf="i === 0" class="col-12 col-md-6 col-lg-6 py-2">
                       <mat-form-field class="full-width">
-                        <mat-label>Email</mat-label>
+                        <mat-label> {{ "email" | translate }}</mat-label>
                         <input matInput formControlName="email" required />
                       </mat-form-field>
                     </div>
                   </div>
                   <section *ngIf="i === 0" class="py-2">
-                    <mat-checkbox formControlName="newsletter"
-                      >I would like to receive news and special offers from Nok
-                      Air at the contact provided and accept Nok Air’s privacy
-                      policy.</mat-checkbox
+                    <mat-checkbox formControlName="newsletter">
+                      {{ "news" | translate }}</mat-checkbox
                     >
                   </section>
                 </div>
@@ -154,8 +154,8 @@
                       <mat-form-field class="full-width">
                         <mat-label>Title</mat-label>
                         <mat-select formControlName="title" required>
-                          <mat-option value="Mstr">Mstr</mat-option>
-                          <mat-option value="Miss">Miss</mat-option>
+                          <mat-option value="MSTR">Mstr</mat-option>
+                          <mat-option value="MISS">Miss</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
@@ -266,8 +266,8 @@
                       <mat-form-field class="full-width">
                         <mat-label>Title</mat-label>
                         <mat-select formControlName="title" required>
-                          <mat-option value="Boy">Boy</mat-option>
-                          <mat-option value="Girl">Girl</mat-option>
+                          <mat-option value="BOY">Boy</mat-option>
+                          <mat-option value="GIRL">Girl</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
@@ -317,7 +317,7 @@
               (click)="redirectPrevious(); $event.stopPropagation()"
               class="large-button"
             >
-              <u>Previous</u>
+              <u>{{ "previous" | translate }}</u>
             </button>
           </div>
           <div class="col text-align-end">
@@ -327,7 +327,7 @@
               class="large-button"
               color="accent"
             >
-              <span>Next</span>
+              <span>{{ "next" | translate }}</span>
             </button>
           </div>
         </div>

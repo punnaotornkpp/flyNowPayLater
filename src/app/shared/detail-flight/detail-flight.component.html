@@ -1,8 +1,8 @@
 <div class="background-detail-flight">
   <div class="row col-12">
     <div class="col-12 col-lg-6 p-4 pb-0">
-      <div class="f-20 bold pb-3">Choose more services</div>
-      <div>Instantly add more convenience to travel</div>
+      <div class="f-20 bold pb-3">{{ "choose-services" | translate }}</div>
+      <div>{{ "choose-services-content" | translate }}</div>
     </div>
     <div class="col-12 col-lg-6 py-3">
       <mat-card
@@ -15,7 +15,7 @@
         ><div class="border-bottom-black pb-2">
           <div class="f-20" *ngIf="item.productCode === 'NF'">Nok Lite</div>
           <div class="f-20" *ngIf="item.productCode === 'NB'">
-            Nok X-tra (Recommended!)
+            Nok X-tra ({{ "recommended" | translate }}!)
           </div>
           <div class="f-20" *ngIf="item.productCode === 'NE'">Nok MAX</div>
         </div>
@@ -27,7 +27,7 @@
             <div class="col-lg-1 col-4">
               <mat-icon class="f-24">work</mat-icon>
             </div>
-            <div class="col align-items-center">7kg Carry-on baggage</div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
           </div>
         </div>
         <div
@@ -38,15 +38,14 @@
             <div class="col-lg-1 col-4">
               <mat-icon class="f-24">work</mat-icon>
             </div>
-            <div class="col align-items-center">7kg Carry-on baggage</div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
           </div>
           <div class="d-flex col-12">
             <div class="col-lg-1 col-4">
               <mat-icon class="f-24">luggage</mat-icon>
             </div>
             <div class="col align-items-center">
-              15kg Checked baggage for domestic flight / 20kg Checked baggage
-              for international flight
+              {{ "15kg" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -54,7 +53,7 @@
               <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
             </div>
             <div class="col align-items-center">
-              Advanced seat selection (DD flight only)
+              {{ "advanced-seat" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -62,8 +61,7 @@
               <mat-icon class="f-24">change_circle</mat-icon>
             </div>
             <div class="col align-items-center">
-              Eligible for reroute only domestic flight through Airport Ticket
-              Counter or Call Center 1318 or +66 (0) 2 439 3344
+              {{ "eligible-reroute" | translate }}
             </div>
           </div>
         </div>
@@ -76,9 +74,7 @@
               <mat-icon class="f-24">restaurant</mat-icon>
             </div>
             <div class="col align-items-center">
-              Hot meal for international flights/ Snack box for domestic flights
-              *Booked at least 48 hours before departure* For cross-regional
-              routes , meals and drinks on board will not be available.
+              {{ "hot-meal" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -86,22 +82,21 @@
               <mat-icon class="f-24">luggage</mat-icon>
             </div>
             <div class="col align-items-center">
-              25kg Checked baggage for domestic flight / 30kg Checked baggage
-              for international flight
+              {{ "25kg" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
             <div class="col-lg-1 col-4">
               <mat-icon class="f-24">work</mat-icon>
             </div>
-            <div class="col align-items-center">7kg Carry-on baggage</div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
           </div>
           <div class="d-flex col-12">
             <div class="col-lg-1 col-4">
               <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
             </div>
             <div class="col align-items-center">
-              Advanced seat selection (DD flight only)
+              {{ "advanced-seat" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -109,7 +104,7 @@
               <mat-icon class="f-24">run_circle</mat-icon>
             </div>
             <div class="col align-items-center">
-              Priority boarding (Nok First)
+              {{ "priority-boarding" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -117,8 +112,7 @@
               <mat-icon class="f-24">airline_seat_flat</mat-icon>
             </div>
             <div class="col align-items-center">
-              Lounge Access (Available at Bangkok-Don Mueang and for Domestic
-              flights only)
+              {{ "lounge-access" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -126,8 +120,7 @@
               <mat-icon class="f-24">change_circle</mat-icon>
             </div>
             <div class="col align-items-center">
-              Eligible for reroute only domestic flight through Airport Ticket
-              Counter or Call Center 1318 or +66 (0) 2 439 3344
+              {{ "eligible-reroute" | translate }}
             </div>
           </div>
           <div class="d-flex col-12">
@@ -135,7 +128,7 @@
               <mat-icon class="f-24">flight_takeoff</mat-icon>
             </div>
             <div class="col align-items-center">
-              Changing your flights without additional fee
+              {{ "changing" | translate }}
             </div>
           </div>
         </div>

@@ -17,7 +17,8 @@
           <div>
             <div class="bold f-24 py-2">{{ journey.title || "" }}</div>
             <div class="">
-              {{ journey.originName || "" }} ({{ journey.origin || "" }}) To
+              {{ journey.originName || "" }} ({{ journey.origin || "" }})
+              {{ "to-header" | translate }}
               {{ journey.destinationName || "" }} ({{
                 journey.destination || ""
               }})
@@ -49,22 +50,6 @@
     </div>
     <div class="container-fluid">
       <div class="pb-5 f-14">
-        <div class="py-2">
-          Please note that the final price will be displayed on the last step of
-          the booking process. The fuel cost fluctuation (included in price).
-        </div>
-        <div class="py-2">
-          For “Muti-city” booking which involved flight connections, do ensure
-          sufficient time for aircraft changes. A minimum of 2 hours for
-          domestic on to domestic and 3 hours for International inbound and
-          outbound connections.
-        </div>
-        <div class="py-2">
-          <strong>International route</strong>: Passenger who hold only one-way
-          ticket may be denied entry at the destination. Please ensure you are
-          in compliance with the entry requirements and regulations at your
-          destination before payment.
-        </div>
         <div class="col-12 d-flex justify-content-space-between py-2">
           <div class="col text-align-start">
             <button
@@ -72,7 +57,7 @@
               (click)="redirectPrevious()"
               class="large-button"
             >
-              <u>Previous</u>
+              <u>{{ "previous" | translate }}</u>
             </button>
           </div>
           <div class="col text-align-end" *ngIf="loading">
@@ -82,7 +67,7 @@
               class="large-button"
               color="accent"
             >
-              <span>Next</span>
+              <span>{{ "next" | translate }}</span>
             </button>
           </div>
         </div>

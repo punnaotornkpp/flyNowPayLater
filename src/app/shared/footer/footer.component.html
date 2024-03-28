@@ -1,21 +1,21 @@
-<div class="background-nokair footer">
+<div class="background-nokair footer" *ngIf="footer">
   <div class="container container-max-width">
     <div class="mt-4 col row text-align-start f-black">
-      <div class="col text-spacing">
-        <h3 class="bold p-0 m-0">Booking</h3>
+      <div class="col-6 col-md-3 col-lg-2 text-spacing">
+        <h3 class="bold p-0 m-0">{{ "booking" | translate }}</h3>
         <div *ngFor="let link of footer.booking">
           <a [href]="link.url" target="_blank" class="f-14">{{ link.title }}</a>
         </div>
       </div>
-      <div class="col text-spacing">
-        <h3 class="bold p-0 m-0">Journey Planning</h3>
+      <div class="col-6 col-md-3 col-lg-2 text-spacing">
+        <h3 class="bold p-0 m-0">{{ "journey-planning" | translate }}</h3>
         <div *ngFor="let link of footer.journeyPlanning">
           <a [href]="link.url" target="_blank" class="f-14">{{ link.title }}</a>
         </div>
       </div>
-      <div class="col text-spacing">
+      <div class="col-6 col-md-3 col-lg-2 text-spacing">
         <div class="mb-3">
-          <h3 class="bold p-0 m-0">About Us</h3>
+          <h3 class="bold p-0 m-0">{{ "about-us" | translate }}</h3>
           <div *ngFor="let link of footer.aboutUs">
             <a [href]="link.url" target="_blank" class="f-14">{{
               link.title
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="mb-3">
-          <h3 class="bold p-0 m-0">In-flight Service</h3>
+          <h3 class="bold p-0 m-0">{{ "in-flight" | translate }}</h3>
           <div *ngFor="let link of footer.inFlightService">
             <a [href]="link.url" target="_blank" class="f-14">{{
               link.title
@@ -31,9 +31,9 @@
           </div>
         </div>
       </div>
-      <div class="col text-spacing">
+      <div class="col-6 col-md-3 col-lg-2 text-spacing">
         <div class="mb-3">
-          <h3 class="bold p-0 m-0">Nok Fan Club</h3>
+          <h3 class="bold p-0 m-0">{{ "nok-fan-club" | translate }}</h3>
           <div *ngFor="let link of footer.nokFanClub">
             <a [href]="link.url" target="_blank" class="f-14">{{
               link.title
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="mb-3">
-          <h3 class="bold p-0 m-0">Corporate Customer</h3>
+          <h3 class="bold p-0 m-0">{{ "corporate-customer" | translate }}</h3>
           <div *ngFor="let link of footer.corporateCustomer">
             <a [href]="link.url" target="_blank" class="f-14">{{
               link.title
@@ -63,37 +63,39 @@
           </h3>
         </div>
       </div>
-      <div class="col-4 text-spacing border-left-black">
-        <div class="mb-3">
-          <h3 class="bold p-0 m-0 pb-2">Nok Mobile</h3>
-          <div class="f-16">
-            Bringing you greater convenient journey, download now
-          </div>
-          <div class="py-3 row row-cols-3">
-            <div class="col p-1" *ngFor="let item of download">
-              <a [href]="item.url">
-                <img [src]="item.img" alt="" />
-              </a>
+      <div class="col-12 col-lg-4 text-spacing border-left-black">
+        <div class="col row">
+          <div class="col-12 col-sm-6 col-lg-12 mb-3">
+            <h3 class="bold p-0 m-0 pb-2">Nok Mobile</h3>
+            <div class="f-16">
+              {{ "nok-mobile-contnet" | translate }}
+            </div>
+            <div class="py-3 row row-cols-3">
+              <div class="col p-1" *ngFor="let item of download">
+                <a [href]="item.url">
+                  <img [src]="item.img" alt="" />
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="mt-3">
-          <h3 class="bold p-0 m-0 pb-2">Follow us on</h3>
-        </div>
-        <div class="py-1 row row-cols-5">
-          <div
-            *ngFor="let hoverState of isHovering; let i = index"
-            class="col p-1"
-          >
-            <a [href]="hoverState.url">
-              <img
-                [src]="hoverState.img"
-                alt=""
-                [ngClass]="{ 'invert-colors': hoverState.status }"
-                (mouseover)="hoverState.status = true"
-                (mouseout)="hoverState.status = false"
-              />
-            </a>
+          <div class="col-12 col-sm-6 col-lg-12 mt-3">
+            <h3 class="bold p-0 m-0 pb-2">{{ "follow-us" | translate }}</h3>
+            <div class="py-1 row row-cols-5">
+              <div
+                *ngFor="let hoverState of isHovering; let i = index"
+                class="col p-1"
+              >
+                <a [href]="hoverState.url">
+                  <img
+                    [src]="hoverState.img"
+                    alt=""
+                    [ngClass]="{ 'invert-colors': hoverState.status }"
+                    (mouseover)="hoverState.status = true"
+                    (mouseout)="hoverState.status = false"
+                  />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -103,12 +105,14 @@
         <a
           href="//content.nokair.com/en/Terms/terms-and-conditions.aspx"
           class="f-300"
-          >Terms &amp; Conditions</a
+          >{{ "terms-conditions" | translate }}</a
         >
       </span>
       <span class="border-right-black px-2">
-        <a href="//content.nokair.com/en/Terms/Terms-of-use.aspx" class="f-300"
-          >Terms of Use</a
+        <a
+          href="//content.nokair.com/en/Terms/Terms-of-use.aspx"
+          class="f-300"
+          >{{ "terms-use" | translate }}</a
         >
       </span>
 
@@ -116,13 +120,12 @@
         <a
           href="//content.nokair.com/en/Terms/Privacy-policy.aspx"
           class="f-300"
-          >Privacy Policy</a
+          >{{ "privacy-policy" | translate }}</a
         >
       </span>
 
       <span class="f-black px-2 f-300"
-        >&copy;2017 Nok Airlines Public Company Limited. All Right
-        Reserved.</span
+        >&copy;2017 {{ "footer-by" | translate }}</span
       >
     </div>
     <div class="center">

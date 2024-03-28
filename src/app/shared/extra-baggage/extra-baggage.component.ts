@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
 import {
-  IAirlinePricing,
   IAvailableExtraService,
   IBundleDetails,
   IResponseDetailPricing,
@@ -42,7 +41,6 @@ export class ExtraBaggageComponent
   ssrSelections: SsrSelection[] = [];
   filteredSsrOptions: SsrOption[] = [];
   initialValue: SsrOption[] = [];
-  status: boolean = false;
   selectedOptions: {
     [passengerIndex: number]: { [flightNumber: string]: string };
   } = {};
@@ -65,7 +63,6 @@ export class ExtraBaggageComponent
     if (this.data.selected && this.data.selected.length > 0) {
       this.ssrSelections = this.data.selected;
       this.applySelectedOptions();
-      this.status = true;
     } else {
       this.applyDefaultOptions();
     }
@@ -255,7 +252,7 @@ export class ExtraBaggageComponent
   }
 
   Cancel() {
-    this.dialogRef.close({ status: this.status, response: this.ssrSelections });
+    this.dialogRef.close({ status: false, response: [], type: 1 });
   }
 
   Confirm() {

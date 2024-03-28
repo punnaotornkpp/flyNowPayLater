@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { INotificationPopup } from '../../model/notification.model';
 import { PopupService } from '../../service/popup.service';
 import { SubscriptionDestroyer } from '../../core/helper/subscriptionDestroyer.helper';
