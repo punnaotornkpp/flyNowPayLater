@@ -3,22 +3,13 @@
   max-width: 150px; 
   height: auto;
 }
-.language img {
-  width: 20px;
-}
-
-.language-selector mat-select {
-  margin-left: 10px; 
-}
-
-@media (max-width: 1023px) {
-  .language-selector {
-    justify-content: flex-end;
-  }
-}
 
 .container-display-header {
  padding-right: 16px;
+}
+
+.highlighted {
+  background-color: var(--nokair50);
 }
 
 

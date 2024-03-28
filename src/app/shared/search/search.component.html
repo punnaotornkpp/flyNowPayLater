@@ -10,8 +10,12 @@
               (change)="onToggleChange($event)"
               formControlName="typeRoute"
             >
-              <mat-button-toggle [value]="0">Round Trip</mat-button-toggle>
-              <mat-button-toggle [value]="1">One Way</mat-button-toggle>
+              <mat-button-toggle [value]="0">{{
+                "round-trip" | translate
+              }}</mat-button-toggle>
+              <mat-button-toggle [value]="1">{{
+                "one-way" | translate
+              }}</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
         </div>
@@ -20,7 +24,7 @@
           class="col-12 col-lg-2 col-md-6 d-flex justify-content-space-between py-2"
         >
           <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Currency</mat-label>
+            <mat-label>{{ "currency" | translate }}</mat-label>
             <mat-select value="THB" formControlName="currency" id="currency">
               <mat-option value="THB">Thai - Baht</mat-option>
               <!-- <mat-option value="USD">US - Dollar</mat-option> -->
@@ -39,7 +43,7 @@
               [formGroupName]="i"
             >
               <mat-form-field appearance="fill" class="full-width">
-                <mat-label>From</mat-label>
+                <mat-label>{{ "form" | translate }}</mat-label>
                 <input
                   matInput
                   [matAutocomplete]="auto"
@@ -68,7 +72,7 @@
               [formGroupName]="i"
             >
               <mat-form-field appearance="fill" class="full-width">
-                <mat-label>To</mat-label>
+                <mat-label>{{ "to" | translate }}</mat-label>
                 <input
                   matInput
                   [matAutocomplete]="autoDestination"
@@ -96,7 +100,7 @@
             [formGroupName]="i"
           >
             <mat-form-field appearance="fill" class="full-width">
-              <mat-label>Depart</mat-label>
+              <mat-label>{{ "depart" | translate }}</mat-label>
               <input
                 matInput
                 [matDatepicker]="picker"
@@ -123,7 +127,7 @@
             [formGroupName]="i"
           >
             <mat-form-field appearance="fill" class="full-width">
-              <mat-label>Return</mat-label>
+              <mat-label>{{ "return" | translate }}</mat-label>
               <input
                 matInput
                 [matDatepicker]="picker"
@@ -142,7 +146,7 @@
         </div>
         <div class="col py-2 custom-mat-form-field-container">
           <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Select Passengers</mat-label>
+            <mat-label>{{ "select-passenger" | translate }}</mat-label>
             <input
               matInput
               readonly
@@ -150,31 +154,30 @@
               [matMenuTriggerFor]="menu"
             />
             <div *ngIf="!isValidAdultCount()" class="text-red f-12">
-              At least one adult must be selected.
+              {{ "least-adult" | translate }}
             </div>
             <div *ngIf="!isValidInfantCount()" class="text-red f-12">
-              The number of infants cannot exceed the number of adults.
+              {{ "exceed-infant" | translate }}
             </div>
           </mat-form-field>
-
           <mat-menu #menu="matMenu" class="custom-dropdown no-select">
             <mat-nav-list>
               <div
-                *ngFor="let category of ['adult', 'child', 'infant']"
+                *ngFor="let category of categories"
                 class="passenger-selection p-2"
               >
-                <div>{{ category | titlecase }}</div>
+                <div>{{ category.translatedName | titlecase }}</div>
                 <div>
                   <span
                     class="cursor icon"
-                    (click)="updateCount(category, false, $event)"
+                    (click)="updateCount(category.key, false, $event)"
                   >
                     <mat-icon matSuffix>remove</mat-icon>
                   </span>
-                  <span class="px-2">{{ selections[category] }}</span>
+                  <span class="px-2">{{ selections[category.key] }}</span>
                   <span
                     class="cursor icon"
-                    (click)="updateCount(category, true, $event)"
+                    (click)="updateCount(category.key, true, $event)"
                   >
                     <mat-icon matSuffix>add</mat-icon>
                   </span>
@@ -198,7 +201,7 @@
       </div>
       <div class="d-flex justify-content-end py-2 px-4 text-align-end">
         <button mat-raised-button (click)="onSubmit()" class="large-button">
-          <span>Search</span>
+          <span>{{ "search" | translate }}</span>
         </button>
       </div>
     </div>

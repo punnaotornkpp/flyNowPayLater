@@ -10,8 +10,8 @@
             <mat-icon class="f-32 f-nokair">work</mat-icon>
           </div>
           <div>
-            <div class="bold f-24 py-2">Extra Services</div>
-            <div class="bold">Please select your additional services</div>
+            <div class="bold f-24 py-2">{{ "extra-service" | translate }}</div>
+            <div class="bold">{{ "extra-service-content" | translate }}</div>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
       <div class="col-12 d-flex justify-content-space-between py-2">
         <div class="col text-align-start">
           <button mat-button (click)="redirectPrevious()" class="large-button">
-            <u>Previous</u>
+            <u>{{ "previous" | translate }}</u>
           </button>
         </div>
         <div class="col text-align-end" *ngIf="loading">
@@ -80,7 +80,7 @@
             class="large-button"
             color="accent"
           >
-            <span>Next</span>
+            <span>{{ "next" | translate }}</span>
           </button>
         </div>
       </div>

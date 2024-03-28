@@ -10,6 +10,26 @@
             alt="Nok Air Logo"
         /></a>
       </div>
+      <div class="col text-align-end">
+        <div *ngIf="index">
+          <button
+            class="mx-1"
+            mat-button
+            (click)="switchLanguage('th')"
+            [ngClass]="{ highlighted: currentLanguage === 'th' }"
+          >
+            ไทย
+          </button>
+          <button
+            class="mx-1"
+            mat-button
+            (click)="switchLanguage('en')"
+            [ngClass]="{ highlighted: currentLanguage === 'en' }"
+          >
+            English
+          </button>
+        </div>
+      </div>
     </div>
   </mat-toolbar>
   <mat-accordion *ngIf="!index">
@@ -37,7 +57,8 @@
                 <div>
                   <div>
                     {{ journey.originName || "" }}
-                    To {{ journey.destinationName || "" }}
+                    {{ "to-header" | translate }}
+                    {{ journey.destinationName || "" }}
                   </div>
                   <div class="bold d-flex justify-content-between">
                     <span>{{
@@ -51,13 +72,16 @@
               <div class="align-self-center pt-2 pb-1 f-14">
                 <div *ngIf="this.sessionValue">
                   <span *ngIf="this.sessionValue.adult > 0"
-                    >{{ this.sessionValue.adult || 0 }} adult
+                    >{{ this.sessionValue.adult || 0 }}
+                    {{ "adult" | translate }}
                   </span>
                   <span *ngIf="this.sessionValue.child > 0"
-                    >, {{ this.sessionValue.child || 0 }} child
+                    >, {{ this.sessionValue.child || 0 }}
+                    {{ "child" | translate }}
                   </span>
                   <span *ngIf="this.sessionValue.infant > 0"
-                    >, {{ this.sessionValue.infant || 0 }} infant
+                    >, {{ this.sessionValue.infant || 0 }}
+                    {{ "infant" | translate }}
                   </span>
                 </div>
               </div>
@@ -67,7 +91,8 @@
                   class="f-10"
                   (click)="openSearch(); $event.stopPropagation()"
                 >
-                  <mat-icon class="f-20">edit</mat-icon>Edit Search
+                  <mat-icon class="f-20">edit</mat-icon
+                  >{{ "edit" | translate }} {{ "search" | translate }}
                 </button>
               </div>
             </div>

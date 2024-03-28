@@ -1,0 +1,190 @@
+{
+    "booking": [
+        {
+            "title": "วิธีการจองและชำระเงิน",
+            "url": "//content.nokair.com/en/Booking/How-to-Book-and-Pay.aspx"
+        },
+        {
+            "title": "การชำระเงินผ่าน QR",
+            "url": "//content.nokair.com/en/Booking/QR-Payment.aspx"
+        },
+        {
+            "title": "การเลือกที่นั่ง",
+            "url": "//content.nokair.com/en/Booking/How-to-Select-Seat.aspx"
+        },
+        {
+            "title": "เส้นทางการบิน",
+            "url": "//content.nokair.com/en/Booking/Where-we-fly.aspx"
+        },
+        {
+            "title": "การค้นหาตั๋วราคาประหยัด",
+            "url": "https://booking.nokair.com/en/"
+        },
+        {
+            "title": "ตารางการบิน",
+            "url": "https://booking.nokair.com/en/flight-schedule"
+        },
+        {
+            "title": "โปรโมชั่น",
+            "url": "//content.nokair.com/en/Booking/Promotion.aspx"
+        },
+        {
+            "title": "ประเภทตั๋ว",
+            "url": "//content.nokair.com/en/Booking/Seat-Types.aspx"
+        },
+        {
+            "title": "วิธีการใช้คูปองมูลค่า",
+            "url": "https://content.nokair.com/en/Booking/How-to-Voucher.aspx"
+        }
+    ],
+    "journeyPlanning": [
+        {
+            "title": "เช็คอิน",
+            "url": "//content.nokair.com/en/Journey-Planning/Check-In.aspx"
+        },
+        {
+            "title": "จัดการการจอง",
+            "url": "/ManageBooking"
+        },
+        {
+            "title": "สถานะเที่ยวบิน",
+            "url": "https://booking.nokair.com/en/flight-status"
+        },
+        {
+            "title": "ข้อมูลสัมภาระ",
+            "url": "//content.nokair.com/en/Journey-Planning/Baggage.aspx"
+        },
+        {
+            "title": "การเดินทางกับทารกหรือเด็ก",
+            "url": "//content.nokair.com/en/Journey-Planning/Travel-with-infant-or-Children.aspx"
+        },
+        {
+            "title": "บริการขนส่งสัตว์เลี้ยง",
+            "url": "//content.nokair.com/en/Journey-Planning/Nok-Air-Cargo.aspx"
+        },
+        {
+            "title": "ผู้โดยสารที่มีความพิการทางกาย",
+            "url": "//content.nokair.com/en/Journey-Planning/Physically-Challenged-Passenger.aspx"
+        },
+        {
+            "title": "เปลี่ยนแปลงการแจ้งเตือนเดินทาง",
+            "url": "//content.nokair.com/en/Journey-Planning/Change-Travel-Itinerary.aspx"
+        },
+        {
+            "title": "นกรีฟันด์",
+            "url": "//content.nokair.com/en/Journey-Planning/Nok-Refund.aspx"
+        },
+        {
+            "title": "นกเฟิร์ส",
+            "url": "//content.nokair.com/en/Journey-Planning/Nok-First.aspx"
+        },
+        {
+            "title": "ประกันการเดินทาง",
+            "url": "//content.nokair.com/en/Journey-Planning/Nok-Sure.aspx"
+        },
+        {
+            "title": "นกคาร์",
+            "url": "//content.nokair.com/en/Booking/Where-we-fly/Flight-Service/Other-Convenience-Services/Nok-Car"
+        },
+        {
+            "title": "บริการอื่นๆ",
+            "url": "//content.nokair.com/en/Journey-Planning/OtherServices.aspx"
+        }
+    ],
+    "aboutUs": [
+        {
+            "title": "โปรไฟล์องค์กร",
+            "url": "//content.nokair.com/en/About-Nokair/Company-Information.aspx"
+        },
+        {
+            "title": "ข่าวสาร",
+            "url": "//content.nokair.com/en/About-Nokair/News.aspx"
+        },
+        {
+            "title": "เกี่ยวกับเครื่องบินนก",
+            "url": "//content.nokair.com/en/About-Nokair/Nok-Air-plane.aspx"
+        },
+        {
+            "title": "งาน",
+            "url": "//content.nokair.com/en/About-Nokair/Careers.aspx"
+        },
+        {
+            "title": "ฝึกงาน",
+            "url": "//content.nokair.com/en/About-Nokair/Internship.aspx"
+        },
+        {
+            "title": "ความสัมพันธ์ของนักลงทุน",
+            "url": "//content.nokair.com/en/About-Nokair/Investor-relations.aspx"
+        }
+    ],
+    "inFlightService": [
+        {
+            "title": "อาหารนก",
+            "url": "https://content.nokair.com/en/Service/Onboard.aspx"
+        },
+        {
+            "title": "ที่นั่งนก",
+            "url": "https://content.nokair.com/en/Service/NokSeat.aspx"
+        },
+        {
+            "title": "นกชื่นใจและนกชวนชิม",
+            "url": "https://content.nokair.com/th/Service/Nok-Kanom.aspx"
+        }
+    ],
+    "nokFanClub": [
+        {
+            "title": "สิทธิประโยชน์สมาชิก",
+            "url": "https://content.nokair.com/en/nok-fanclub/Member-Benefit.aspx"
+        },
+        {
+            "title": "เป็นสมาชิก",
+            "url": "https://content.nokair.com/en/nok-fanclub/Be-a-Member.aspx"
+        },
+        {
+            "title": "สิทธิพาร์ทเนอร์",
+            "url": "https://content.nokair.com/th/nok-fanclub/Partner-Privileges.aspx"
+        },
+        {
+            "title": "แลกรางวัล",
+            "url": "https://content.nokair.com/en/nok-fanclub/Redeem-Point.aspx"
+        },
+        {
+            "title": "โอนแต้ม",
+            "url": "https://content.nokair.com/th/nok-fanclub/Transfer-Point.aspx"
+        }
+    ],
+    "corporateCustomer": [
+        {
+            "title": "จองเป็นกลุ่ม",
+            "url": "//content.nokair.com/en/Customer-Company/Travel-together.aspx"
+        },
+        {
+            "title": "ตัวแทนท่องเที่ยว",
+            "url": "//booking.nokair.com/en/ta"
+        },
+        {
+            "title": "บริการเช่าเครื่องบินเป็นแบบสัญญา",
+            "url": "//content.nokair.com/en/Customer-Company/charterflight.aspx"
+        },
+        {
+            "title": "ลูกค้าธุรกิจ",
+            "url": "//content.nokair.com/en/Customer-Company/Corporate-customers.aspx"
+        },
+        {
+            "title": "ลูกค้ารัฐบาล",
+            "url": "//content.nokair.com/en/Customer-Company/Government-customers.aspx"
+        }
+    ],
+    "contactUs": [
+        {
+            "title": "ติดต่อเรา",
+            "url": "https://content.nokair.com/en/Contact-Nok.aspx"
+        }
+    ],
+    "nokMobile": [
+        {
+            "title": "Nok Mobile",
+            "url": "https://content.nokair.com/en/Nok-Air-Application.aspx"
+        }
+    ]
+}

@@ -45,6 +45,8 @@ export class SelectScheduleComponent
       try {
         const history = this.session.get('history');
         const schedule = this.session.get('schedule') || '';
+        const securityToken = this.session.get('securityToken');
+
         const selectedFlight = JSON.parse(
           this.session.get('flightFareKey')
         ) as IPRICING;
@@ -56,6 +58,7 @@ export class SelectScheduleComponent
         this.form = JSON.parse(history).form as FlightSearchForm;
         if (schedule) {
           const data = JSON.parse(schedule);
+          this.securityToken = JSON.parse(securityToken);
           this.sessionValue = data as IFlight;
           this.spinner = true;
           return;

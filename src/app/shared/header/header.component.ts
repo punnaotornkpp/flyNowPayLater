@@ -16,6 +16,8 @@ import {
   TaxDetails,
 } from '../../model/pricing-detail.model';
 import { IResponseSubmit } from '../../model/submit.model';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../service/language.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -35,6 +37,7 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
   taxDetailsByPaxType: TaxDetails[] = [];
   extraPricing!: IResponseSubmit;
   check!: IResponseSubmit; ////
+  currentLanguage: string = 'en';
   totalExtra = [
     { amount: 0, taxName: '', taxCode: 'BG05' },
     { amount: 0, taxName: '', taxCode: 'BG10' },
@@ -54,7 +57,9 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     private location: Location,
     private router: Router,
     private session: SessionStorage,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private translate: TranslateService,
+    private languageService: LanguageService
   ) {
     super();
     this.breakpointObserver
@@ -68,6 +73,15 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       .subscribe(() => {
         this.checkPath();
       });
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const language = this.session.get('language');
+      if (language) {
+        this.currentLanguage = JSON.parse(language);
+        this.translate.use(this.currentLanguage);
+      } else {
+        this.translate.setDefaultLang('en');
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -242,5 +256,16 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
       });
     });
     this.taxDetailsByPaxType = Object.values(taxDetailsMap);
+  }
+
+  switchLanguage(language: string): void {
+    this.router.navigateByUrl('');
+    ///
+    /// remove all session
+    ///
+    this.currentLanguage = language;
+    this.translate.use(language);
+    this.session.set('language', language);
+    this.languageService.setCurrentLanguage(language);
   }
 }

@@ -15,6 +15,7 @@ import { CoreModule } from '../core/core.module';
 import { ExtraBaggageComponent } from './extra-baggage/extra-baggage.component';
 import { ExtraSelectionSeatComponent } from './extra-selection-seat/extra-selection-seat.component';
 import { ComplateComponent } from './status/complate/complate.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ComplateComponent } from './status/complate/complate.component';
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
+    TranslateModule,
   ],
 })
 export class SharedModule {}

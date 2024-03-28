@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IAirport } from '../model/airport.model';
 import { environment } from '../../environments/environment';
 import { FlightSearchForm } from '../model/session.model';
 import { IPRICING } from '../model/pricing-detail.model';

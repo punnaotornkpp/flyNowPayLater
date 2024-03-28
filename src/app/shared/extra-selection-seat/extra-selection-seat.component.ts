@@ -50,7 +50,6 @@ export class ExtraSelectionSeatComponent
   seatAssign: ISeatAssign[] = [];
   show: boolean[] = [];
   currentShownIndex = 0;
-  status: boolean = false;
   passengerSeatSelections: Map<string, PassengerSeatSelection> = new Map();
   selectedSeats: Map<string, SeatSelection> = new Map();
   selectedSeat: string = '';
@@ -91,7 +90,6 @@ export class ExtraSelectionSeatComponent
         airlineIndex: 0,
         flightNumber: firstAirline.travelInfos[0].flightNumber,
       };
-      this.status = true;
     }
     this.data.pricing.airlines.forEach((_, index) => {
       this.show[index] = index === 0;
@@ -277,7 +275,7 @@ export class ExtraSelectionSeatComponent
   }
 
   Cancel() {
-    this.dialogRef.close({ status: this.status, response: '', type: 0 });
+    this.dialogRef.close({ status: false, response: [], type: 0 });
   }
 
   Confirm() {

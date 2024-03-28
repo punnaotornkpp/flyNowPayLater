@@ -3,15 +3,17 @@
     <div class="row p-0 col-12 text-align-center f-14" *ngIf="!isSmallScreen">
       <div class="col-2 bold d-flex justify-content-center">
         <div class="row p-0 col-12">
-          <div class="col-12 col-lg-6">Departure</div>
-          <div class="col-12 col-lg-6">Arrival</div>
+          <div class="col-12 col-lg-6">{{ "departure" | translate }}</div>
+          <div class="col-12 col-lg-6">{{ "arrival" | translate }}</div>
         </div>
       </div>
-      <div class="col-5 bold text-align-start">Flight Information</div>
+      <div class="col-5 bold text-align-start">
+        {{ "flight-info" | translate }}
+      </div>
       <div class="col bold">Nok Lite</div>
       <div class="col bold">
         <div class="text-align-center">Nok X-tra</div>
-        <div>(Recommended!)</div>
+        <div>{{ "recommended" | translate }}!</div>
       </div>
       <div class="col bold">Nok MAX</div>
     </div>

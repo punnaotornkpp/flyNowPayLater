@@ -72,7 +72,6 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
 
   selectFlightFare(key: [IFlightFareKey, number], schedule: ISchedule[]) {
     const item = schedule[key[1]];
-    console.log(key[0], item.departureDate);
     this.onSelect.emit([key[0], item.departureDate]);
   }
 

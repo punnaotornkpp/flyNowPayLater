@@ -34,9 +34,8 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
       });
   }
 
-  /// ใช้
-
   ngOnInit(): void {
+    console.log(this.currentIndex);
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
         this.isSelectedFlight.forEach(
@@ -56,33 +55,6 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
-  /// เทส ใช้ journeyKey เพื่อเช็คเพิ่ม
-  // ngOnInit(): void {
-  //   // console.log(this.isSelectedFlight);
-  //   // console.log(this.value);
-  //   if (this.isSelectedFlight && this.value) {
-  //     this.value.forEach((schedule, index) => {
-  //       this.isSelectedFlight.forEach((selected) => {
-  //         if (schedule.journeyKey === selected.journeyKey) {
-  //           console.log(schedule.journeyKey);
-  //           console.log(selected.journeyKey);
-  //           console.log(schedule);
-  //           const fareIndex = schedule.fares.findIndex(
-  //             (fare) => fare.fareKey === selected.fareKey
-  //           );
-  //           console.log(schedule.fares[fareIndex]);
-  //           console.log(selected.fareKey);
-  //           console.log(index);
-  //           if (fareIndex !== -1) {
-  //             this.selectDetail(index, schedule.fares[fareIndex]);
-  //             this.isSelected = true;
-  //           }
-  //         }
-  //       });
-  //     });
-  //   }
-  // }
-
   openDetailFlight(data: ISchedule) {
     this.dialog.open(DialogDetailFlightComponent, { data: data });
   }
@@ -94,12 +66,9 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   selectFlightFare(item: IFare) {
-    console.log(this.value);
-    console.log(item.fareKey);
-    console.log(this.currentIndex);
     let setItem: IFlightFareKey = {
       fareKey: item.fareKey,
-      journeyKey: this.value[this.currentIndex].journeyKey,
+      journeyKey: this.value[this.selectedItem].journeyKey,
     };
     console.log(setItem);
     this.onSelect.emit([setItem, this.selectedItem]);

@@ -42,6 +42,7 @@ import { SharedService } from '../../service/shared.service';
 })
 export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   items = MOCK_EXTRAS;
+
   ssr!: ISSR;
   seat!: ISeat;
   spinner: boolean = false;
@@ -58,6 +59,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   };
   securityToken: string = '';
   defaultSeat!: PassengerSeatSelection[];
+  defaultContent = MOCK_EXTRAS;
   defaultBaggage!: SsrSelection[];
   summaryAmount: number = 0;
 
@@ -244,25 +246,37 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
 
   setStatus(id: number, resp: { status: boolean; response: []; type: number }) {
     this.items[id].status = resp.status;
-    if (resp.status) {
-      if (0 === resp.type) {
+    if (0 === resp.type) {
+      if (resp.status) {
         this.items[id].content = `${this.showSeat(resp.response)}`;
-        this.updateSeat(resp.response);
-      } else if (1 === resp.type) {
-        this.items[id].content = `${this.showBaggage(resp.response)}`;
-        this.updateBaggage(resp.response);
       } else {
-        this.items[id].content = this.items[id].content;
+        this.items[id].content = this.defaultContent[id].content;
       }
-      this.items[id].detail.title = '';
+      this.updateSeat(resp.response);
+    } else if (1 === resp.type) {
+      if (resp.status) {
+        this.items[id].content = `${this.showBaggage(resp.response)}`;
+      } else {
+        this.items[id].content = this.defaultContent[id].content;
+      }
+      this.updateBaggage(resp.response);
     } else {
+      this.items[id].content = this.items[id].content;
     }
+    this.items[id].detail.title = '';
   }
 
   updateSeat(resp: PassengerSeatSelection[]) {
     this.defaultSeat = resp;
-    if (this.defaultSeat && this.defaultSeat.length > 0) {
-      this.setDialog();
+    this.setDialog();
+    if (Array.isArray(resp) && resp.length === 0) {
+      this.form.passengerInfos.forEach((passenger: any) => {
+        passenger.flightFareKey.forEach((flight: any) => {
+          flight.selectedSeat = [];
+        });
+      });
+      this.updateSummary();
+      return;
     }
     resp.forEach((extra) => {
       this.form.passengerInfos.forEach((passenger: any) => {
@@ -300,8 +314,15 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
 
   updateBaggage(resp: SsrSelection[]) {
     this.defaultBaggage = resp;
-    if (this.defaultBaggage && this.defaultBaggage.length > 0) {
-      this.setDialog();
+    this.setDialog();
+    if (Array.isArray(resp) && resp.length === 0) {
+      this.form.passengerInfos.forEach((passenger: any) => {
+        passenger.flightFareKey.forEach((flight: any) => {
+          flight.extraService = [];
+        });
+      });
+      this.updateSummary();
+      return;
     }
     resp.forEach((extra) => {
       this.form.passengerInfos.forEach((passenger: any) => {
