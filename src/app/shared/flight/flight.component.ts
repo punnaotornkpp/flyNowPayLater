@@ -60,9 +60,12 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   selectDetail(index: number, fare: IFare): void {
+    const isSelected = this.isSelectedFlight.some(
+      (selected) => fare.fareKey === selected.fareKey
+    );
+    this.isSelected = isSelected;
     this.selectedItem = index;
     this.selectedDate = fare;
-    this.isSelected = false;
   }
 
   selectFlightFare(item: IFare) {

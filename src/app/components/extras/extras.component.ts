@@ -41,7 +41,7 @@ import { SharedService } from '../../service/shared.service';
 })
 export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   items = MOCK_EXTRAS;
-
+  defaultContent = MOCK_EXTRAS;
   ssr!: ISSR;
   seat!: ISeat;
   spinner: boolean = false;
@@ -58,7 +58,6 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
   };
   securityToken: string = '';
   defaultSeat!: PassengerSeatSelection[];
-  defaultContent = MOCK_EXTRAS;
   defaultBaggage!: SsrSelection[];
   summaryAmount: number = 0;
 
@@ -241,7 +240,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
-  setStatus(id: number, resp: { status: boolean; response: []; type: number }) {
+  async setStatus(
+    id: number,
+    resp: { status: boolean; response: []; type: number }
+  ) {
     this.items[id].status = resp.status;
     if (0 === resp.type) {
       if (resp.status) {
@@ -249,21 +251,21 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       } else {
         this.items[id].content = this.defaultContent[id].content;
       }
-      this.updateSeat(resp.response);
+      await this.updateSeat(resp.response);
     } else if (1 === resp.type) {
       if (resp.status) {
         this.items[id].content = `${this.showBaggage(resp.response)}`;
       } else {
         this.items[id].content = this.defaultContent[id].content;
       }
-      this.updateBaggage(resp.response);
+      await this.updateBaggage(resp.response);
     } else {
       this.items[id].content = this.items[id].content;
     }
     this.items[id].detail.title = '';
   }
 
-  updateSeat(resp: PassengerSeatSelection[]) {
+  async updateSeat(resp: PassengerSeatSelection[]) {
     this.defaultSeat = resp;
     this.setDialog();
     if (Array.isArray(resp) && resp.length === 0) {
@@ -272,7 +274,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           flight.selectedSeat = [];
         });
       });
-      this.updateSummary();
+      this.updateSummary(false);
       return;
     }
     resp.forEach((extra) => {
@@ -306,10 +308,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         }
       });
     });
-    this.updateSummary();
+    this.updateSummary(true);
   }
 
-  updateBaggage(resp: SsrSelection[]) {
+  async updateBaggage(resp: SsrSelection[]) {
     this.defaultBaggage = resp;
     this.setDialog();
     if (Array.isArray(resp) && resp.length === 0) {
@@ -318,7 +320,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           flight.extraService = [];
         });
       });
-      this.updateSummary();
+      this.updateSummary(false);
       return;
     }
     resp.forEach((extra) => {
@@ -348,7 +350,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
         }
       });
     });
-    this.updateSummary();
+    this.updateSummary(true);
   }
 
   preparePassengerInfos() {
@@ -410,13 +412,17 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
     return age;
   }
 
-  updateSummary() {
+  updateSummary(status: boolean) {
     this.wait = false;
     const obs = this.booking
       .submitBooking(this.form, this.securityToken)
       .subscribe({
         next: (resp) => {
-          this.popup.success('Add extra service success.');
+          if (status) {
+            this.popup.success('Add extra service success.');
+          } else {
+            this.popup.success('Cancel extra service success.');
+          }
           this.summaryAmount = Number(resp.data!.totalAmount);
           this.wait = true;
           this.session.set('formSubmit', this.form);
