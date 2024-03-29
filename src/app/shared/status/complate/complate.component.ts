@@ -19,13 +19,22 @@ export class ComplateComponent implements OnInit {
       try {
         this.response = history.state.data;
         if (this.response) {
-          // this.session.remove('history');
-          // this.session.remove('display');
-          // this.session.remove('flightFareKey');
-          // this.session.remove('passengers');
-          // this.session.remove('selectedExtras');
-          // this.session.remove('pricing');
-          // this.session.remove('extras');
+          const sessionKeys = [
+            'display',
+            'flightFareKey',
+            'passengers',
+            'formSubmit',
+            'extraContent',
+            'extraPricing',
+            'extras',
+            'pricing',
+            'schedule',
+            'history',
+            'securityToken',
+          ];
+          sessionKeys.forEach((key) => {
+            this.session.remove(key);
+          });
         } else {
           this.response = null;
         }
