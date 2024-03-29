@@ -242,6 +242,7 @@ export class SelectScheduleComponent
           this.session.set('formSubmit', '');
           this.session.set('display', resp);
           this.session.set('flightFareKey', pricing);
+          this.selectedFlight = pricing.flightFareKey;
           this.sharedService.triggerHeaderRefresh();
         },
         error: (error) => {
@@ -249,7 +250,6 @@ export class SelectScheduleComponent
           this.popup.waring(
             'Sorry, something went wrong. , Please select other available flights.'
           );
-          // this.router.navigateByUrl('');
           console.log(error);
         },
       });
