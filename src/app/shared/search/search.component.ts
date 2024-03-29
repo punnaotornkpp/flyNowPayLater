@@ -243,15 +243,21 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
         }
         this.popup.success('Search success');
         this.session.set('history', { form: formValue });
-        this.session.set('display', '');
-        this.session.set('flightFareKey', '');
-        this.session.set('passengers', '');
-        this.session.set('formSubmit', '');
-        this.session.set('extraContent', '');
-        this.session.set('extraPricing', '');
-        this.session.set('pricing', '');
-        this.session.set('extras', '');
-        this.session.set('securityToken', '');
+        const sessionKeys = [
+          'display',
+          'flightFareKey',
+          'passengers',
+          'formSubmit',
+          'extraContent',
+          'extraPricing',
+          'extras',
+          'pricing',
+          'schedule',
+          'securityToken',
+        ];
+        sessionKeys.forEach((key) => {
+          this.session.set(key, '');
+        });
         this.session.remove('schedule');
         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.sharedService.triggerHeaderRefresh();

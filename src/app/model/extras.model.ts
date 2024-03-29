@@ -2,7 +2,6 @@ import { Type } from '@angular/core';
 import { ExtraBaggageComponent } from '../shared/extra-baggage/extra-baggage.component';
 import { ExtraSelectionSeatComponent } from '../shared/extra-selection-seat/extra-selection-seat.component';
 import { ExtraSpecialBaggageComponent } from '../shared/extra-special-baggage/extra-special-baggage.component';
-import { IResponseDetailPricing } from './pricing-detail.model';
 
 export interface IExtras {
   id: number;
