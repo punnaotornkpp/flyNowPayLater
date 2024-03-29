@@ -5,6 +5,7 @@ import { IJourney, ISchedule } from '../../model/flight-schedule';
 import { SharedService } from '../../service/shared.service';
 import { SessionStorage } from '../../core/helper/session.helper';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
+import { IFareSelectionEvent, ISelectEvent } from '../../model/event.model';
 
 @Component({
   selector: 'app-schedule',
@@ -17,7 +18,7 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
   @Input() isSelectedFlight: IFlightFareKey[] = [];
   @Output() onNextClick = new EventEmitter<any>();
   @Output() onBackClick = new EventEmitter<any>();
-  @Output() onSelect = new EventEmitter<[IFlightFareKey, string]>();
+  @Output() onSelect = new EventEmitter<IFareSelectionEvent>();
 
   empty = false;
   defaultTabIndex: number = 4;
@@ -70,13 +71,11 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
     }
   }
 
-  selectFlightFare(key: [IFlightFareKey, number], schedule: ISchedule[]) {
-    const item = schedule[key[1]];
-    this.onSelect.emit([key[0], item.departureDate]);
+  selectFlightFare(key: ISelectEvent, schedule: ISchedule[]) {
+    const item = schedule[key.selectedItem];
+    this.onSelect.emit({
+      fareKey: key.setItem,
+      departureDate: item.departureDate,
+    });
   }
-
-  // selectFlightFare(key: [IFlightFareKey, number], schedule: ISchedule[]): void {
-  //   const item = schedule[key[1]];
-  //   this.onSelect.emit({ fareKey: key[0], departureDate: item.departureDate });
-  // }
 }

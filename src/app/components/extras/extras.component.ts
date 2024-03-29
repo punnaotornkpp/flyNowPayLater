@@ -22,7 +22,6 @@ import {
   IResponsePricing,
   ISSR,
   ISeat,
-  ISeatCharge,
 } from '../../model/pricing-detail.model';
 import { BookingService } from '../../service/booking.service';
 import {
@@ -87,12 +86,10 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
           this.defaultBaggage = extraContent.baggage;
         }
         this.securityToken = securityToken;
-        console.log(this.securityToken);
         const flightFareKey: IPRICING = JSON.parse(
           this.session.get('flightFareKey')
         );
         this.pricing = JSON.parse(this.session.get('pricing'));
-
         this.summaryAmount = Number(this.pricing.data.totalAmount);
         const passengers = JSON.parse(this.session.get('passengers'));
         this.passengers = [
@@ -419,6 +416,7 @@ export class ExtrasComponent extends SubscriptionDestroyer implements OnInit {
       .submitBooking(this.form, this.securityToken)
       .subscribe({
         next: (resp) => {
+          this.popup.success('Add extra service success.');
           this.summaryAmount = Number(resp.data!.totalAmount);
           this.wait = true;
           this.session.set('formSubmit', this.form);

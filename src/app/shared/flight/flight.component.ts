@@ -5,6 +5,7 @@ import { DialogDetailFlightComponent } from '../dialog-detail-flight/dialog-deta
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { IFare, ISchedule } from '../../model/flight-schedule';
 import { IFlightFareKey } from '../../model/pricing-detail.model';
+import { ISelectEvent } from '../../model/event.model';
 
 @Component({
   selector: 'app-flight',
@@ -15,7 +16,7 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   @Input() value!: ISchedule[];
   @Input() currentIndex: number = 0;
   @Input() isSelectedFlight: IFlightFareKey[] = [];
-  @Output() onSelect = new EventEmitter<[IFlightFareKey, number]>();
+  @Output() onSelect = new EventEmitter<ISelectEvent>();
 
   selectedItem: number = 99;
   selectedDate!: IFare;
@@ -35,7 +36,6 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.currentIndex);
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
         this.isSelectedFlight.forEach(
@@ -70,7 +70,6 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
       fareKey: item.fareKey,
       journeyKey: this.value[this.selectedItem].journeyKey,
     };
-    console.log(setItem);
-    this.onSelect.emit([setItem, this.selectedItem]);
+    this.onSelect.emit({ setItem: setItem, selectedItem: this.selectedItem });
   }
 }

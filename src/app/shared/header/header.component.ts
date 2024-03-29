@@ -260,12 +260,26 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
 
   switchLanguage(language: string): void {
     this.router.navigateByUrl('');
-    ///
-    /// remove all session
-    ///
+    const sessionKeys = [
+      'flightFareKey',
+      'passengers',
+      'formSubmit',
+      'extraContent',
+      'extraPricing',
+      'pricing',
+      'extras',
+      'history',
+      'schedule',
+      'securityToken',
+      'display',
+    ];
+    sessionKeys.forEach((key) => {
+      this.session.set(key, '');
+    });
     this.currentLanguage = language;
     this.translate.use(language);
     this.session.set('language', language);
     this.languageService.setCurrentLanguage(language);
+    window.location.reload();
   }
 }

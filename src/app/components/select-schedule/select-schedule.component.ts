@@ -9,6 +9,7 @@ import { DateTime } from '../../core/helper/date.helper';
 import { SharedService } from '../../service/shared.service';
 import { PopupService } from '../../service/popup.service';
 import { IFlightFareKey, IPRICING } from '../../model/pricing-detail.model';
+import { IFareSelectionEvent } from '../../model/event.model';
 
 @Component({
   selector: 'app-select-schedule',
@@ -23,7 +24,7 @@ export class SelectScheduleComponent
   spinner: boolean = false;
   form!: FlightSearchForm;
   status: boolean = false;
-  defaultDate = '';
+  defaultDate: string = '';
   combineItem: IFlightFareKey[] = [];
   loading: boolean = false;
   isLoading: boolean = false;
@@ -43,10 +44,10 @@ export class SelectScheduleComponent
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const history = this.session.get('history');
+        this.form = JSON.parse(this.session.get('history') || '{}')
+          .form as FlightSearchForm;
         const schedule = this.session.get('schedule') || '';
-        const securityToken = this.session.get('securityToken');
-
+        this.securityToken = JSON.parse(this.session.get('securityToken'));
         const selectedFlight = JSON.parse(
           this.session.get('flightFareKey')
         ) as IPRICING;
@@ -55,11 +56,8 @@ export class SelectScheduleComponent
           this.combineItem = this.selectedFlight;
           this.loading = true;
         }
-        this.form = JSON.parse(history).form as FlightSearchForm;
         if (schedule) {
-          const data = JSON.parse(schedule);
-          this.securityToken = JSON.parse(securityToken);
-          this.sessionValue = data as IFlight;
+          this.sessionValue = JSON.parse(schedule) as IFlight;
           this.spinner = true;
           return;
         } else {
@@ -202,13 +200,13 @@ export class SelectScheduleComponent
     return originalDates;
   }
 
-  selectFlightFare(item: [IFlightFareKey, string], index: number) {
+  selectFlightFare(item: IFareSelectionEvent, index: number) {
     this.loading = false;
     if (index >= this.combineItem.length) {
       this.combineItem.length = index + 1;
     }
-    this.combineItem[index] = item[0];
-    this.combineItem[index].departureTime = item[1];
+    this.combineItem[index] = item.fareKey;
+    this.combineItem[index].departureTime = item.departureDate;
     if (this.combineItem[0] == null) {
       this.popup.info('Please choose your depart trip first.');
       this.loading = false;
