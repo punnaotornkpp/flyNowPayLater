@@ -50,6 +50,9 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     { amount: 0, taxName: '', taxCode: 'S300' },
     { amount: 0, taxName: '', taxCode: 'S150' },
   ];
+  serviceDescriptions: string[] = [];
+  priceDetailsResults: number[] = [];
+  calculatedTotalAmount: number = 0;
 
   constructor(
     private dialog: MatDialog,
@@ -91,17 +94,22 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
     this.AddSubscription(obs);
   }
 
+  initializeSessionData(): void {}
+
   getSessionValue(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        const item = this.session.get('history');
-        const display = this.session.get('display') || '';
-        const flightFareKey = this.session.get('flightFareKey') || '';
-        const extraPricing = this.session.get('extraPricing') || '';
-        this.extraPricing = JSON.parse(extraPricing);
-        this.flightFareKey = JSON.parse(flightFareKey);
-        this.display = JSON.parse(display).data;
+        const sessionValue = this.session.parseSessionData('history');
+        this.sessionValue = sessionValue.form as FlightSearchForm;
+        this.flightFareKey = this.session.parseSessionData('flightFareKey');
+        this.extraPricing = this.session.parseSessionData('extraPricing');
+        const display = this.session.parseSessionData('display');
+        this.display = display.data;
         if (this.display) {
+          this.calculatedTotalAmount =
+            this.extraPricing && this.extraPricing.data
+              ? parseFloat(this.extraPricing.data.totalAmount.toString())
+              : parseFloat(this.display.totalAmount.toString());
           this.totalAirportTax = 0;
           this.totalVAT = 0;
           this.totalExtra = [
@@ -122,8 +130,14 @@ export class HeaderComponent extends SubscriptionDestroyer implements OnInit {
             this.totalAmount(this.display.totalAmount);
             this.calculateTaxesAndDetails();
           }
+          this.serviceDescriptions = this.display.airlines.map(
+            (airline, index) =>
+              this.getService(this.flightFareKey.flightFareKey[index].fareKey)
+          );
+          this.priceDetailsResults = this.display.airlines.map((airline) =>
+            this.getPriceDetail(airline.pricingDetails)
+          );
         }
-        this.sessionValue = JSON.parse(item).form as FlightSearchForm;
       } catch (error) {
         this.router.navigateByUrl('');
       }

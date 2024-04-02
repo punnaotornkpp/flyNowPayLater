@@ -36,6 +36,15 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
   }
 
   ngOnInit(): void {
+    this.value = this.value.map((schedule) => ({
+      ...schedule,
+      travelInfos: schedule.travelInfos.map((info) => ({
+        ...info,
+        aircraftDescription: this.setAircraftDescription(
+          info.aircraftDescription
+        ),
+      })),
+    }));
     if (this.isSelectedFlight && this.value) {
       this.value.forEach((schedule, index) => {
         this.isSelectedFlight.forEach(
@@ -74,5 +83,10 @@ export class FlightComponent extends SubscriptionDestroyer implements OnInit {
       journeyKey: this.value[this.selectedItem].journeyKey,
     };
     this.onSelect.emit({ setItem: setItem, selectedItem: this.selectedItem });
+  }
+
+  setAircraftDescription(item: string) {
+    const parts = item.split(' (');
+    return parts[0] || '';
   }
 }

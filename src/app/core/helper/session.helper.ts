@@ -21,4 +21,9 @@ export class SessionStorage {
   remove(key: string): void {
     sessionStorage.removeItem(key);
   }
+
+  parseSessionData(key: string, defaultValue: any = null): any {
+    const val = this.get(key);
+    return val ? JSON.parse(val) : defaultValue;
+  }
 }

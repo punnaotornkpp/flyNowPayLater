@@ -38,9 +38,9 @@ export class PassengersComponent
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        this.sessionValue = JSON.parse(this.session.get('history'))
+        const passenger = this.session.parseSessionData('passengers');
+        this.sessionValue = this.session.parseSessionData('history')
           .form as FlightSearchForm;
-        const passenger = JSON.parse(this.session.get('passengers'));
         if (passenger) {
           const setPassengers = passenger;
           setControl(setPassengers, this.form, this.fb);

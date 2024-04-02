@@ -113,9 +113,8 @@ export class SearchComponent extends SubscriptionDestroyer implements OnInit {
           if (typeof window !== 'undefined' && window.sessionStorage) {
             try {
               this.updateTranslatedCategories();
-              const sessionDataString = this.session.get('history');
-              if (sessionDataString) {
-                this.sessionData = JSON.parse(sessionDataString);
+              this.sessionData = this.session.parseSessionData('history');
+              if (this.sessionData) {
                 this.selectedToggleValue = this.sessionData?.form?.typeRoute;
                 if (this.sessionData?.form) {
                   setControls(this.sessionData.form, this.bookingForm);

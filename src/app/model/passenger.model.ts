@@ -7,7 +7,7 @@ export interface PassengerSelections {
   infant: number;
 }
 
-export interface IDispalyPassenger {
+export interface IDisplayPassenger {
   title: string;
   firstName: string;
   lastName: string;

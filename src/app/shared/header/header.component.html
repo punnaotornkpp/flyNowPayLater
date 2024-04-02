@@ -104,7 +104,7 @@
                 *ngIf="this.sessionValue && this.display"
               >
                 {{ this.sessionValue.currency || "" }}
-                {{ totalAmount(display.totalAmount) | number : "1.2-2" || 0 }}
+                {{ calculatedTotalAmount | number : "1.2-2" || 0 }}
               </span>
               <span
                 class="bold f-24 d-flex"
@@ -181,11 +181,9 @@
               *ngIf="!show"
             >
               <div class="row col-12 justify-content-between">
-                <span class="col f-14 bold">{{
-                  getService(flightFareKey.flightFareKey[i].fareKey)
-                }}</span>
+                <span class="col f-14 bold">{{ serviceDescriptions[i] }}</span>
                 <span class="col text-align-end bold f-14">{{
-                  getPriceDetail(airline.pricingDetails) | number : "1.2-2"
+                  priceDetailsResults[i] | number : "1.2-2"
                 }}</span>
               </div>
               <div

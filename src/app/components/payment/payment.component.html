@@ -23,19 +23,16 @@
               <div class="bold">{{ "passenger-detail" | translate }}</div>
             </div>
           </div>
-          <div class="px-3">
+          <div class="px-3" *ngIf="this.form?.passengerInfos">
             <mat-card
               class="p-3 mt-2"
-              *ngFor="let item of this.passengers; let i = index"
+              *ngFor="let item of this.form?.passengerInfos; let i = index"
             >
               <div class="row bold py-1">
-                <div class="col-sm-5 col-12">{{ item.type }}</div>
+                <div class="col-sm-5 col-12">{{ item.passengerType }}</div>
                 <div class="col-sm-2 col-12">{{ "date" | translate }}</div>
                 <div class="col-sm-5 col-12" *ngIf="i === 0">
                   {{ "email" | translate }}
-                </div>
-                <div class="col-sm-5 col-12" *ngIf="item.type === 'Infant'">
-                  {{ item.associateInfantToAdult || "" }}
                 </div>
               </div>
               <div class="row py-1">
@@ -43,7 +40,7 @@
                   {{ item.title }} {{ item.firstName }} {{ item.lastName }}
                 </div>
                 <div class="col-sm-2 col-12">
-                  {{ setTimeZone(item.birthdayDate) }}
+                  {{ item.dateOfBirth }}
                 </div>
                 <div class="col-sm-5 col-12" *ngIf="i === 0">
                   {{ item.email || "" }}
@@ -71,8 +68,8 @@
                 <mat-expansion-panel
                   hideToggle
                   class="my-2"
-                  (opened)="setPaymentMethod('V')"
-                  [class.highlight]="activePanel === 'V'"
+                  (opened)="setPaymentMethod('V3')"
+                  [class.highlight]="activePanel === 'V3'"
                 >
                   <mat-expansion-panel-header>
                     <mat-panel-title>VISA</mat-panel-title>
@@ -81,8 +78,8 @@
                 </mat-expansion-panel>
                 <mat-expansion-panel
                   hideToggle
-                  (opened)="setPaymentMethod('M')"
-                  [class.highlight]="activePanel === 'M'"
+                  (opened)="setPaymentMethod('M3')"
+                  [class.highlight]="activePanel === 'M3'"
                 >
                   <mat-expansion-panel-header>
                     <mat-panel-title>MASTER CARD</mat-panel-title>

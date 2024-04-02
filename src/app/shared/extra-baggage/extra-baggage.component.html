@@ -3,7 +3,7 @@
     *ngFor="let item of this.data.pricing.airlines; let i = index"
     class="mb-2 text-spacing"
   >
-    <mat-card-title class="f-18 bold pt-3">{{ getTitle(i) }}</mat-card-title>
+    <mat-card-title class="f-18 bold pt-3">{{ this.title[i] }}</mat-card-title>
     <mat-card-content>
       <div class="row col d-flex">
         <div class="col-12 col-lg-6">
@@ -16,17 +16,17 @@
           </div>
           <div class="py-2 border-bottom-black">
             <div class="py-1">
-              {{ getBundleInfo(item.bundleDetails).bundleName }}
+              {{ bundleInfos[i].bundleName }}
             </div>
             <div class="d-flex align-items-center">
               <span><mat-icon class="f-32 px-2">luggage</mat-icon></span>
-              <p>{{ getBundleInfo(item.bundleDetails).baggageInfo }}</p>
+              <p>{{ bundleInfos[i].baggageInfo }}</p>
             </div>
           </div>
           <div class="py-2">
             <div>Your price:</div>
             <div class="bold">
-              {{ getSumAmountByAirline(i) | number : "1.2-2" }}
+              {{ totalAmountsByAirline[i] | number : "1.2-2" }}
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <div
             class="row col py-1"
             *ngFor="
-              let passenger of checkInfant(this.data.passengers);
+              let passenger of filteredPassengers;
               let passengerIndex = index
             "
           >
@@ -65,9 +65,9 @@
                   <mat-option [value]="null">No Selection</mat-option>
                   <mat-option
                     *ngFor="
-                      let ssr of getSsrOptionsForFlightInit(
+                      let ssr of initialSsrOptionsByFlight[
                         item.travelInfos[0].flightNumber
-                      )
+                      ]
                     "
                     [value]="ssr.ssrCode"
                   >
@@ -76,7 +76,8 @@
                   <mat-option
                     *ngFor="
                       let ssr of getSsrOptionsForFlight(
-                        item.travelInfos[0].flightNumber
+                        item.travelInfos[0].flightNumber,
+                        passenger.type
                       )
                     "
                     [value]="ssr.ssrCode"

@@ -1,3 +1,4 @@
+import { IPassengerInfo } from './passenger.model';
 import { IPricingDetail } from './pricing-detail.model';
 
 export interface IResponseSubmit {
@@ -61,4 +62,10 @@ export interface IResponsePassengerDetail {
   nationality: string;
   seatSelect: string;
   pricingDetails: IPricingDetail;
+}
+
+export interface IPaymentSubmit {
+  actionType: string;
+  paymentMethod: string;
+  passengerInfos: IPassengerInfo[];
 }

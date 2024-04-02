@@ -1,8 +1,8 @@
 <div>
   <div class="p-2 row col">
-    <div class="f-24 bold py-4">Seat Selection</div>
-    <div class="col row">
+    <div class="col row justify-content-center">
       <div class="col-lg-4 col-12">
+        <div class="f-24 bold py-3">Seat Selection</div>
         <mat-card
           *ngFor="
             let airline of this.data.pricing.airlines;
@@ -11,7 +11,7 @@
           class="mb-4 text-spacing"
         >
           <mat-card-title class="f-18 bold pt-3">{{
-            getTitle(indexAirline)
+            title[indexAirline]
           }}</mat-card-title>
           <mat-card-subtitle class="pe-3 thin f-12">
             {{ airline.travelInfos[0].originName }} ({{
@@ -32,7 +32,7 @@
               <div *ngIf="show[indexAirline]" class="row d-flex">
                 <button
                   *ngFor="
-                    let passenger of checkInfant(data.passengers);
+                    let passenger of filteredPassengers;
                     let indexPassenger = index
                   "
                   class="p-2 border my-2 cursor"
@@ -122,9 +122,9 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8 col-12">
+      <div class="col-lg-8 col-xl-7 col-12">
         <div class="col-12 row">
-          <div class="center bold f-16 py-4">Seat Map</div>
+          <div class="center bold f-16 py-3">Seat Map</div>
           <div class="center py-3 background-nokair">
             Selecting seat for
             <span class="bold">{{ selectedValue.passengerName }}</span> for
@@ -149,7 +149,23 @@
               </div>
               <div *ngFor="let row of seatRows; let i = index">
                 <div class="row mb-2 align-items-center">
+                  <div
+                    *ngIf="row.rowNumber === 16 || row.rowNumber === 17"
+                    class="col-12 justify-content-space-between row"
+                  >
+                    <div class="col justify-content-start d-flex">
+                      <mat-icon class="f-32 text-red"
+                        >keyboard_double_arrow_left</mat-icon
+                      >
+                    </div>
+                    <div class="col justify-content-end d-flex">
+                      <mat-icon class="f-32 text-red"
+                        >keyboard_double_arrow_right</mat-icon
+                      >
+                    </div>
+                  </div>
                   <div class="col-1 text-start">{{ row.rowNumber }}</div>
+
                   <div
                     class="col text-center"
                     *ngFor="let seat of row.seats.split('')"
@@ -180,7 +196,7 @@
                       <!-- {{ row.rowNumber }}{{ seat }} -->
                     </button>
                   </div>
-                  <!-- <div class="col-1 text-end">{{ row.rowNumber }}</div> -->
+                  <div class="col-1 text-end">{{ row.rowNumber }}</div>
                 </div>
               </div>
               <div class="row text-center mt-5">
@@ -198,29 +214,29 @@
             <div class="plane-tail text-center"></div>
           </div>
         </div>
-        <div class="col-12 row d-flex justify-content-end py-3">
-          <div class="col-6 col-lg-4 col-xl-2 text-align-end">
-            <button
-              mat-raised-button
-              (click)="Cancel()"
-              class="large-button"
-              color="accent"
-            >
-              <span>Cancel</span>
-            </button>
-          </div>
-          <div class="col-6 col-lg-4 col-xl-2 text-align-end">
-            <button
-              mat-raised-button
-              (click)="Confirm()"
-              class="large-button"
-              color="accent"
-            >
-              <span>Confirm</span>
-            </button>
-          </div>
-        </div>
       </div>
+    </div>
+  </div>
+  <div class="col-12 row d-flex justify-content-end py-3">
+    <div class="col-6 col-lg-4 col-xl-2 text-align-end">
+      <button
+        mat-raised-button
+        (click)="Cancel()"
+        class="large-button"
+        color="accent"
+      >
+        <span>Cancel</span>
+      </button>
+    </div>
+    <div class="col-6 col-lg-4 col-xl-2 text-align-end">
+      <button
+        mat-raised-button
+        (click)="Confirm()"
+        class="large-button"
+        color="accent"
+      >
+        <span>Confirm</span>
+      </button>
     </div>
   </div>
 </div>

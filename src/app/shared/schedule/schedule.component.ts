@@ -49,7 +49,7 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
         break;
       default:
         if (typeof window !== 'undefined' && window.sessionStorage) {
-          const sessionvalue = JSON.parse(this.session.get('history'));
+          const sessionvalue = this.session.parseSessionData('history');
           sessionvalue.form.journeys[this.currentIndex].departureDate =
             value[event.index - 1].departureDate;
           this.session.set('history', { form: sessionvalue.form });
@@ -61,7 +61,7 @@ export class ScheduleComponent extends SubscriptionDestroyer implements OnInit {
 
   findDefaultIndex() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
-      const sessionvalue = JSON.parse(this.session.get('history'));
+      const sessionvalue = this.session.parseSessionData('history');
       const targetDepartureDate =
         sessionvalue.form.journeys[this.currentIndex].departureDate;
       const matchingIndex = this.value.findIndex(

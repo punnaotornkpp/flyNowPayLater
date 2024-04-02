@@ -7,25 +7,13 @@ import {
   ISeatMap,
 } from '../../model/pricing-detail.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IDispalyPassenger } from '../../model/passenger.model';
+import { IDisplayPassenger } from '../../model/passenger.model';
 import { ExtrasComponent } from '../../components/extras/extras.component';
-import { SessionStorage } from '../../core/helper/session.helper';
 import { IData, IResponseAirline } from '../../model/submit.model';
-
-export interface PassengerSeatSelection {
-  passengerName: string;
-  passengerIndex: number;
-  airlineIndex: number;
-  flightNumber: string;
-  seat: ISeatCharge | null;
-  selected?: boolean;
-}
-
-interface SeatSelection {
-  passengerIndex: number;
-  airlineIndex: number;
-  selectedSeat: string;
-}
+import {
+  PassengerSeatSelection,
+  SeatSelection,
+} from '../../model/extras.model';
 
 @Component({
   selector: 'app-extra-selection-seat',
@@ -53,14 +41,17 @@ export class ExtraSelectionSeatComponent
   passengerSeatSelections: Map<string, PassengerSeatSelection> = new Map();
   selectedSeats: Map<string, SeatSelection> = new Map();
   selectedSeat: string = '';
+  seatStatusCache: Map<string, string> = new Map();
+  seatAvailabilityCache: Map<string, boolean> = new Map();
+  title: string[] = [];
+  filteredPassengers: IDisplayPassenger[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ExtrasComponent>,
-    private session: SessionStorage,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       pricing: IData;
-      passengers: IDispalyPassenger[];
+      passengers: IDisplayPassenger[];
       seats: ISeat;
       default: PassengerSeatSelection[];
     }
@@ -69,6 +60,7 @@ export class ExtraSelectionSeatComponent
   }
 
   ngOnInit(): void {
+    this.filteredPassengers = this.checkInfant(this.data.passengers);
     if (this.data.default && this.data.default.length > 0) {
       this.processDefaultSelections(this.data.default);
     }
@@ -93,6 +85,7 @@ export class ExtraSelectionSeatComponent
     }
     this.data.pricing.airlines.forEach((_, index) => {
       this.show[index] = index === 0;
+      this.title[index] = this.getTitle(index);
     });
   }
 
@@ -237,7 +230,7 @@ export class ExtraSelectionSeatComponent
     );
   }
 
-  checkInfant(passengers: IDispalyPassenger[]) {
+  checkInfant(passengers: IDisplayPassenger[]) {
     const filteredPassengers = passengers.filter(
       (passenger) => passenger.type !== 'Infant'
     );

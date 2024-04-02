@@ -44,20 +44,12 @@ export class SelectScheduleComponent
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       try {
-        this.form = JSON.parse(this.session.get('history') || '{}')
-          .form as FlightSearchForm;
-        const schedule = this.session.get('schedule') || '';
-        this.securityToken = JSON.parse(this.session.get('securityToken'));
-        const selectedFlight = JSON.parse(
-          this.session.get('flightFareKey')
-        ) as IPRICING;
-        if (selectedFlight) {
-          this.selectedFlight = selectedFlight.flightFareKey;
+        this.initializeSessionData();
+        if (this.selectedFlight) {
           this.combineItem = this.selectedFlight;
           this.loading = true;
         }
-        if (schedule) {
-          this.sessionValue = JSON.parse(schedule) as IFlight;
+        if (this.sessionValue) {
           this.spinner = true;
           return;
         } else {
@@ -66,6 +58,19 @@ export class SelectScheduleComponent
       } catch (error) {
         this.router.navigateByUrl('');
       }
+    }
+  }
+
+  initializeSessionData(): void {
+    this.form = this.session.parseSessionData('history' || {})
+      .form as FlightSearchForm;
+    this.sessionValue = this.session.parseSessionData('schedule') as IFlight;
+    this.securityToken = this.session.parseSessionData('securityToken');
+    const selectedFlight = this.session.parseSessionData(
+      'flightFareKey'
+    ) as IPRICING;
+    if (selectedFlight) {
+      this.selectedFlight = selectedFlight.flightFareKey;
     }
   }
 
@@ -96,7 +101,7 @@ export class SelectScheduleComponent
   }
 
   redirectNext() {
-    const display = JSON.parse(this.session.get('display'));
+    const display = this.session.parseSessionData('display');
     if (display) {
       this.session.set('pricing', display);
       this.router.navigateByUrl('passengers');
