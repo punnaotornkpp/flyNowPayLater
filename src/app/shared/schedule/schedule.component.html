@@ -1,0 +1,42 @@
+<div class="row p-0">
+  <div class="col col-12 d-flex align-items-center">
+    <div class="col col-12">
+      <mat-tab-group
+        mat-align-tabs="center"
+        (selectedTabChange)="onTabChange($event, this.value)"
+        [selectedIndex]="defaultTabIndex"
+        mat-stretch-tabs
+      >
+        <mat-tab [disabled]="empty">
+          <ng-template mat-tab-label>
+            <mat-icon>arrow_back_ios</mat-icon>
+          </ng-template>
+        </mat-tab>
+        <mat-tab *ngFor="let item of value">
+          <ng-template mat-tab-label>
+            <div class="">
+              <div class="f-10 py-1">
+                {{ item.departureDate | date : "EE d MMM" }}
+              </div>
+              <strong class="f-12">{{
+                item.lowestFare | decimalFloat | number : "1.2-2"
+              }}</strong>
+            </div>
+          </ng-template>
+          <div class="py-5 px-2">
+            <app-flight
+              [isSelectedFlight]="isSelectedFlight"
+              [value]="item.schedules"
+              [currentIndex]="this.currentIndex"
+              (onSelect)="selectFlightFare($event, item.schedules)"
+            ></app-flight></div
+        ></mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

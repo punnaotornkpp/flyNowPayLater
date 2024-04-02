@@ -1,0 +1,226 @@
+<div>
+  <div class="p-2 row col">
+    <div class="f-24 bold py-4">Seat Selection</div>
+    <div class="col row">
+      <div class="col-lg-4 col-12">
+        <mat-card
+          *ngFor="
+            let airline of this.data.pricing.airlines;
+            let indexAirline = index
+          "
+          class="mb-4 text-spacing"
+        >
+          <mat-card-title class="f-18 bold pt-3">{{
+            getTitle(indexAirline)
+          }}</mat-card-title>
+          <mat-card-subtitle class="pe-3 thin f-12">
+            {{ airline.travelInfos[0].originName }} ({{
+              airline.travelInfos[0].origin
+            }}) - {{ airline.travelInfos[0].destinationName }} ({{
+              airline.travelInfos[0].destination
+            }})</mat-card-subtitle
+          >
+          <mat-card-content>
+            <div class="row d-flex py-2">
+              <button
+                *ngIf="!show[indexAirline]"
+                class="p-2 border my-2 cursor show"
+                (click)="openShow(indexAirline)"
+              >
+                <div>Show</div>
+              </button>
+              <div *ngIf="show[indexAirline]" class="row d-flex">
+                <button
+                  *ngFor="
+                    let passenger of checkInfant(data.passengers);
+                    let indexPassenger = index
+                  "
+                  class="p-2 border my-2 cursor"
+                  [ngClass]="{
+                    'selected-passenger':
+                      selectedPassengerIndices[indexAirline] === indexPassenger
+                  }"
+                  (click)="
+                    selectPassenger(
+                      indexAirline,
+                      indexPassenger,
+                      passenger.firstName,
+                      airline
+                    )
+                  "
+                >
+                  <div>
+                    {{
+                      getSelectedSeat(indexPassenger, indexAirline) ||
+                        passenger.firstName + " " + passenger.lastName
+                    }}
+                  </div>
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div class="col row">
+          <div class="col-6 row py-2">
+            <div class="seat__icon premium-front col-4"></div>
+            <div class="col-8">
+              <div class="bold">Nok Premium Seat Front Row</div>
+              <div>500.00</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon premium col-4"></div>
+            <div class="col-8">
+              <div class="bold">Nok Premium Seat</div>
+              <div>Free</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon happy col-4"></div>
+            <div class="col-8">
+              <div class="bold">Nok Happy Seat</div>
+              <div>Free</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon booked col-4"></div>
+            <div class="col-8">
+              <div class="bold">Booked Seat</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon unavailable col-4"></div>
+            <div class="col-8">
+              <div class="bold">Unavailable Seat</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon blocked col-4"></div>
+            <div class="col-8">
+              <div class="bold">Blocked Seat</div>
+            </div>
+          </div>
+          <div class="col-6 row py-2">
+            <div class="seat__icon selected col-4"></div>
+            <div class="col-8">
+              <div class="bold">Selected Seat</div>
+            </div>
+          </div>
+        </div>
+        <div class="col row px-2 py-3">
+          <div class="bold f-16 pb-3">
+            Seat Description Nok Air's in-flight seats are divided into 3 types,
+            namely Private Seat (unoccupied seat), Nok Premium Seat and Nok
+            Happy Seat.
+          </div>
+          <div class="f-16">
+            Note: <span class="bold">Private Seat</span> is seat with no-one
+            sitting next to you. We guarantee that the seats next to you are
+            adjacent to each other in the same row and side. No one else will
+            sit with you. For example, selecting seat no. 2C, there will be
+            no-one seating next to you at seat no. 2B.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-12">
+        <div class="col-12 row">
+          <div class="center bold f-16 py-4">Seat Map</div>
+          <div class="center py-3 background-nokair">
+            Selecting seat for
+            <span class="bold">{{ selectedValue.passengerName }}</span> for
+            <span class="bold">{{ selectedValue.origin }}</span> to
+            <span class="bold">{{ selectedValue.destination }}</span>
+          </div>
+          <div class="container seat-map-plane background-white py-2">
+            <div class="plane-nose text-center">
+              <img src="assets/image/head-airplane.svg" alt="" />
+            </div>
+            <div class="container border-seat-map-plane">
+              <div class="row mb-5 text-center">
+                <div class="col-1"></div>
+                <div class="col">A</div>
+                <div class="col">B</div>
+                <div class="col">C</div>
+                <div class="col"></div>
+                <div class="col">H</div>
+                <div class="col">J</div>
+                <div class="col">K</div>
+                <div class="col-1"></div>
+              </div>
+              <div *ngFor="let row of seatRows; let i = index">
+                <div class="row mb-2 align-items-center">
+                  <div class="col-1 text-start">{{ row.rowNumber }}</div>
+                  <div
+                    class="col text-center"
+                    *ngFor="let seat of row.seats.split('')"
+                  >
+                    <button
+                      *ngIf="seat !== ' '"
+                      mat-raised-button
+                      class="full-width button-seat"
+                      [ngClass]="
+                        getButtonColor(
+                          row.rowNumber,
+                          seat,
+                          selectedValue.passengerIndex,
+                          selectedValue.airlineIndex
+                        )
+                      "
+                      [disabled]="!isSeatAvailable(row.rowNumber, seat)"
+                      (click)="
+                        selectSeat(
+                          getSeatCharge(row.rowNumber, seat),
+                          selectedValue.passengerIndex,
+                          selectedValue.airlineIndex,
+                          selectedValue.flightNumber,
+                          selectedValue.passengerName
+                        )
+                      "
+                    >
+                      <!-- {{ row.rowNumber }}{{ seat }} -->
+                    </button>
+                  </div>
+                  <!-- <div class="col-1 text-end">{{ row.rowNumber }}</div> -->
+                </div>
+              </div>
+              <div class="row text-center mt-5">
+                <div class="col-1"></div>
+                <div class="col">A</div>
+                <div class="col">B</div>
+                <div class="col">C</div>
+                <div class="col"></div>
+                <div class="col">H</div>
+                <div class="col">J</div>
+                <div class="col">K</div>
+                <div class="col-1"></div>
+              </div>
+            </div>
+            <div class="plane-tail text-center"></div>
+          </div>
+        </div>
+        <div class="col-12 row d-flex justify-content-end py-3">
+          <div class="col-6 col-lg-4 col-xl-2 text-align-end">
+            <button
+              mat-raised-button
+              (click)="Cancel()"
+              class="large-button"
+              color="accent"
+            >
+              <span>Cancel</span>
+            </button>
+          </div>
+          <div class="col-6 col-lg-4 col-xl-2 text-align-end">
+            <button
+              mat-raised-button
+              (click)="Confirm()"
+              class="large-button"
+              color="accent"
+            >
+              <span>Confirm</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

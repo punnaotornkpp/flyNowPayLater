@@ -1,0 +1,21 @@
+mat-card {
+    min-height: 480px;
+    height: 100%; 
+    background-color: var(--nokair25);
+    border-radius: 10px;
+}
+
+img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+
+.bottom {
+  margin-top: auto;
+}
+
+.not-click {
+  pointer-events: none ;
+}
+

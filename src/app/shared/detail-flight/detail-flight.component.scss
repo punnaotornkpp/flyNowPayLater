@@ -1,0 +1,23 @@
+.background-detail-flight {
+    background-color: lightgrey;
+    border-radius: 4px;
+}
+
+
+
+.background-detail-flight mat-card.nokMax {
+  background-color: var(--danger50);
+}
+
+.background-detail-flight mat-card.nokXtra {
+  background-color: var(--nokair50);
+}
+
+.background-detail-flight mat-card.nokLite {
+  background-color: var(--info50);
+}
+
+mat-icon {
+    width: 24px !important;
+}
+

@@ -1,40 +1,209 @@
-<mat-card class="mx-5">
-  <div class="d-flex justify-content-space-between">
+<form [formGroup]="bookingForm">
+  <mat-card class="no-select">
     <div>
-      <mat-button-toggle-group>
-        <mat-button-toggle value="red">Round Trip</mat-button-toggle>
-        <mat-button-toggle value="green">One Way</mat-button-toggle>
-        <mat-button-toggle value="blue">Multi-city</mat-button-toggle>
-      </mat-button-toggle-group>
+      <div class="row align-items-center px-1">
+        <div
+          class="col-12 col-lg-4 col-md-12 d-flex justify-content-space-between"
+        >
+          <div>
+            <mat-button-toggle-group
+              (change)="onToggleChange($event)"
+              formControlName="typeRoute"
+            >
+              <mat-button-toggle [value]="0">{{
+                "round-trip" | translate
+              }}</mat-button-toggle>
+              <mat-button-toggle [value]="1">{{
+                "one-way" | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6 col-md-12"></div>
+        <div
+          class="col-12 col-lg-2 col-md-6 d-flex justify-content-space-between py-2"
+        >
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>{{ "currency" | translate }}</mat-label>
+            <mat-select value="THB" formControlName="currency" id="currency">
+              <mat-option value="THB">Thai - Baht</mat-option>
+              <!-- <mat-option value="USD">US - Dollar</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div
+        class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 px-1"
+        [class.row-cols-lg-5]="selectedToggleValue != 1"
+      >
+        <div class="col py-2">
+          <div formArrayName="journeys">
+            <div
+              *ngFor="let journey of journeysArray.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>{{ "form" | translate }}</mat-label>
+                <input
+                  matInput
+                  [matAutocomplete]="auto"
+                  formControlName="originName"
+                />
+                <mat-autocomplete
+                  [panelWidth]="300"
+                  #auto="matAutocomplete"
+                  (optionSelected)="onOptionSelected($event, i, 0)"
+                >
+                  <mat-option
+                    *ngFor="let option of filteredAirports[i] | async"
+                    [value]="option"
+                  >
+                    {{ option.name }} ({{ option.code }})
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col py-2">
+          <div formArrayName="journeys">
+            <div
+              *ngFor="let journey of journeysArray.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>{{ "to" | translate }}</mat-label>
+                <input
+                  matInput
+                  [matAutocomplete]="autoDestination"
+                  formControlName="destinationName"
+                />
+                <mat-autocomplete
+                  [panelWidth]="300"
+                  #autoDestination="matAutocomplete"
+                  (optionSelected)="onOptionSelected($event, i, 1)"
+                >
+                  <mat-option
+                    *ngFor="let option of filteredDestinations[i] | async"
+                    [value]="option"
+                  >
+                    {{ option.name }} ({{ option.code }})
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col py-2" formArrayName="journeys">
+          <div
+            *ngFor="let journey of journeysArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ "depart" | translate }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                readonly
+                formControlName="departureDate"
+                id="departureDate"
+                [min]="minDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div
+          class="col py-2"
+          *ngIf="selectedToggleValue != 1"
+          formArrayName="journeys"
+        >
+          <div
+            *ngFor="let journey of journeysArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ "return" | translate }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                readonly
+                formControlName="returnDate"
+                id="returnDate"
+                [min]="minReturnDate[i]"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col py-2 custom-mat-form-field-container">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>{{ "select-passenger" | translate }}</mat-label>
+            <input
+              matInput
+              readonly
+              [value]="selectionDisplay"
+              [matMenuTriggerFor]="menu"
+            />
+            <div *ngIf="!isValidAdultCount()" class="text-red f-12">
+              {{ "least-adult" | translate }}
+            </div>
+            <div *ngIf="!isValidInfantCount()" class="text-red f-12">
+              {{ "exceed-infant" | translate }}
+            </div>
+          </mat-form-field>
+          <mat-menu #menu="matMenu" class="custom-dropdown no-select">
+            <mat-nav-list>
+              <div
+                *ngFor="let category of categories"
+                class="passenger-selection p-2"
+              >
+                <div>{{ category.translatedName | titlecase }}</div>
+                <div>
+                  <span
+                    class="cursor icon"
+                    (click)="updateCount(category.key, false, $event)"
+                  >
+                    <mat-icon matSuffix>remove</mat-icon>
+                  </span>
+                  <span class="px-2">{{ selections[category.key] }}</span>
+                  <span
+                    class="cursor icon"
+                    (click)="updateCount(category.key, true, $event)"
+                  >
+                    <mat-icon matSuffix>add</mat-icon>
+                  </span>
+                </div>
+              </div>
+            </mat-nav-list>
+          </mat-menu>
+        </div>
+        <!-- <div class="col py-2">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Promo Code</mat-label>
+            <input
+              matInput
+              placeholder=""
+              value=""
+              formControlName="promoCode"
+              id="promoCode"
+            />
+          </mat-form-field>
+        </div> -->
+      </div>
+      <div class="d-flex justify-content-end py-2 px-4 text-align-end">
+        <button mat-raised-button (click)="onSubmit()" class="large-button">
+          <span>{{ "search" | translate }}</span>
+        </button>
+      </div>
     </div>
-    <div>
-      <mat-form-field>
-        <mat-label>Select</mat-label>
-        <mat-select value="option1">
-          <mat-option>None</mat-option>
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row col-12 pt-4">
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-    <div class="col">Lorem ipsum dolor sit amet.</div>
-  </div>
-  <div class="pt-2">
-    <section>
-      <mat-checkbox>Check me!</mat-checkbox>
-    </section>
-  </div>
-  <div class="d-flex justify-content-end">
-    <button mat-raised-button (click)="redirectToSelect()">
-      <span class="px-3">Search</span>
-    </button>
-  </div>
-</mat-card>
+  </mat-card>
+</form>

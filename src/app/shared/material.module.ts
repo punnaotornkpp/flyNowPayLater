@@ -6,6 +6,22 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @NgModule({
   exports: [
     MatButtonModule,
@@ -15,6 +31,21 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatFormFieldModule,
     MatButtonToggleModule,
     MatCheckboxModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatAutocompleteModule,
+    BrowserAnimationsModule,
+    MatChipsModule,
+    MatListModule,
+    MatTabsModule,
+    MatDialogModule,
+    MatRadioModule, // เอาออก
+    MatExpansionModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

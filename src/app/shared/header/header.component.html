@@ -1,29 +1,277 @@
-<div class="background-nokair top-header">
-  <div class="logo cursor">
-    <a href=""
-      ><img
-        src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
-        alt=""
-        title="Nok Air"
-    /></a>
-  </div>
-  <div class="language-selector">
-    <div class="dropdown">
-      <a
-        class="btn dropdown-toggle"
-        href="#"
-        role="button"
-        id="dropdownMenuLink"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><a class="dropdown-item" href="#">1</a></li>
-        <li><a class="dropdown-item" href="#">2</a></li>
-        <li><a class="dropdown-item" href="#">3</a></li>
-      </ul>
+<div>
+  <mat-toolbar class="background-nokair border-bottom-black">
+    <div
+      class="col-12 d-flex justify-content-between align-items-center container container-max-width"
+    >
+      <div class="col logo text-align-start">
+        <a href="">
+          <img
+            src="https://images.prismic.io/nokair-ezycommerce/166f2a16-33ac-46e3-9d80-ae0fd1b97940_Nok_Air-Logo.png?auto=compress,format"
+            alt="Nok Air Logo"
+        /></a>
+      </div>
+      <div class="col text-align-end">
+        <div *ngIf="index">
+          <button
+            class="mx-1"
+            mat-button
+            (click)="switchLanguage('th')"
+            [ngClass]="{ highlighted: currentLanguage === 'th' }"
+          >
+            ไทย
+          </button>
+          <button
+            class="mx-1"
+            mat-button
+            (click)="switchLanguage('en')"
+            [ngClass]="{ highlighted: currentLanguage === 'en' }"
+          >
+            English
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+  </mat-toolbar>
+  <mat-accordion *ngIf="!index">
+    <mat-expansion-panel
+      class="background-nokair"
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header class="container container-max-width">
+        <mat-panel-title
+          ><div class="col-12 d-flex align-items-center f-12">
+            <ng-container *ngIf="!isSmallScreen">
+              <div
+                class="col-6 col-lg-4 d-flex border-right-black"
+                *ngFor="let journey of sessionValue?.journeys; let i = index"
+                [ngClass]="{
+                  'col-6': true,
+                  'col-lg-4': sessionValue.journeys.length > 1,
+                  'col-lg-8': sessionValue.journeys.length === 1
+                }"
+              >
+                <div class="align-self-center px-3">
+                  <mat-icon class="f-24 center transform45">flight</mat-icon>
+                </div>
+                <div>
+                  <div>
+                    {{ journey.originName || "" }}
+                    {{ "to-header" | translate }}
+                    {{ journey.destinationName || "" }}
+                  </div>
+                  <div class="bold d-flex justify-content-between">
+                    <span>{{
+                      journey.departureDate | date : "EEEE d MMMM y"
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="col-12 col-lg-2 border-right-black center">
+              <div class="align-self-center pt-2 pb-1 f-14">
+                <div *ngIf="this.sessionValue">
+                  <span *ngIf="this.sessionValue.adult > 0"
+                    >{{ this.sessionValue.adult || 0 }}
+                    {{ "adult" | translate }}
+                  </span>
+                  <span *ngIf="this.sessionValue.child > 0"
+                    >, {{ this.sessionValue.child || 0 }}
+                    {{ "child" | translate }}
+                  </span>
+                  <span *ngIf="this.sessionValue.infant > 0"
+                    >, {{ this.sessionValue.infant || 0 }}
+                    {{ "infant" | translate }}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-stroked-button
+                  class="f-10"
+                  (click)="openSearch(); $event.stopPropagation()"
+                >
+                  <mat-icon class="f-20">edit</mat-icon
+                  >{{ "edit" | translate }} {{ "search" | translate }}
+                </button>
+              </div>
+            </div>
+            <div
+              class="col-12 col-lg-2 d-flex border-right-black justify-content-center"
+            >
+              <span
+                class="bold f-24 d-flex"
+                *ngIf="this.sessionValue && this.display"
+              >
+                {{ this.sessionValue.currency || "" }}
+                {{ totalAmount(display.totalAmount) | number : "1.2-2" || 0 }}
+              </span>
+              <span
+                class="bold f-24 d-flex"
+                *ngIf="this.sessionValue && !this.display"
+              >
+                {{ this.sessionValue.currency || "" }}
+                {{ 0 | number : "1.2-2" }}
+              </span>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div
+        class="container container-max-width"
+        *ngIf="this.sessionValue && this.display"
+      >
+        <div
+          class="col-12 d-flex align-items-center f-12 container-display-header pt-2"
+          *ngIf="!isSmallScreen"
+        >
+          <div
+            *ngFor="let airline of display.airlines; let i = index"
+            class="row col-12 col-lg-4 d-flex px-3 align-self-start"
+            [ngClass]="{
+              'col-lg-4': display.airlines.length > 1,
+              'col-lg-8': display.airlines.length === 1
+            }"
+          >
+            <div class="row col-12 justify-content-between bold">
+              <span class="col">
+                {{
+                  airline.travelInfos[0].departureTime | date : "EEEE d MMMM y"
+                }}</span
+              >
+              <span class="col text-align-end">
+                {{
+                  airline.travelInfos[0].arrivalTime | date : "EEEE d MMMM y"
+                }}
+              </span>
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col">
+                {{ airline.travelInfos[0].departureTime | transformDateToTime }}
+              </span>
+              <span class="col text-align-end">
+                {{
+                  airline.travelInfos[0].arrivalTime | transformDateToTime
+                }}</span
+              >
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col text-align-end">
+                {{ airline.travelInfos[0].flightNumber }}</span
+              >
+            </div>
+            <div class="row col-12 justify-content-between bold">
+              <span class="col-7 f-14">Fare</span>
+              <span class="col-2 text-align-end"
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="show"
+                  (click)="showMoreDetail(show)"
+                  >expand_more</mat-icon
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="!show"
+                  (click)="showMoreDetail(show)"
+                  >expand_less</mat-icon
+                ></span
+              >
+            </div>
+            <span
+              class="row col-12 justify-content-between text-spacing"
+              *ngIf="!show"
+            >
+              <div class="row col-12 justify-content-between">
+                <span class="col f-14 bold">{{
+                  getService(flightFareKey.flightFareKey[i].fareKey)
+                }}</span>
+                <span class="col text-align-end bold f-14">{{
+                  getPriceDetail(airline.pricingDetails) | number : "1.2-2"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let item of airline.pricingDetails"
+              >
+                <span class="col"
+                  >{{ item.paxCount }} X {{ item.paxTypeCode }}</span
+                >
+                <span class="col text-align-end">{{
+                  item.fareAmount | number : "1.2-2"
+                }}</span>
+              </div>
+            </span>
+          </div>
+          <div class="row col-12 col-lg-4 d-flex px-3 align-self-start">
+            <div class="row col-12 justify-content-between bold">
+              <span class="col-7 f-14">Taxes</span>
+              <span class="col-2 text-align-end"
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="showTaxes"
+                  (click)="showMoreDetailTaxe(showTaxes)"
+                  >expand_more</mat-icon
+                ><mat-icon
+                  class="bold f-24 cursor"
+                  *ngIf="!showTaxes"
+                  (click)="showMoreDetailTaxe(showTaxes)"
+                  >expand_less</mat-icon
+                ></span
+              >
+            </div>
+
+            <span
+              class="row col-12 justify-content-between text-spacing"
+              *ngIf="!showTaxes"
+            >
+              <div class="row col-12 justify-content-between bold">
+                <span class="col f-14">Total Airport Tax</span>
+                <span class="col text-align-end">{{
+                  totalAirportTax | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let detail of taxDetailsByPaxType"
+              >
+                <span class="col f-14"
+                  >{{ detail.count }} x {{ detail.paxType }}</span
+                >
+                <span class="col text-align-end">{{
+                  detail.AT | currency : "THB"
+                }}</span>
+              </div>
+              <div class="row col-12 justify-content-between bold">
+                <span class="col f-14">Total VAT</span>
+                <span class="col text-align-end">{{
+                  totalVAT | currency : "THB"
+                }}</span>
+              </div>
+              <div
+                class="row col-12 justify-content-between"
+                *ngFor="let detail of taxDetailsByPaxType"
+              >
+                <span class="col f-14"
+                  >{{ detail.count }} x {{ detail.paxType }}</span
+                >
+                <span class="col text-align-end">{{
+                  detail.VAT | currency : "THB"
+                }}</span>
+              </div>
+              <ng-container *ngFor="let taxItem of totalExtra">
+                <div
+                  class="row col-12 justify-content-between bold"
+                  *ngIf="taxItem.amount != 0"
+                >
+                  <span class="col f-14">{{ taxItem.taxName }}</span>
+                  <span class="col text-align-end">{{
+                    taxItem.amount | currency : "THB"
+                  }}</span>
+                </div>
+              </ng-container>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
-<div class="border-header background-nokair top-header"></div>

@@ -1,0 +1,122 @@
+<div class="container container-max-width">
+  <div class="px-2">
+    <div class="py-3">
+      <app-step [page]="5"></app-step>
+    </div>
+    <div class="spinner-container" *ngIf="!spinner" class="overlay">
+      <mat-spinner color="accent"></mat-spinner>
+      <mat-icon class="spinner-icon" color="accent"
+        >connecting_airports</mat-icon
+      >
+    </div>
+    <div *ngIf="spinner">
+      <div>
+        <div>
+          <div class="py-4 d-flex">
+            <div class="align-self-center px-3">
+              <mat-icon class="f-32 f-nokair">person</mat-icon>
+            </div>
+            <div>
+              <div class="bold f-24 py-2">
+                {{ "passenger" | translate }} (s)
+              </div>
+              <div class="bold">{{ "passenger-detail" | translate }}</div>
+            </div>
+          </div>
+          <div class="px-3">
+            <mat-card
+              class="p-3 mt-2"
+              *ngFor="let item of this.passengers; let i = index"
+            >
+              <div class="row bold py-1">
+                <div class="col-sm-5 col-12">{{ item.type }}</div>
+                <div class="col-sm-2 col-12">{{ "date" | translate }}</div>
+                <div class="col-sm-5 col-12" *ngIf="i === 0">
+                  {{ "email" | translate }}
+                </div>
+                <div class="col-sm-5 col-12" *ngIf="item.type === 'Infant'">
+                  {{ item.associateInfantToAdult || "" }}
+                </div>
+              </div>
+              <div class="row py-1">
+                <div class="col-sm-5 col-12">
+                  {{ item.title }} {{ item.firstName }} {{ item.lastName }}
+                </div>
+                <div class="col-sm-2 col-12">
+                  {{ setTimeZone(item.birthdayDate) }}
+                </div>
+                <div class="col-sm-5 col-12" *ngIf="i === 0">
+                  {{ item.email || "" }}
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <div>
+          <div class="pt-5 pb-4 d-flex">
+            <div class="align-self-center px-3">
+              <mat-icon class="f-32 f-nokair">credit_card</mat-icon>
+            </div>
+            <div>
+              <div class="bold f-24 py-2">
+                {{ "payment-submit" | translate }}
+              </div>
+              <div class="bold">{{ "select-payment" | translate }}</div>
+            </div>
+          </div>
+          <div class="pb-5 px-3">
+            {{ "select-payment-detail" | translate }}
+            <div class="py-4">
+              <mat-accordion>
+                <mat-expansion-panel
+                  hideToggle
+                  class="my-2"
+                  (opened)="setPaymentMethod('V')"
+                  [class.highlight]="activePanel === 'V'"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>VISA</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <p></p>
+                </mat-expansion-panel>
+                <mat-expansion-panel
+                  hideToggle
+                  (opened)="setPaymentMethod('M')"
+                  [class.highlight]="activePanel === 'M'"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>MASTER CARD</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <p></p>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="px-3">
+        <div class="f-16 bold f-nokair">
+          {{ "term-submit" | translate }}
+        </div>
+        <mat-checkbox>{{ "check" | translate }}</mat-checkbox>
+      </section>
+      <div class="col-12 d-flex justify-content-space-between py-2">
+        <div class="col text-align-start">
+          <button mat-button (click)="redirectPrevious()" class="large-button">
+            <u>Previous</u>
+          </button>
+        </div>
+        <div class="col text-align-end" *ngIf="loading">
+          <button
+            mat-raised-button
+            (click)="redirectNext()"
+            class="large-button"
+            color="accent"
+          >
+            <span>Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="p-2 text-align-center">
+  <h1 mat-dialog-title class="text-dark">{{ "flight-info" | translate }}</h1>
+  <div mat-dialog-content>
+    <div class="text-align-start py-2 row">
+      <div class="col-1 align-self-center">
+        <div><mat-icon class="f-24 text-dark">flight</mat-icon></div>
+      </div>
+      <div class="col">
+        <div class="f-14 py-2">
+          {{ data.travelInfos[0].origin || "" }} -
+          {{ data.travelInfos[0].destination || "" }}
+        </div>
+        <div class="bold f-18 text-dark">
+          {{ data.travelInfos[0].arrivalDate | date : "EEEE d MMMM y" || "" }} |
+          {{ data.departureDate | transformDateToTime }} -
+          {{ data.arrivalDate | transformDateToTime }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-12 d-flex justify-content-space-between bold py-1 text-dark"
+      >
+        <div class="col text-align-start">Flight</div>
+        <div class="col text-align-end">
+          {{ data.travelInfos[0].flightNumber || "" }}
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-space-between py-1">
+        <div class="col text-align-start">Duration</div>
+        <div class="col text-align-end">
+          {{ data.travelInfos[0].duration || "" }}
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-space-between py-1">
+        <div class="col text-align-start">Aircraft</div>
+        <div class="col text-align-end">
+          {{ data.travelInfos[0].aircraftDescription || "" }}
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-space-between py-1">
+        <div class="col text-align-start">Operated by</div>
+        <div class="col text-align-end">Nok Air</div>
+      </div>
+    </div>
+  </div>
+</div>

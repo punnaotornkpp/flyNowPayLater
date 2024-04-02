@@ -1,4 +1,25 @@
 @use '@angular/material' as mat;
+:root {
+    --nokair: #FFCB0B;
+    --black : #111111;
+    --mdc-outlined-text-field-label-text-size: 14px;
+    --mdc-filled-text-field-label-text-size: 12px;
+    --mat-select-trigger-text-size: 12px;
+}
+@include mat.core();
+$my-primary: mat.define-palette(mat.$gray-palette, 700);
+$my-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$my-warn: mat.define-palette(mat.$deep-orange-palette);
+$my-theme: mat.define-light-theme((
+    color: (
+        primary: $my-primary,
+        accent: $my-accent,
+        warn: $my-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+));
+@include mat.all-component-themes($my-theme);
 
 
 .mat-button-toggle-label-content {
@@ -15,6 +36,73 @@
   display: none;
 }
 
+.mat-mdc-text-field-wrapper{
+    cursor: pointer;
+    background-color: white;
+    border-radius: 4px !important;
+}
 
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+    border : none
+}
 
+.mat-mdc-text-field-wrapper {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.mat-mdc-option  {
+    font-size: 12px !important;
+}
+
+.mat-mdc-form-field-input-control.mat-mdc-form-field-input-control {
+    font-size: 12px !important;
+}
+
+.mat-icon {
+    font-size: 12px;
+    height: auto !important;
+    width: auto !important;
+}
+
+.mat-mdc-tab:not(.mdc-tab--stacked) {
+    background-color: gainsboro;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab:first-child {
+    border-top-left-radius: 12px;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+    margin-right: 1px;
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab:last-child {
+    border-top-right-radius: 12px;
+}
+
+.mdc-tab {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.mat-expantion-panel {
+   &.backgound-nokair {
+     .mat-expansion-panel-body {
+           background-color: var(--nokair);
+     }
+   }
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 10px !important; 
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+        background-color: var(--nokair25) !important;
+}
+
+.mat-mdc-menu-content {
+    width: 210px;
+}
 

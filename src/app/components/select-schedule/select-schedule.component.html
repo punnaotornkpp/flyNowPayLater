@@ -1,1 +1,77 @@
-<div class="container"><app-step></app-step></div>
+<div class="container container-max-width">
+  <div class="px-2">
+    <div class="py-1">
+      <app-step [page]="2"></app-step>
+    </div>
+
+    <div class="pb-3">
+      <div *ngFor="let journey of this.form?.journeys; let i = index">
+        <div class="pt-1 pb-4 d-flex">
+          <div class="align-self-center px-3">
+            <img
+              class="image"
+              src="../../../assets/image/airplane.png"
+              alt=""
+            />
+          </div>
+          <div>
+            <div class="bold f-24 py-2">{{ journey.title || "" }}</div>
+            <div class="">
+              {{ journey.originName || "" }} ({{ journey.origin || "" }})
+              {{ "to-header" | translate }}
+              {{ journey.destinationName || "" }} ({{
+                journey.destination || ""
+              }})
+            </div>
+          </div>
+        </div>
+        <app-schedule
+          [isSelectedFlight]="selectedFlight"
+          [value]="sessionValue.data[i].journey"
+          [currentIndex]="i"
+          (onNextClick)="handleNewSchedule(i, 0)"
+          (onBackClick)="handleBackClick(i, $event)"
+          (onSelect)="selectFlightFare($event, i)"
+          *ngIf="spinner"
+        ></app-schedule>
+        <div class="d-flex center spinner-container" *ngIf="!spinner">
+          <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
+        </div>
+        <div class="spinner-container" *ngIf="isLoading" class="overlay">
+          <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="pb-5 f-14">
+        <div class="col-12 d-flex justify-content-space-between py-2">
+          <div class="col text-align-start">
+            <button
+              mat-button
+              (click)="redirectPrevious()"
+              class="large-button"
+            >
+              <u>{{ "previous" | translate }}</u>
+            </button>
+          </div>
+          <div class="col text-align-end" *ngIf="loading">
+            <button
+              mat-raised-button
+              (click)="confirmSchedule()"
+              class="large-button"
+              color="accent"
+            >
+              <span>{{ "next" | translate }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

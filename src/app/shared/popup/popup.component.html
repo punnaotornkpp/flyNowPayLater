@@ -1,0 +1,28 @@
+<div id="popup" class="p-2">
+  <div class="container-fluid">
+    <mat-card
+      *ngFor="let item of notification"
+      class="notification-box py-2"
+      [ngClass]="{
+        danger: item?.status === 1,
+        warning: item?.status === 2,
+        info: item?.status === 3
+      }"
+    >
+      <div class="d-flex align-items-center justify-content-between">
+        <mat-icon *ngIf="item?.status === 0" class="px-3 f-16">done</mat-icon>
+        <mat-icon *ngIf="item?.status === 1" class="px-3 f-16"
+          >dangerous</mat-icon
+        >
+        <mat-icon *ngIf="item?.status === 2" class="px-3 f-16"
+          >warning</mat-icon
+        >
+        <mat-icon *ngIf="item?.status === 3" class="px-3 f-16">info</mat-icon>
+        <p class="mb-0 flex-grow-1">{{ item?.message }}</p>
+        <button (click)="remove(item)" mat-icon-button>
+          <mat-icon class="f-16">close</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

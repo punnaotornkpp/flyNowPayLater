@@ -1,0 +1,151 @@
+<div class="background-detail-flight">
+  <div class="row col-12">
+    <div class="col-12 col-lg-6 p-4 pb-0">
+      <div class="f-20 bold pb-3">{{ "choose-services" | translate }}</div>
+      <div>{{ "choose-services-content" | translate }}</div>
+    </div>
+    <div class="col-12 col-lg-6 py-3">
+      <mat-card
+        class="p-3"
+        [ngClass]="{
+          nokLite: item.productCode === 'NF',
+          nokXtra: item.productCode === 'NB',
+          nokMax: item.productCode === 'NE'
+        }"
+        ><div class="border-bottom-black pb-2">
+          <div class="f-20" *ngIf="item.productCode === 'NF'">Nok Lite</div>
+          <div class="f-20" *ngIf="item.productCode === 'NB'">
+            Nok X-tra ({{ "recommended" | translate }}!)
+          </div>
+          <div class="f-20" *ngIf="item.productCode === 'NE'">Nok MAX</div>
+        </div>
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NF'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
+          </div>
+        </div>
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NB'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">luggage</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "15kg" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "advanced-seat" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">change_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "eligible-reroute" | translate }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="py-2 text-spacing row col"
+          *ngIf="item.productCode === 'NE'"
+        >
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">restaurant</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "hot-meal" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">luggage</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "25kg" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">work</mat-icon>
+            </div>
+            <div class="col align-items-center">{{ "7kg" | translate }}</div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_recline_normal</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "advanced-seat" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">run_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "priority-boarding" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">airline_seat_flat</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "lounge-access" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">change_circle</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "eligible-reroute" | translate }}
+            </div>
+          </div>
+          <div class="d-flex col-12">
+            <div class="col-lg-1 col-4">
+              <mat-icon class="f-24">flight_takeoff</mat-icon>
+            </div>
+            <div class="col align-items-center">
+              {{ "changing" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 d-flex justify-content-space-between py-1">
+          <div class="col text-align-start">
+            <mat-radio-button
+              [name]="currentIndex.toString()"
+              [checked]="internalCheck"
+              (change)="selectFlight(true)"
+            >
+            </mat-radio-button>
+          </div>
+          <div class="col text-align-end f-18 align-self-center bold">
+            {{ item.fareAmount | number : "1.2-2" }}
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

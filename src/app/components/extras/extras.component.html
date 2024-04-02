@@ -1,0 +1,93 @@
+<div class="container container-max-width">
+  <div class="px-2">
+    <div class="py-3">
+      <app-step [page]="4"></app-step>
+    </div>
+    <div class="py-3">
+      <div>
+        <div class="py-4 d-flex">
+          <div class="align-self-center px-3">
+            <mat-icon class="f-32 f-nokair">work</mat-icon>
+          </div>
+          <div>
+            <div class="bold f-24 py-2">{{ "extra-service" | translate }}</div>
+            <div class="bold">{{ "extra-service-content" | translate }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex center">
+        <div class="spinner-container" *ngIf="!spinner">
+          <mat-spinner color="accent"></mat-spinner>
+          <mat-icon class="spinner-icon" color="accent"
+            >connecting_airports</mat-icon
+          >
+        </div>
+      </div>
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3" *ngIf="spinner">
+        <div class="col py-2" *ngFor="let item of items">
+          <mat-card>
+            <img mat-card-image [src]="item.img" [alt]="item.title" />
+            <div class="p-3">
+              <div class="d-flex align-item-center">
+                <mat-checkbox
+                  color="warn"
+                  [checked]="item.status"
+                  (change)="item.status = !item.status"
+                  class="not-click"
+                >
+                </mat-checkbox>
+                <mat-card-title class="py-2">
+                  {{ item.title }}
+                </mat-card-title>
+              </div>
+              <div class="p-2 text-spacing">
+                {{ item.content }}
+                <span *ngIf="item.detail.title != ''">
+                  <a
+                    class="f-black bold"
+                    [href]="item.detail.link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ({{ item.detail.title }})
+                  </a>
+                </span>
+              </div>
+            </div>
+            <mat-card-actions class="justify-content-center bottom">
+              <button
+                mat-flat-button
+                color="accent"
+                (click)="openDialog(item.id)"
+              >
+                <span class="px-3 py-2">{{ item.button }}</span>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-space-between py-2">
+        <div class="col text-align-start">
+          <button mat-button (click)="redirectPrevious()" class="large-button">
+            <u>{{ "previous" | translate }}</u>
+          </button>
+        </div>
+        <div class="col text-align-end" *ngIf="loading">
+          <button
+            mat-raised-button
+            (click)="redirectNext()"
+            class="large-button"
+            color="accent"
+          >
+            <span>{{ "next" | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!wait" ngClass="overlay">
+    <mat-spinner color="accent"></mat-spinner>
+    <mat-icon class="spinner-icon" color="accent">connecting_airports</mat-icon>
+  </div>
+</div>

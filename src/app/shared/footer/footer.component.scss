@@ -1,10 +1,36 @@
-footer {
-    opacity: 0.8;   
+.footer {
     color: white;
     padding: 10px;
     text-align: center;
-    position: fixed;
+    // position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 15px;
+    font-size: 12px;
+}
+
+
+
+a {
+  color: black;
+  text-decoration: none;
+  font-weight: 400; 
+
+  &:hover,
+  &:focus {
+    text-decoration: underline; 
+  }
+}
+
+
+
+.invert-colors {
+  filter: invert(100%);
+}
+
+.f-300 {
+  font-weight: 300;
+}
+
+.border-right-black {
+  border-right: 1px solid black;
 }

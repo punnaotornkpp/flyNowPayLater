@@ -1,11 +1,52 @@
 mat-card {
     background-color: var(--nokair);
     padding: 1rem;
+    border-radius: 8px;
 }
 
 mat-button-toggle-group {
     border-color: var(--nokair);
+
 }
+
+mat-button-toggle {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.row > * {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+
+.passenger-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+    .custom-dropdown {
+      width: 100%; 
+    }
+}
+
+.icon {
+  background-color: var(--nokair);
+  border-radius: 4px;
+  padding: 8px;
+  display: inline;
+  vertical-align: middle;
+}
+
+.icon:hover {
+  background-color: var(--nokair50);
+}
+
+
+
+
+
 
 
 

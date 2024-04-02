@@ -1,0 +1,116 @@
+<div class="container pt-2">
+  <mat-card
+    *ngFor="let item of this.data.pricing.airlines; let i = index"
+    class="mb-2 text-spacing"
+  >
+    <mat-card-title class="f-18 bold pt-3">{{ getTitle(i) }}</mat-card-title>
+    <mat-card-content>
+      <div class="row col d-flex">
+        <div class="col-12 col-lg-6">
+          <div class="py-2 border-bottom-black">
+            {{ item.travelInfos[0].originName }} ({{
+              item.travelInfos[0].origin
+            }}) - {{ item.travelInfos[0].destinationName }} ({{
+              item.travelInfos[0].destination
+            }})
+          </div>
+          <div class="py-2 border-bottom-black">
+            <div class="py-1">
+              {{ getBundleInfo(item.bundleDetails).bundleName }}
+            </div>
+            <div class="d-flex align-items-center">
+              <span><mat-icon class="f-32 px-2">luggage</mat-icon></span>
+              <p>{{ getBundleInfo(item.bundleDetails).baggageInfo }}</p>
+            </div>
+          </div>
+          <div class="py-2">
+            <div>Your price:</div>
+            <div class="bold">
+              {{ getSumAmountByAirline(i) | number : "1.2-2" }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div
+            class="row col py-1"
+            *ngFor="
+              let passenger of checkInfant(this.data.passengers);
+              let passengerIndex = index
+            "
+          >
+            <div class="col align-self-center">
+              {{ passenger.firstName }} {{ passenger.lastName }}
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label
+                  >Choose baggage for {{ passenger.firstName }}</mat-label
+                >
+                <mat-select
+                  (selectionChange)="
+                    onSsrSelection(
+                      $event.value,
+                      item.travelInfos[0].flightNumber,
+                      passengerIndex,
+                      i
+                    )
+                  "
+                  [value]="
+                    getSelectedOption(
+                      passengerIndex,
+                      item.travelInfos[0].flightNumber
+                    )
+                  "
+                >
+                  <mat-option [value]="null">No Selection</mat-option>
+                  <mat-option
+                    *ngFor="
+                      let ssr of getSsrOptionsForFlightInit(
+                        item.travelInfos[0].flightNumber
+                      )
+                    "
+                    [value]="ssr.ssrCode"
+                  >
+                    {{ ssr.description }}
+                  </mat-option>
+                  <mat-option
+                    *ngFor="
+                      let ssr of getSsrOptionsForFlight(
+                        item.travelInfos[0].flightNumber
+                      )
+                    "
+                    [value]="ssr.ssrCode"
+                  >
+                    + {{ ssr.description }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div class="col-12 row d-flex justify-content-end py-3">
+    <div class="col-6 col-sm-4 col-lg-2 text-align-end">
+      <button
+        mat-raised-button
+        (click)="Cancel()"
+        class="large-button"
+        color="accent"
+      >
+        <span>Cancel</span>
+      </button>
+    </div>
+    <div class="col-6 col-sm-4 col-lg-2 text-align-end">
+      <button
+        mat-raised-button
+        (click)="Confirm()"
+        class="large-button"
+        color="accent"
+      >
+        <span>Confirm</span>
+      </button>
+    </div>
+  </div>
+</div>

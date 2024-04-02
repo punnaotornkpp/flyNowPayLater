@@ -1,0 +1,92 @@
+<div class="px-1">
+  <div class="pb-3">
+    <div class="row p-0 col-12 text-align-center f-14" *ngIf="!isSmallScreen">
+      <div class="col-2 bold d-flex justify-content-center">
+        <div class="row p-0 col-12">
+          <div class="col-12 col-lg-6">{{ "departure" | translate }}</div>
+          <div class="col-12 col-lg-6">{{ "arrival" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-5 bold text-align-start">
+        {{ "flight-info" | translate }}
+      </div>
+      <div class="col bold">Nok Lite</div>
+      <div class="col bold">
+        <div class="text-align-center">Nok X-tra</div>
+        <div>{{ "recommended" | translate }}!</div>
+      </div>
+      <div class="col bold">Nok MAX</div>
+    </div>
+  </div>
+  <div class="border-top" *ngFor="let item of value; let i = index">
+    <div class="hover-background cursor">
+      <div class="row p-0 py-3 text-align-center">
+        <div
+          class="col-12 col-lg-2 bold d-flex align-items-center justify-content-center"
+          (click)="openDetailFlight(item)"
+        >
+          <div class="f-20">
+            {{ item.departureDate | transformDateToTime }}
+          </div>
+          <mat-icon class="f-24 gray px-2">east</mat-icon>
+          <div class="f-20">
+            {{ item.arrivalDate | transformDateToTime }}
+          </div>
+        </div>
+        <div
+          class="col-12 col-lg-5 text-align-start"
+          [class.center]="isSmallScreen"
+          [class.py-2]="isSmallScreen"
+          (click)="openDetailFlight(item)"
+        >
+          <div>
+            <mat-icon class="f-24">flight</mat-icon>
+          </div>
+          <div>
+            {{ item.travelInfos[0].duration || "" }} |
+            {{ item.travelInfos[0].flightNumber || "" }} |
+            {{ item.travelInfos[0].aircraftDescription || "" }}
+          </div>
+        </div>
+        <div class="row p-0 col">
+          <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
+            <button
+              mat-raised-button
+              (click)="selectDetail(i, item.fares[0]); $event.stopPropagation()"
+              class="price-button nokLite"
+            >
+              {{ item.fares[0].fareAmount | decimalFloat | number : "1.2-2" }}
+            </button>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
+            <button
+              mat-raised-button
+              (click)="selectDetail(i, item.fares[1]); $event.stopPropagation()"
+              class="price-button nokXtra"
+            >
+              {{ item.fares[1].fareAmount | decimalFloat | number : "1.2-2" }}
+            </button>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4 bold align-self-center py-1">
+            <button
+              mat-raised-button
+              (click)="selectDetail(i, item.fares[2]); $event.stopPropagation()"
+              class="price-button nokMax"
+            >
+              {{ item.fares[2].fareAmount | decimalFloat | number : "1.2-2" }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedItem === i">
+      <app-detail-flight
+        [isSelected]="isSelected"
+        [item]="selectedDate"
+        [check]="false"
+        [currentIndex]="this.currentIndex"
+        (onSelect)="selectFlightFare($event)"
+      ></app-detail-flight>
+    </div>
+  </div>
+</div>

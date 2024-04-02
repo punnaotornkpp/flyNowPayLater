@@ -1,28 +1,25 @@
-.top-header{
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 50px 8px 50px;
-}
-
-.logo {
-    display: flex;
-    text-align: left;
-}
 
 .logo img {
-    max-height: 35px;
-    width: auto;
+  max-width: 150px; 
+  height: auto;
 }
 
-.border-header {
-    border-top: 1px solid rgba(0,0,0,.15);
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgba(0, 0, 0, 0.15);
-    color: #000;
+.container-display-header {
+ padding-right: 16px;
 }
 
-.language-selector {
-    display: flex;
-    text-align: right;
+.highlighted {
+  background-color: var(--nokair50);
 }
+
+
+mat-expansion-panel-header {
+  background-color: var(--nokair) !important;
+  border-radius: 0px !important;
+  height: 75px;
+}
+
+mat-accordion mat-expansion-panel{
+    border-radius: 0px !important;
+}
+
